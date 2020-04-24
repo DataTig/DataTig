@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+
+
+
+<p>{{ site_description }}</p>
+
+
+<table class="table">
+    <tr>
+        <th>id</th>
+        <th>&nbsp;</th>
+    </tr>
+    {% for type_id, type in types.items() %}
+        <tr>
+            <td>{{ type.id }}</td>
+            <td><a href="/type/{{ type.id }}/"><button type="button" class="btn btn-link">View</button></a></td>
+        </tr>
+    {% endfor %}
+</table>
+
+
+{% endblock %}
+

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}{{ item_id }}{% endblock %}
+
+{% block body %}
+
+<h2>{{ item_id }} - {{ type.id }}</h2>
+
+<table class="table">
+    {% for field_id, field in type.fields.items() %}
+        <tr>
+            <th>
+                {{ field.title() }}
+            </th>
+            <td>
+                {% if field.type() == 'url' %}
+                    <a href="{{ datastore.get_field(type.id, item_id, field_id) }}">{{ datastore.get_field(type.id, item_id, field_id) }}</a>
+                {% else %}
+                    {{ datastore.get_field(type.id, item_id, field_id) }}
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+
+</table>
+
+<h3>Raw Data</h3>
+
+<div>
+    {{ item_data }}
+</div>
+
+<a href="data.json"><button type="button" class="btn btn-primary">Download Raw JSON data</button></a>
+
+{% endblock %}
