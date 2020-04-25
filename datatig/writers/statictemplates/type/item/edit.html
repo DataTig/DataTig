@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}{{ item_id }}{% endblock %}
+
+{% block body %}
+
+<h2>Edit {{ item_id }} - {{ type.id }}</h2>
+
+<form id="edit_form" action="#" onsubmit="on_form_change(); return false;">
+<table class="table">
+    {% for field_id, field in type.fields.items() %}
+        <tr>
+                <th>
+                    {{ field.title() }}
+                </th>
+                <td>
+                    {% if field.type() == 'url' %}
+                        <input type="url" name="{{ field_id }}" value="{{ datastore.get_field(type.id, item_id, field_id) }}" onchange="on_form_change();">
+                    {% else %}
+                        <input type="text" name="{{ field_id }}" value="{{ datastore.get_field(type.id, item_id, field_id) }}" onchange="on_form_change();">
+                    {% endif %}
+                </td>
+        </tr>
+    {% endfor %}
+</table>
+    <input type="submit" value="Next" class="btn btn-primary">
+    <input type="reset" value="Reset" onclick="return confirm('Are you sure you want to reset?');" class="btn btn-danger">
+</form>
+
+<h3>How To Submit</h3>
+
+<div>
+    <textarea id="raw_data_out" readonly="readonly"></textarea>
+</div>
+
+<p>
+    <a href="#" onclick="copy(); return false;"><button type="button" class="btn btn-primary">Copy Data</button></a>
+</p>
+{% if site_github_url %}
+    <p>Go to the Github page to edit <em>{{  item_data.git_filename }}</em> and copy and paste in the content above.</p>
+    <a href="https://github.com/{{ site_github_url }}/edit/{{ site_github_primary_branch }}/{{  item_data.git_filename }}" target="_new"><button type="button" class="btn btn-primary">Edit on GitHub</button></a>
+{% else %}
+    <p>In the git repository, edit <em>{{  item_data.git_filename }}</em> and copy and paste in the content above.</p>
+{% endif %}
+
+{% endblock %}
+
+
+{% block javascript %}
+<script>
+
+
+    var data = JSON.parse("{{ item_data_json_string | escapejs }}");
+
+    function on_form_change() {
+        {% for field_id, field in type.fields.items() %}
+            {% if field.type() == 'url' %}
+                set_data("{{ field.key() }}", $('form#edit_form input[name="{{ field_id }}"]').val());
+            {% else %}
+                set_data("{{ field.key() }}", $('form#edit_form input[name="{{ field_id }}"]').val());
+            {% endif %}
+        {% endfor %}
+        $('#raw_data_out').val(JSON.stringify(data, null, 4));
+    }
+
+    function set_data(key, value) {
+        var key_bits = key.split('/');
+        if (key_bits.length == 1) {
+            data[key] = value;
+        } else {
+            var data_pointer = data;
+            var last_key = key_bits.pop();
+            for (var i in key_bits) {
+                data_pointer = data_pointer[key_bits[i]];
+            }
+            data_pointer[last_key] = value;
+        }
+    }
+
+    function copy() {
+        document.getElementById('raw_data_out').select();
+        copied = document.execCommand('copy');
+    }
+
+    $( document ).ready(function() {
+        on_form_change();
+    });
+
+</script>
+{% endblock %}

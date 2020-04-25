@@ -2,6 +2,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 import os
 import shutil
 import json
+from .static_util import jinja2_escapejs_filter
 
 def static_writer(config, datastore):
     # Templates
@@ -9,6 +10,7 @@ def static_writer(config, datastore):
         loader=FileSystemLoader(searchpath=os.path.join(os.path.dirname(os.path.realpath(__file__)),'statictemplates')),
         autoescape=select_autoescape(['html', 'xml'])
     )
+    env.filters['escapejs'] = jinja2_escapejs_filter
 
     template_variables = {
         'site_title': config.config.get('title', 'SITE'),
@@ -60,6 +62,15 @@ def static_writer(config, datastore):
                     type=template_variables['types'][type],
                     item_id=item_id,
                     item_data=datastore.get_item(type, item_id),
+                    **template_variables)
+                )
+            os.makedirs(os.path.join(config.out_dir, 'type', type, 'item', item_id,'edit'), exist_ok=True)
+            with open(os.path.join(config.out_dir, 'type', type,'item', item_id, 'edit','index.html'), "w") as fp:
+                fp.write(env.get_template('type/item/edit.html').render(
+                    type=template_variables['types'][type],
+                    item_id=item_id,
+                    item_data=datastore.get_item(type, item_id),
+                    item_data_json_string=json.dumps(datastore.get_item(type, item_id).data),
                     **template_variables)
                 )
             with open(os.path.join(config.out_dir, 'type', type, 'item', item_id, 'data.json'), "w") as fp:
