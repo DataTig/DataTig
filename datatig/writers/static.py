@@ -13,6 +13,8 @@ def static_writer(config, datastore):
     template_variables = {
         'site_title': config.config.get('title', 'SITE'),
         'site_description': config.config.get('description', ''),
+        'site_github_url': config.github_url(),
+        'site_github_primary_branch': config.github_primary_branch(),
         'types': {},
         'datastore': datastore,
     }
@@ -61,4 +63,4 @@ def static_writer(config, datastore):
                     **template_variables)
                 )
             with open(os.path.join(config.out_dir, 'type', type, 'item', item_id, 'data.json'), "w") as fp:
-                json.dump(datastore.get_item(type, item_id), fp, indent=2)
+                json.dump(datastore.get_item(type, item_id).data, fp, indent=2)

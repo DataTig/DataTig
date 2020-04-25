@@ -24,11 +24,19 @@
 
 </table>
 
+{% if site_github_url %}
+    <a href="https://github.com/{{ site_github_url }}/edit/{{ site_github_primary_branch }}/{{  item_data.git_filename }}"><button type="button" class="btn btn-primary">Edit Raw data directly on GitHub</button></a>
+{% endif %}
+
 <h3>Raw Data</h3>
 
 <div>
-    {{ item_data }}
+    {{ item_data.data }}
 </div>
+
+{% if site_github_url %}
+    <a href="https://github.com/{{ site_github_url }}/blob/{{ site_github_primary_branch }}/{{  item_data.git_filename }}"><button type="button" class="btn btn-primary">View on GitHub</button></a>
+{% endif %}
 
 <a href="data.json"><button type="button" class="btn btn-primary">Download Raw JSON data</button></a>
 

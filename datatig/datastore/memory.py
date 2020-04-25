@@ -19,7 +19,7 @@ class DataStoreMemory:
 
     def get_field(self, type_id, item_id, field_id):
         field_config = self.site_config.types[type_id].fields[field_id]
-        data = self.data[type_id][item_id]
+        data = self.data[type_id][item_id].data
         obj = JSONDeepReaderWriter(data)
         return obj.read(field_config.key())
 
