@@ -3,6 +3,7 @@ import os
 import shutil
 import json
 from .static_util import jinja2_escapejs_filter
+from spreadsheetforms.api import put_data_in_form
 
 def static_writer(config, datastore):
     # Templates
@@ -26,6 +27,7 @@ def static_writer(config, datastore):
             'id': k,
             'fields': v.fields,
             'list_fields': v.list_fields(),
+            'guide_form_xlsx': v.guide_form_xlsx(),
         }
 
     # Out Dir
@@ -47,7 +49,9 @@ def static_writer(config, datastore):
             )
 
     # Each Type!
-    for type in config.types.keys():
+    for type, type_config in config.types.items():
+        if type_config.guide_form_xlsx():
+            guide_form_xlsx = os.path.join(config.source_dir, type_config.guide_form_xlsx())
         os.makedirs(os.path.join(config.out_dir, 'type', type), exist_ok=True)
         with open(os.path.join(config.out_dir, 'type', type, 'index.html'), "w") as fp:
             fp.write(env.get_template('type/index.html').render(
@@ -75,3 +79,16 @@ def static_writer(config, datastore):
                 )
             with open(os.path.join(config.out_dir, 'type', type, 'item', item_id, 'data.json'), "w") as fp:
                 json.dump(datastore.get_item(type, item_id).data, fp, indent=2)
+            if type_config.guide_form_xlsx():
+                os.makedirs(os.path.join(config.out_dir, 'type', type, 'item', item_id, 'editspreadsheet'), exist_ok=True)
+                with open(os.path.join(config.out_dir, 'type', type, 'item', item_id, 'editspreadsheet', 'index.html'),
+                          "w") as fp:
+                    fp.write(env.get_template('type/item/editspreadsheet.html').render(
+                        type=template_variables['types'][type],
+                        item_id=item_id,
+                        item_data=datastore.get_item(type, item_id),
+                        item_data_json_string=json.dumps(datastore.get_item(type, item_id).data),
+                        **template_variables)
+                    )
+                out_form_xlsx = os.path.join(config.out_dir, 'type', type, 'item', item_id, 'data-form.xlsx')
+                put_data_in_form(guide_form_xlsx, datastore.get_item(type, item_id).data, out_form_xlsx)

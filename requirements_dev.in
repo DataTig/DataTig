@@ -1,4 +1,6 @@
+# TODO this is duplicated in setup.py, fix that
 Jinja2
+spreadsheetforms
 
 # DEV
 pip-tools

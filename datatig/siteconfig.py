@@ -38,6 +38,9 @@ class TypeConfig:
     def directory(self):
         return self.config.get('directory')
 
+    def guide_form_xlsx(self):
+        return self.config.get('guide_form_xlsx')
+
     def list_fields(self):
         return self.config.get('list_fields',[]) # TODO add some sensible defaults
 
