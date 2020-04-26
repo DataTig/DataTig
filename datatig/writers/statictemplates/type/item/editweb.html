@@ -2,6 +2,17 @@
 
 {% block title %}{{ item_id }}{% endblock %}
 
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/type/{{ type.id }}/">{{ type.id }}</a></li>
+        <li class="breadcrumb-item"><a href="/type/{{ type.id }}/item/{{ item_id }}/">{{ item_id }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit in Browser</li>
+      </ol>
+    </nav>
+{% endblock %}
+
 {% block body %}
 
 <h2>Edit {{ item_id }} - {{ type.id }}</h2>
