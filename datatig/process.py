@@ -1,7 +1,7 @@
 from .siteconfig import SiteConfig
 from .readers.directory import process_type
 from .datastore.memory import DataStoreMemory
-from .writers.static import static_writer
+from .writers.static import StaticWriter
 
 def go(source_dir, source_config, out_dir):
 
@@ -13,4 +13,5 @@ def go(source_dir, source_config, out_dir):
     for type in config.types.keys():
         process_type(config, type, datastore)
 
-    static_writer(config, datastore)
+    static_writer = StaticWriter(config, datastore)
+    static_writer.go()
