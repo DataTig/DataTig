@@ -17,7 +17,7 @@ class SiteConfig:
             self.types[k] = TypeConfig(k, v)
 
     def github_url(self):
-        return self.config.get('github',{}).get('url')
+        return self.config.get('githost',{}).get('url')
 
     def git_submodule_directory(self):
         return self.config.get('git_submodule_directory')
