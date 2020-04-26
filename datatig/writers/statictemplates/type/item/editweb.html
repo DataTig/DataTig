@@ -71,6 +71,7 @@
             var data_pointer = data;
             var last_key = key_bits.pop();
             for (var i in key_bits) {
+                // TODO this will fail if data structure doesn't already exist
                 data_pointer = data_pointer[key_bits[i]];
             }
             data_pointer[last_key] = value;
@@ -80,6 +81,7 @@
     function copy() {
         document.getElementById('raw_data_out').select();
         copied = document.execCommand('copy');
+        // TODO show user feedback if copied worked/failed
     }
 
     $( document ).ready(function() {

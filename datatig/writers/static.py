@@ -64,9 +64,9 @@ def static_writer(config, datastore):
                     item_data=datastore.get_item(type, item_id),
                     **template_variables)
                 )
-            os.makedirs(os.path.join(config.out_dir, 'type', type, 'item', item_id,'edit'), exist_ok=True)
-            with open(os.path.join(config.out_dir, 'type', type,'item', item_id, 'edit','index.html'), "w") as fp:
-                fp.write(env.get_template('type/item/edit.html').render(
+            os.makedirs(os.path.join(config.out_dir, 'type', type, 'item', item_id,'editweb'), exist_ok=True)
+            with open(os.path.join(config.out_dir, 'type', type,'item', item_id, 'editweb','index.html'), "w") as fp:
+                fp.write(env.get_template('type/item/editweb.html').render(
                     type=template_variables['types'][type],
                     item_id=item_id,
                     item_data=datastore.get_item(type, item_id),
