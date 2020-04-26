@@ -7,8 +7,8 @@ from datatig.datastore.base import StoredItem
 def process_type(config, type, datastore):
     start_dir = os.path.join(config.source_dir, config.types[type].directory())
     full_sourcedir = os.path.abspath(config.source_dir)
-    if config.github_submodule_directory():
-        full_sourcedir = os.path.join(full_sourcedir, config.github_submodule_directory())
+    if config.git_submodule_directory():
+        full_sourcedir = os.path.join(full_sourcedir, config.git_submodule_directory())
     for path, subdirs, files in os.walk(start_dir):
         for name in files:
             full_filename = os.path.abspath(os.path.join(path, name))

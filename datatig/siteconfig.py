@@ -19,8 +19,8 @@ class SiteConfig:
     def github_url(self):
         return self.config.get('github',{}).get('url')
 
-    def github_submodule_directory(self):
-        return self.config.get('github',{}).get('submodule_directory')
+    def git_submodule_directory(self):
+        return self.config.get('git_submodule_directory')
 
     def github_primary_branch(self):
         return "master"
