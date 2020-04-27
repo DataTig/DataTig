@@ -37,7 +37,12 @@ class StaticWriter:
                 'fields': v.fields,
                 'list_fields': v.list_fields(),
                 'guide_form_xlsx': v.guide_form_xlsx(),
+                'json_schema': v.json_schema(),
+                'pretty_json_indent': v.pretty_json_indent(),
             }
+            if v.json_schema():
+                with open(os.path.join(self.config.source_dir, v.json_schema())) as fp:
+                    self._template_variables['types'][k]['json_schema_string'] = fp.read()
 
         # Out Dir
         os.makedirs(self.config.out_dir, exist_ok=True)

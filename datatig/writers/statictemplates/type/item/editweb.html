@@ -17,26 +17,8 @@
 
 <h2>Edit {{ item_id }} - {{ type.id }}</h2>
 
-<form id="edit_form" action="#" onsubmit="on_form_change(); return false;">
-<table class="table">
-    {% for field_id, field in type.fields.items() %}
-        <tr>
-                <th>
-                    {{ field.title() }}
-                </th>
-                <td>
-                    {% if field.type() == 'url' %}
-                        <input type="url" name="{{ field_id }}" value="{{ datastore.get_field(type.id, item_id, field_id) }}" onchange="on_form_change();">
-                    {% else %}
-                        <input type="text" name="{{ field_id }}" value="{{ datastore.get_field(type.id, item_id, field_id) }}" onchange="on_form_change();">
-                    {% endif %}
-                </td>
-        </tr>
-    {% endfor %}
-</table>
-    <input type="submit" value="Next" class="btn btn-primary">
-    <input type="reset" value="Reset" onclick="return confirm('Are you sure you want to reset?');" class="btn btn-danger">
-</form>
+<div id="editor_holder">
+</div>
 
 <h3>How To Submit</h3>
 
@@ -58,46 +40,38 @@
 
 
 {% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@2.2.1/dist/jsoneditor.min.js"></script>
 <script>
 
-
     var data = JSON.parse("{{ item_data_json_string | escapejs }}");
+    var schema = JSON.parse("{{ type.json_schema_string | escapejs }}");
 
-    function on_form_change() {
-        {% for field_id, field in type.fields.items() %}
-            {% if field.type() == 'url' %}
-                set_data("{{ field.key() }}", $('form#edit_form input[name="{{ field_id }}"]').val());
-            {% else %}
-                set_data("{{ field.key() }}", $('form#edit_form input[name="{{ field_id }}"]').val());
-            {% endif %}
-        {% endfor %}
-        $('#raw_data_out').val(JSON.stringify(data, null, 4));
-    }
+    const editor_options = {
+        startval: data,
+        schema: schema,
+        theme:'bootstrap4',
+        iconlib: "fontawesome5"
+    };
 
-    function set_data(key, value) {
-        var key_bits = key.split('/');
-        if (key_bits.length == 1) {
-            data[key] = value;
-        } else {
-            var data_pointer = data;
-            var last_key = key_bits.pop();
-            for (var i in key_bits) {
-                // TODO this will fail if data structure doesn't already exist
-                data_pointer = data_pointer[key_bits[i]];
-            }
-            data_pointer[last_key] = value;
-        }
-    }
+    var editor;
+
+    function update() {
+        $('#raw_data_out').val(JSON.stringify(editor.getValue(),null,{{ type.pretty_json_indent }}));
+    };
+
+    $( document ).ready(function() {
+        var element = document.getElementById('editor_holder');
+        editor = new JSONEditor(element, editor_options);
+        editor.on('change',update);
+        update();
+    });
 
     function copy() {
+        update();
         document.getElementById('raw_data_out').select();
         copied = document.execCommand('copy');
         // TODO show user feedback if copied worked/failed
-    }
-
-    $( document ).ready(function() {
-        on_form_change();
-    });
+    };
 
 </script>
 {% endblock %}

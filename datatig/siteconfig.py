@@ -44,6 +44,13 @@ class TypeConfig:
     def list_fields(self):
         return self.config.get('list_fields',[]) # TODO add some sensible defaults
 
+    def json_schema(self):
+        return self.config.get('json_schema')
+
+    def pretty_json_indent(self):
+        return self.config.get('pretty_json_indent',4)
+
+
 class TypeFieldConfig:
 
     def __init__(self, id, config):

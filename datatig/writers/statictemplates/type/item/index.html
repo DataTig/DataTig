@@ -35,7 +35,9 @@
 </table>
 
 <p>
-    <a href="editweb/"><button type="button" class="btn btn-primary">Edit in Browser</button></a>
+    {% if type.json_schema %}
+        <a href="editweb/"><button type="button" class="btn btn-primary">Edit in Browser</button></a>
+    {% endif %}
     {% if type.guide_form_xlsx %}
         <a href="editspreadsheet/"><button type="button" class="btn btn-primary">Edit in a spreadsheet</button></a>
     {% endif %}
