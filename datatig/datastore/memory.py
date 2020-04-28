@@ -12,7 +12,7 @@ class DataStoreMemory:
         self.data[type_id][item_id] = data
 
     def get_ids_in_type(self, type_id):
-        return self.data[type_id].keys()
+        return sorted(self.data[type_id].keys())
 
     def get_item(self, type_id, item_id):
         return self.data[type_id][item_id]
