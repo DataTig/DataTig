@@ -1,6 +1,7 @@
 # TODO this is duplicated in setup.py, fix that
 Jinja2
 spreadsheetforms
+jsonschema
 
 # DEV
 pip-tools

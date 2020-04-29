@@ -34,17 +34,35 @@
 
 </table>
 
-<p>
-    {% if type.json_schema %}
-        <a href="editweb/"><button type="button" class="btn btn-primary">Edit in Browser</button></a>
+{% if item_data.json_schema_validation_errors or item_data.json_schema_validation_pass %}
+    <h3>Validation</h3>
+
+    {% if item_data.json_schema_validation_errors %}
+        <p><i class="fas fa-times-circle"></i> There were validation errors:</p>
+        <div>
+            {{ item_data.json_schema_validation_errors }}
+        </div>
     {% endif %}
-    {% if type.guide_form_xlsx %}
-        <a href="editspreadsheet/"><button type="button" class="btn btn-primary">Edit in a spreadsheet</button></a>
+    {% if item_data.json_schema_validation_pass %}
+        <p><i class="fas fa-check-circle"></i> Validation passed</p>
     {% endif %}
-    {% if site_github_url %}
-        <a href="https://github.com/{{ site_github_url }}/edit/{{ site_github_primary_branch }}/{{  item_data.git_filename }}"><button type="button" class="btn btn-primary">Edit Raw data directly on GitHub</button></a>
-    {% endif %}
-</p>
+
+{% endif %}
+
+{% if type.json_schema or type.guide_form_xlsx or site_github_url %}
+    <h3>Edit</h3>
+    <p>
+        {% if type.json_schema %}
+            <a href="editweb/"><button type="button" class="btn btn-primary">Edit in Browser</button></a>
+        {% endif %}
+        {% if type.guide_form_xlsx %}
+            <a href="editspreadsheet/"><button type="button" class="btn btn-primary">Edit in a spreadsheet</button></a>
+        {% endif %}
+        {% if site_github_url %}
+            <a href="https://github.com/{{ site_github_url }}/edit/{{ site_github_primary_branch }}/{{  item_data.git_filename }}"><button type="button" class="btn btn-primary">Edit Raw data directly on GitHub</button></a>
+        {% endif %}
+    </p>
+{% endif %}
 
 <h3>Raw Data</h3>
 

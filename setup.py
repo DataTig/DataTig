@@ -10,6 +10,6 @@ setuptools.setup(
     },
     classifiers=[
     ],
-    install_requires=['Jinja2','spreadsheetforms'] ,
+    install_requires=['Jinja2','spreadsheetforms','jsonschema'] ,
     python_requires='>=3.6',
 )

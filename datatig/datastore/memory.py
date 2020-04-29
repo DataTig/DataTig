@@ -11,6 +11,12 @@ class DataStoreMemory:
             self.data[type_id] = {}
         self.data[type_id][item_id] = data
 
+    def store_json_schema_validation_errors(self, type_id, item_id, errors):
+        self.data[type_id][item_id].json_schema_validation_errors = errors
+
+    def store_json_schema_validation_pass(self, type_id, item_id):
+        self.data[type_id][item_id].json_schema_validation_pass = True
+
     def get_ids_in_type(self, type_id):
         return sorted(self.data[type_id].keys())
 
