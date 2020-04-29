@@ -37,6 +37,7 @@ class StaticWriter:
                 'fields': v.fields,
                 'list_fields': v.list_fields(),
                 'directory': v.directory(),
+                'directory_in_git_repository': v.directory_in_git_repository(),
                 'guide_form_xlsx': v.guide_form_xlsx(),
                 'json_schema': v.json_schema(),
                 'pretty_json_indent': v.pretty_json_indent(),

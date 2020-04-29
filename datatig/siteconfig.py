@@ -14,7 +14,7 @@ class SiteConfig:
             self.config = json.load(fp)
 
         for k,v in self.config.get('types',[]).items():
-            self.types[k] = TypeConfig(k, v)
+            self.types[k] = TypeConfig(k, v, self)
 
     def github_url(self):
         return self.config.get('githost',{}).get('url')
@@ -28,15 +28,22 @@ class SiteConfig:
 
 class TypeConfig:
 
-    def __init__(self, id, config):
+    def __init__(self, id, config, siteconfig):
         self.id = id
         self.config = config
         self.fields = {}
         for k, v in config.get('fields',{}).items():
             self.fields[k] = TypeFieldConfig(k, v)
+        self.siteconfig = siteconfig
 
     def directory(self):
         return self.config.get('directory')
+
+    def directory_in_git_repository(self):
+        dir = self.config.get('directory')
+        if self.siteconfig.git_submodule_directory() and dir.startswith(self.siteconfig.git_submodule_directory()):
+            dir = dir[len(self.siteconfig.git_submodule_directory()):]
+        return dir
 
     def guide_form_xlsx(self):
         return self.config.get('guide_form_xlsx')
