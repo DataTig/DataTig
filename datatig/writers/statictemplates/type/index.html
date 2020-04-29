@@ -37,4 +37,13 @@
     {% endfor %}
 </table>
 
+{% if type.json_schema %}
+    <h3>New</h3>
+    <p class="text-right">
+        {% if type.json_schema %}
+            <a href="newweb/"><button type="button" class="btn btn-primary">New</button></a>
+        {% endif %}
+    </p>
+{% endif %}
+
 {% endblock %}

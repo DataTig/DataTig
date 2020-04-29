@@ -36,6 +36,7 @@ class StaticWriter:
                 'id': k,
                 'fields': v.fields,
                 'list_fields': v.list_fields(),
+                'directory': v.directory(),
                 'guide_form_xlsx': v.guide_form_xlsx(),
                 'json_schema': v.json_schema(),
                 'pretty_json_indent': v.pretty_json_indent(),
@@ -55,7 +56,7 @@ class StaticWriter:
         assets_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'staticassets')
         for filename in [f for f in os.listdir(assets_dir) if os.path.isfile(os.path.join(assets_dir, f))]:
             name_bits = filename.split(".")
-            if name_bits[-1] in ['css']:
+            if name_bits[-1] in ['css','js']:
                 shutil.copy(
                     os.path.join(assets_dir, filename),
                     os.path.join(self.config.out_dir, filename)
@@ -67,6 +68,9 @@ class StaticWriter:
                 guide_form_xlsx = os.path.join(self.config.source_dir, type_config.guide_form_xlsx())
 
             self._write_template(os.path.join( 'type', type), 'index.html', 'type/index.html', {
+                'type': self._template_variables['types'][type]
+            })
+            self._write_template(os.path.join( 'type', type, 'newweb'), 'index.html', 'type/newweb.html', {
                 'type': self._template_variables['types'][type]
             })
 

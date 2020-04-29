@@ -6,7 +6,7 @@ setuptools.setup(
     version="0.0.1",
     packages=setuptools.find_packages(exclude=['test']),
     package_data={
-        "": ["*.html", "*.txt", "*.css"],
+        "": ["*.html", "*.txt", "*.css","*.js"],
     },
     classifiers=[
     ],

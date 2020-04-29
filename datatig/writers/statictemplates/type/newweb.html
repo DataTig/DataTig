@@ -1,21 +1,20 @@
 {% extends "base.html" %}
 
-{% block title %}{{ item_id }}{% endblock %}
+{% block title %}{{ type.id }}{% endblock %}
 
 {% block breadcrumbs %}
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">Home</a></li>
         <li class="breadcrumb-item"><a href="/type/{{ type.id }}/">{{ type.id }}</a></li>
-        <li class="breadcrumb-item"><a href="/type/{{ type.id }}/item/{{ item_id }}/">{{ item_id }}</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Edit in Browser</li>
+        <li class="breadcrumb-item active" aria-current="page">New in Browser</li>
       </ol>
     </nav>
 {% endblock %}
 
 {% block body %}
 
-<h2>Edit {{ item_id }} - {{ type.id }}</h2>
+<h2>New {{ type.id }}</h2>
 
 <div id="editor_holder">
 </div>
@@ -30,12 +29,12 @@
     <a href="#" onclick="copy(); return false;"><button type="button" class="btn btn-primary">Copy Data</button></a>
 </p>
 {% if site_github_url %}
-    <p>Go to the Github page to edit <em>{{  item_data.git_filename }}</em> and copy and paste in the content above.</p>
+    <p>Go to the Github page to add a new file in <em>{{ type.directory }}</em> and copy and paste in the content above.</p>
     <p class="text-right">
-        <a href="https://github.com/{{ site_github_url }}/edit/{{ site_github_primary_branch }}/{{  item_data.git_filename }}" target="_new"><button type="button" class="btn btn-primary">Edit on GitHub</button></a>
+        <a href="https://github.com/{{ site_github_url }}/new/{{ site_github_primary_branch }}/{{  type.directory }}" target="_new"><button type="button" class="btn btn-primary">Edit on GitHub</button></a>
     </p>
 {% else %}
-    <p>In the git repository, edit <em>{{  item_data.git_filename }}</em> and copy and paste in the content above.</p>
+    <p>In the git repository, create a new file in <em>{{ type.directory }}</em> and copy and paste in the content above.</p>
 {% endif %}
 
 {% endblock %}
@@ -44,7 +43,7 @@
 {% block javascript %}
 <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@2.2.1/dist/jsoneditor.min.js"></script>
 <script>
-    var data = JSON.parse("{{ item_data_json_string | escapejs }}");
+    var data = {};
     var schema = JSON.parse("{{ type.json_schema_string | escapejs }}");
     var pretty_json_indent = {{ type.pretty_json_indent }};
 </script>
