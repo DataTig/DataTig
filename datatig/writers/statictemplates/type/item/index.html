@@ -39,9 +39,30 @@
 
     {% if item_data.json_schema_validation_errors %}
         <p><i class="fas fa-times-circle"></i> There were validation errors:</p>
-        <div>
-            {{ item_data.json_schema_validation_errors }}
-        </div>
+        <p>
+            <a href="#" onclick="$('#validation_errors').toggle(); return false;"><button type="button" class="btn btn-secondary">Show/Hide</button></a>
+        </p>
+        <table class="table" id="validation_errors">
+            <tr>
+                <th>Message</th>
+                <th>Data Path</th>
+                <th>Schema Path</th>
+            </tr>
+            {% for err in item_data.json_schema_validation_errors %}
+                <tr>
+                    <td>
+                        {{ err.message }}
+                    </td>
+                    <td>
+                        {{ err.path }}
+                    </td>
+                    <td>
+                        {{ err.schema_path }}
+                    </td>
+
+                </tr>
+            {% endfor %}
+        </table>
     {% endif %}
     {% if item_data.json_schema_validation_pass %}
         <p><i class="fas fa-check-circle"></i> Validation passed</p>
