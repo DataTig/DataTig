@@ -26,12 +26,14 @@
     <textarea id="raw_data_out" readonly="readonly"></textarea>
 </div>
 
-<p>
+<p class="text-right">
     <a href="#" onclick="copy(); return false;"><button type="button" class="btn btn-primary">Copy Data</button></a>
 </p>
 {% if site_github_url %}
     <p>Go to the Github page to edit <em>{{  item_data.git_filename }}</em> and copy and paste in the content above.</p>
-    <a href="https://github.com/{{ site_github_url }}/edit/{{ site_github_primary_branch }}/{{  item_data.git_filename }}" target="_new"><button type="button" class="btn btn-primary">Edit on GitHub</button></a>
+    <p class="text-right">
+        <a href="https://github.com/{{ site_github_url }}/edit/{{ site_github_primary_branch }}/{{  item_data.git_filename }}" target="_new"><button type="button" class="btn btn-primary">Edit on GitHub</button></a>
+    </p>
 {% else %}
     <p>In the git repository, edit <em>{{  item_data.git_filename }}</em> and copy and paste in the content above.</p>
 {% endif %}

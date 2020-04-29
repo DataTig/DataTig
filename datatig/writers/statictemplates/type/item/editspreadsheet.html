@@ -19,7 +19,9 @@
 
 <p>Download this spreadsheet and edit it.</p>
 
-<a href="../data-form.xlsx"><button type="button" class="btn btn-primary">Get Spreadsheet</button></a>
+<p class="text-right">
+    <a href="../data-form.xlsx"><button type="button" class="btn btn-primary">Get Spreadsheet</button></a>
+</p>
 
 <p>Then using Python, run these commands to get the JSON data:</p>
 
@@ -27,7 +29,9 @@
 
 {% if site_github_url %}
     <p>Go to the Github page to edit <em>{{  item_data.git_filename }}</em> and copy and paste in the JSON.</p>
-    <p><a href="https://github.com/{{ site_github_url }}/edit/{{ site_github_primary_branch }}/{{  item_data.git_filename }}" target="_new"><button type="button" class="btn btn-primary">Edit on GitHub</button></a></p>
+    <p class="text-right">
+        <a href="https://github.com/{{ site_github_url }}/edit/{{ site_github_primary_branch }}/{{  item_data.git_filename }}" target="_new"><button type="button" class="btn btn-primary">Edit on GitHub</button></a>
+    </p>
     <p>Or open a issue?</p>
     <p>Button TODO</p>
 {% else %}

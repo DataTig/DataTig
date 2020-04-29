@@ -39,7 +39,7 @@
 
     {% if item_data.json_schema_validation_errors %}
         <p><i class="fas fa-times-circle"></i> There were validation errors:</p>
-        <p>
+        <p class="text-right">
             <a href="#" onclick="$('#validation_errors').toggle(); return false;"><button type="button" class="btn btn-secondary">Show/Hide</button></a>
         </p>
         <table class="table" id="validation_errors">
@@ -72,7 +72,7 @@
 
 {% if type.json_schema or type.guide_form_xlsx or site_github_url %}
     <h3>Edit</h3>
-    <p>
+    <p class="text-right">
         {% if type.json_schema %}
             <a href="editweb/"><button type="button" class="btn btn-primary">Edit in Browser</button></a>
         {% endif %}
@@ -91,10 +91,10 @@
     {{ item_data.data }}
 </div>
 
-{% if site_github_url %}
-    <a href="https://github.com/{{ site_github_url }}/blob/{{ site_github_primary_branch }}/{{  item_data.git_filename }}"><button type="button" class="btn btn-primary">View on GitHub</button></a>
-{% endif %}
-
-<a href="data.json"><button type="button" class="btn btn-primary">Download Raw JSON data</button></a>
-
+<p  class="text-right">
+    {% if site_github_url %}
+        <a href="https://github.com/{{ site_github_url }}/blob/{{ site_github_primary_branch }}/{{  item_data.git_filename }}"><button type="button" class="btn btn-primary">View on GitHub</button></a>
+    {% endif %}
+    <a href="data.json"><button type="button" class="btn btn-primary">Download Raw JSON data</button></a>
+</p>
 {% endblock %}
