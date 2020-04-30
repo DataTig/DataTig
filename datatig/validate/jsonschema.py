@@ -29,7 +29,9 @@ class JsonSchemaValidator:
                 err_data = [{
                     'message': err.message,
                     'path': err.path,
+                    'path_str': "/".join([str(element) for element in list(err.path)]),
                     'schema_path': err.schema_path,
+                    'schema_path_str': "/".join([str(element) for element in list(err.schema_path)]),
                 } for err in errors]
                 self.datastore.store_json_schema_validation_errors(type_id, item_id, err_data)
             else:
