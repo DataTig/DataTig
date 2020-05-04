@@ -13,8 +13,9 @@ class SiteConfig:
         with open(filename) as fp:
             self.config = json.load(fp)
 
-        for k,v in self.config.get('types',[]).items():
-            self.types[k] = TypeConfig(k, v, self)
+        for config in self.config.get('types', []):
+            type_config = TypeConfig(config, self)
+            self.types[type_config.id] = type_config
 
     def github_url(self):
         return self.config.get('githost',{}).get('url')
@@ -28,8 +29,8 @@ class SiteConfig:
 
 class TypeConfig:
 
-    def __init__(self, id, config, siteconfig):
-        self.id = id
+    def __init__(self, config, siteconfig):
+        self.id = config.get('id')
         self.config = config
         self.fields = {}
         for k, v in config.get('fields',{}).items():
