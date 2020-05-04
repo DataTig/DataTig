@@ -33,8 +33,9 @@ class TypeConfig:
         self.id = config.get('id')
         self.config = config
         self.fields = {}
-        for k, v in config.get('fields',{}).items():
-            self.fields[k] = TypeFieldConfig(k, v)
+        for config in self.config.get('fields', []):
+            field_config = TypeFieldConfig(config)
+            self.fields[field_config.id] = field_config
         self.siteconfig = siteconfig
 
     def directory(self):
@@ -61,8 +62,8 @@ class TypeConfig:
 
 class TypeFieldConfig:
 
-    def __init__(self, id, config):
-        self.id = id
+    def __init__(self, config):
+        self.id = config.get('id')
         self.config = config
 
     def key(self):
