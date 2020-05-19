@@ -4,7 +4,9 @@ import shutil
 import json
 from .static_util import jinja2_escapejs_filter
 from spreadsheetforms.api import put_data_in_form
-
+import pygments
+import pygments.lexers.data
+import pygments.formatters
 
 class StaticWriter:
 
@@ -63,6 +65,10 @@ class StaticWriter:
                     os.path.join(self.config.out_dir, filename)
                 )
 
+        # Asset - Pygments
+        with open(os.path.join(self.config.out_dir, 'pygments.css'),"w") as fp:
+            fp.write(pygments.formatters.HtmlFormatter().get_style_defs('.highlight'))
+
         # Each Type!
         for type, type_config in self.config.types.items():
             if type_config.guide_form_xlsx():
@@ -84,6 +90,11 @@ class StaticWriter:
                     'item_data': self.datastore.get_item(type, item_id),
                     'item_data_json_string': json.dumps(self.datastore.get_item(type, item_id).data),
                 }
+                item_template_vars['record_data_html'] = pygments.highlight(
+                    json.dumps(item_template_vars['item_data'].data, indent=4),
+                    pygments.lexers.data.JsonLexer(),
+                    pygments.formatters.HtmlFormatter()
+                )
                 # pages
                 self._write_template(os.path.join('type', type,'record', item_id), 'index.html', 'type/record/index.html', item_template_vars)
                 self._write_template(os.path.join('type', type,'record', item_id, 'editweb'), 'index.html', 'type/record/editweb.html', item_template_vars)

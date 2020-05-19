@@ -21,6 +21,6 @@ setuptools.setup(
     },
     classifiers=[
     ],
-    install_requires=['Jinja2','spreadsheetforms','jsonschema'] ,
+    install_requires=['Jinja2','spreadsheetforms','jsonschema','Pygments'] ,
     python_requires='>=3.6',
 )
