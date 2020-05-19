@@ -75,7 +75,7 @@ class StaticWriter:
                 'type': self._template_variables['types'][type]
             })
 
-            # Each Item!
+            # Each Item/Record!
             for item_id in self.datastore.get_ids_in_type(type):
                 # vars
                 item_template_vars = {
@@ -85,16 +85,16 @@ class StaticWriter:
                     'item_data_json_string': json.dumps(self.datastore.get_item(type, item_id).data),
                 }
                 # pages
-                self._write_template(os.path.join('type', type,'item', item_id), 'index.html', 'type/item/index.html', item_template_vars)
-                self._write_template(os.path.join('type', type,'item', item_id, 'editweb'), 'index.html', 'type/item/editweb.html', item_template_vars)
+                self._write_template(os.path.join('type', type,'record', item_id), 'index.html', 'type/record/index.html', item_template_vars)
+                self._write_template(os.path.join('type', type,'record', item_id, 'editweb'), 'index.html', 'type/record/editweb.html', item_template_vars)
                 if type_config.guide_form_xlsx():
-                    self._write_template(os.path.join('type', type, 'item', item_id, 'editspreadsheet'), 'index.html',
-                                         'type/item/editspreadsheet.html', item_template_vars)
+                    self._write_template(os.path.join('type', type, 'record', item_id, 'editspreadsheet'), 'index.html',
+                                         'type/record/editspreadsheet.html', item_template_vars)
                 # data files
-                with open(os.path.join(self.config.out_dir, 'type', type, 'item', item_id, 'data.json'), "w") as fp:
+                with open(os.path.join(self.config.out_dir, 'type', type, 'record', item_id, 'data.json'), "w") as fp:
                     json.dump(self.datastore.get_item(type, item_id).data, fp, indent=2)
                 if type_config.guide_form_xlsx():
-                    out_form_xlsx = os.path.join(self.config.out_dir, 'type', type, 'item', item_id, 'data-form.xlsx')
+                    out_form_xlsx = os.path.join(self.config.out_dir, 'type', type, 'record', item_id, 'data-form.xlsx')
                     put_data_in_form(guide_form_xlsx, self.datastore.get_item(type, item_id).data, out_form_xlsx)
 
     def _write_template(self, dirname, filename, templatename, variables):

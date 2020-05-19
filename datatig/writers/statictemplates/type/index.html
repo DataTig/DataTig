@@ -32,7 +32,7 @@
                     {{ datastore.get_field(type.id, item_id, field_name) }}
                 </td>
             {% endfor %}
-            <td><a href="/type/{{ type.id }}/item/{{ item_id }}/"><button type="button" class="btn btn-link">View</button></a></td>
+            <td><a href="/type/{{ type.id }}/record/{{ item_id }}/"><button type="button" class="btn btn-link">View</button></a></td>
         </tr>
     {% endfor %}
 </table>
