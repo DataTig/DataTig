@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+* **BREAKING CHANGE:** The cli script call for build has changed to have a --staticsite option. This is to be flexible for adding other options later.
+
 ## [0.0.4] - 2021-04-14
 
 First release with changelog
