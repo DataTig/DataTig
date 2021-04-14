@@ -22,5 +22,6 @@ setuptools.setup(
     classifiers=[
     ],
     install_requires=['Jinja2','spreadsheetforms','jsonschema','Pygments'] ,
+    extras_require={"Dev": ["pytest"]},
     python_requires='>=3.6',
 )
