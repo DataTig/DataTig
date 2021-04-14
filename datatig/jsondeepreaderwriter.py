@@ -1,12 +1,9 @@
-
-
 class JSONDeepReaderWriter:
-
     def __init__(self, json):
         self.json = json
 
     def read(self, path, default=None):
-        path_bits = path.split('/')
+        path_bits = path.split("/")
         current_json = self.json
         for path_bit in path_bits:
             if path_bit in current_json.keys():
@@ -18,4 +15,3 @@ class JSONDeepReaderWriter:
     def write(self, path):
         # TODO
         pass
-

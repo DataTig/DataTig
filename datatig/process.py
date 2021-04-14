@@ -1,8 +1,8 @@
-from .siteconfig import SiteConfig
-from .readers.directory import process_type
 from .datastore.memory import DataStoreMemory
-from .writers.static import StaticWriter
+from .readers.directory import process_type
+from .siteconfig import SiteConfig
 from .validate.jsonschema import JsonSchemaValidator
+from .writers.static import StaticWriter
 
 
 def go(source_dir, source_config, out_dir):

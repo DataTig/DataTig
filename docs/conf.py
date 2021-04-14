@@ -1,5 +1,3 @@
+project = "DataTig"
 
-project = 'DataTig'
-
-master_doc = 'index'
-
+master_doc = "index"

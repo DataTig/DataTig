@@ -1,7 +1,7 @@
 from datatig.jsondeepreaderwriter import JSONDeepReaderWriter
 
-class DataStoreMemory:
 
+class DataStoreMemory:
     def __init__(self, site_config):
         self.site_config = site_config
         self.data = {}
@@ -28,4 +28,3 @@ class DataStoreMemory:
         data = self.data[type_id][item_id].data
         obj = JSONDeepReaderWriter(data)
         return obj.read(field_config.key())
-
