@@ -1,7 +1,7 @@
 import json
 import os
 
-from datatig.datastore.base import StoredItem
+from datatig.models.record import RecordModel
 
 
 def process_type(config, type, datastore):
@@ -29,6 +29,7 @@ def process_file(
     with open(filename_absolute) as fp:
         data = json.load(fp)
 
-    stored_item = StoredItem(data, filename_relative_to_git)
+    record = RecordModel()
+    record.load_from_json_file(data, filename_relative_to_git)
 
-    datastore.store(type, id, stored_item)
+    datastore.store(type, id, record)

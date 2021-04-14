@@ -8,7 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
-* **BREAKING CHANGE:** The cli script call for build has changed to have a --staticsite option. This is to be flexible for adding other options later.
+* **BREAKING CHANGE:** The cli script call for build has changed to have a --staticsiteoutput option.
+
+### Added
+
+* SQLite output mode via the --sqliteoutput option
+
 
 ## [0.0.4] - 2021-04-14
 

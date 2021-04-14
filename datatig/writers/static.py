@@ -12,11 +12,12 @@ from .static_util import jinja2_escapejs_filter
 
 
 class StaticWriter:
-    def __init__(self, config, datastore):
+    def __init__(self, config, datastore, out_dir):
         self.config = config
         self.datastore = datastore
         self._template_variables = {}
         self._jinja2_env = None
+        self.out_dir = out_dir
 
     def go(self):
         # Templates
@@ -57,7 +58,7 @@ class StaticWriter:
                     ] = fp.read()
 
         # Out Dir
-        os.makedirs(self.config.out_dir, exist_ok=True)
+        os.makedirs(self.out_dir, exist_ok=True)
 
         # Top Level Static Pages
         for page in ["robots.txt", "index.html"]:
@@ -76,11 +77,11 @@ class StaticWriter:
             if name_bits[-1] in ["css", "js"]:
                 shutil.copy(
                     os.path.join(assets_dir, filename),
-                    os.path.join(self.config.out_dir, filename),
+                    os.path.join(self.out_dir, filename),
                 )
 
         # Asset - Pygments
-        with open(os.path.join(self.config.out_dir, "pygments.css"), "w") as fp:
+        with open(os.path.join(self.out_dir, "pygments.css"), "w") as fp:
             fp.write(pygments.formatters.HtmlFormatter().get_style_defs(".highlight"))
 
         # Each Type!
@@ -144,7 +145,7 @@ class StaticWriter:
                 # data files
                 with open(
                     os.path.join(
-                        self.config.out_dir,
+                        self.out_dir,
                         "type",
                         type,
                         "record",
@@ -156,7 +157,7 @@ class StaticWriter:
                     json.dump(self.datastore.get_item(type, item_id).data, fp, indent=2)
                 if type_config.guide_form_xlsx():
                     out_form_xlsx = os.path.join(
-                        self.config.out_dir,
+                        self.out_dir,
                         "type",
                         type,
                         "record",
@@ -169,8 +170,14 @@ class StaticWriter:
                         out_form_xlsx,
                     )
 
+        # All Data
+        shutil.copy(
+            self.datastore.get_file_name(),
+            os.path.join(self.out_dir, "database.sqlite"),
+        )
+
     def _write_template(self, dirname, filename, templatename, variables):
-        os.makedirs(os.path.join(self.config.out_dir, dirname), exist_ok=True)
+        os.makedirs(os.path.join(self.out_dir, dirname), exist_ok=True)
         variables.update(self._template_variables)
-        with open(os.path.join(self.config.out_dir, dirname, filename), "w") as fp:
+        with open(os.path.join(self.out_dir, dirname, filename), "w") as fp:
             fp.write(self._jinja2_env.get_template(templatename).render(**variables))
