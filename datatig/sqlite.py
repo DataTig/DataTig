@@ -49,9 +49,19 @@ class DataStoreSQLite:
                                   id TEXT PRIMARY KEY,
                                   data TEXT,
                                   git_filename TEXT,
-                                  format TEXT,
-                                  json_schema_validation_errors TEXT,
-                                  json_schema_validation_pass INT
+                                  format TEXT
+                              )""",
+                    [],
+                )
+
+                cur.execute(
+                    """CREATE TABLE record_json_schema_validation_error_"""
+                    + type.id
+                    + """  (
+                                  record_id TEXT,
+                                  message TEXT,
+                                  data_path TEXT,
+                                  schema_path TEXT
                               )""",
                     [],
                 )
@@ -98,37 +108,29 @@ class DataStoreSQLite:
                 """INSERT INTO record_"""
                 + type_id
                 + """ (
-                id, data, git_filename, format, json_schema_validation_errors, json_schema_validation_pass 
-                ) VALUES (?, ?, ?,  ?, '[]', 0)""",
+                id, data, git_filename, format
+                ) VALUES (?, ?, ?,  ?)""",
                 insert_data,
             )
             self.connection.commit()
 
     def store_json_schema_validation_errors(self, type_id, item_id, errors):
-        errors_cleaned = []
-        for e in errors:
-            e["path"] = list(e["path"])
-            e["schema_path"] = list(e["schema_path"])
-            errors_cleaned.append(e)
         with closing(self.connection.cursor()) as cur:
-            update_data = [json.dumps(errors_cleaned), item_id]
-            cur.execute(
-                """UPDATE record_"""
-                + type_id
-                + """  SET json_schema_validation_errors=? WHERE ID = ?""",
-                update_data,
-            )
-            self.connection.commit()
-
-    def store_json_schema_validation_pass(self, type_id, item_id):
-        with closing(self.connection.cursor()) as cur:
-            update_data = [item_id]
-            cur.execute(
-                """UPDATE record_"""
-                + type_id
-                + """  SET json_schema_validation_pass=1 WHERE ID = ?""",
-                update_data,
-            )
+            for error in errors:
+                insert_data = [
+                    item_id,
+                    error["message"],
+                    error["path_str"],
+                    error["schema_path_str"],
+                ]
+                cur.execute(
+                    """INSERT INTO record_json_schema_validation_error_"""
+                    + type_id
+                    + """ (
+                    record_id, message, data_path, schema_path 
+                    ) VALUES (?, ?, ?,  ?)""",
+                    insert_data,
+                )
             self.connection.commit()
 
     def get_ids_in_type(self, type_id):
@@ -141,8 +143,18 @@ class DataStoreSQLite:
             cur.execute("SELECT * FROM record_" + type_id + "  WHERE id=?", [item_id])
             data = cur.fetchone()
             if data:
+                cur.execute(
+                    "SELECT * FROM record_json_schema_validation_error_"
+                    + type_id
+                    + "  WHERE record_id=?",
+                    [item_id],
+                )
+                json_schema_validation_errors_data = cur.fetchall()
                 record = RecordModel()
-                record.load_from_database(data)
+                record.load_from_database(
+                    data,
+                    json_schema_validation_errors_data=json_schema_validation_errors_data,
+                )
                 return record
 
     def get_field(self, type_id, item_id, field_id):

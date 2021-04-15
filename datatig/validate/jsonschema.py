@@ -46,5 +46,3 @@ class JsonSchemaValidator:
                 self.datastore.store_json_schema_validation_errors(
                     type_id, item_id, err_data
                 )
-            else:
-                self.datastore.store_json_schema_validation_pass(type_id, item_id)
