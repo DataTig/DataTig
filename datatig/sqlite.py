@@ -2,6 +2,7 @@ import json
 import sqlite3
 from contextlib import closing
 
+from .exceptions import DuplicateRecordIdException
 from .jsondeepreaderwriter import JSONDeepReaderWriter
 from .models.record import RecordModel
 from .models.type_field import TypeFieldModel
@@ -73,6 +74,20 @@ class DataStoreSQLite:
 
     def store(self, type_id, item_id, record):
         with closing(self.connection.cursor()) as cur:
+            # Check
+            cur.execute("SELECT * FROM record_" + type_id + "  WHERE id=?", [item_id])
+            data = cur.fetchone()
+            if data:
+                raise DuplicateRecordIdException(
+                    "The id "
+                    + item_id
+                    + " is duplicated in "
+                    + record.git_filename
+                    + " and "
+                    + data["git_filename"]
+                )
+
+            # Store
             insert_data = [
                 item_id,
                 json.dumps(record.data),

@@ -1,0 +1,2 @@
+class DuplicateRecordIdException(Exception):
+    pass
