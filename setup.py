@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="DataTig",
-    version="0.0.4",
+    version="0.1.0",
     description="A tool for working with crowd sourced data in JSON files in a Git repository",
     long_description="A tool for working with crowd sourced data in JSON files in a Git repository",
     url="https://github.com/DataTig/DataTig",
