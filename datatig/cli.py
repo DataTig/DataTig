@@ -1,5 +1,4 @@
 import argparse
-import os
 
 import datatig.process
 
@@ -29,7 +28,6 @@ def main():
 
         datatig.process.go(
             args.source,
-            os.path.join(args.source, "datatig.json"),
             staticsite_output=staticsite_output,
             sqlite_output=sqlite_output,
         )

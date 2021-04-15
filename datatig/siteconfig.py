@@ -1,4 +1,7 @@
 import json
+import os
+
+import yaml
 
 from .models.type import TypeModel
 
@@ -9,9 +12,16 @@ class SiteConfig:
         self.types = {}
         self.source_dir = source_dir
 
-    def load_from_file(self, filename):
-        with open(filename) as fp:
-            self.config = json.load(fp)
+    def load_from_file(self):
+
+        if os.path.isfile(os.path.join(self.source_dir, "datatig.json")):
+            with open(os.path.join(self.source_dir, "datatig.json")) as fp:
+                self.config = json.load(fp)
+        elif os.path.isfile(os.path.join(self.source_dir, "datatig.yaml")):
+            with open(os.path.join(self.source_dir, "datatig.yaml")) as fp:
+                self.config = yaml.safe_load(fp)
+        else:
+            raise Exception("No Config File!")
 
         for config in self.config.get("types", []):
             type_config = TypeModel(self)

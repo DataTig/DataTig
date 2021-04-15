@@ -7,10 +7,10 @@ from contextlib import closing
 import datatig.process
 
 
-def test_json_site():
+def test_yaml_site():
     # Get Dirs
     source_dir = os.path.join(
-        os.path.dirname(os.path.realpath(__file__)), "data", "json_site"
+        os.path.dirname(os.path.realpath(__file__)), "data", "yaml_site"
     )
     with tempfile.TemporaryDirectory() as staticsite_dir:
         # Process!

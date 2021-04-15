@@ -48,6 +48,7 @@ class DataStoreSQLite:
                                   id TEXT PRIMARY KEY,
                                   data TEXT,
                                   git_filename TEXT,
+                                  format TEXT,
                                   json_schema_validation_errors TEXT,
                                   json_schema_validation_pass INT
                               )""",
@@ -76,13 +77,14 @@ class DataStoreSQLite:
                 item_id,
                 json.dumps(record.data),
                 record.git_filename,
+                record.format,
             ]
             cur.execute(
                 """INSERT INTO record_"""
                 + type_id
                 + """ (
-                id, data, git_filename, json_schema_validation_errors, json_schema_validation_pass 
-                ) VALUES (?, ?, ?,  '[]', 0)""",
+                id, data, git_filename, format, json_schema_validation_errors, json_schema_validation_pass 
+                ) VALUES (?, ?, ?,  ?, '[]', 0)""",
                 insert_data,
             )
             self.connection.commit()

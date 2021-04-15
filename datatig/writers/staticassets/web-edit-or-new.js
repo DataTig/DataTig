@@ -9,7 +9,11 @@ const editor_options = {
 var editor;
 
 function update() {
-    $('#raw_data_out').val(JSON.stringify(editor.getValue(),null,pretty_json_indent));
+    if (data_format == 'json') {
+        $('#raw_data_out').val(JSON.stringify(editor.getValue(),null,pretty_json_indent));
+    } else {
+        $('#raw_data_out').val(jsyaml.dump(editor.getValue(),{'sortKeys':true,'forceQuotes':true}));
+    }
 };
 
 $( document ).ready(function() {

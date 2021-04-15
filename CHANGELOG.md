@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 * SQLite output mode via the --sqliteoutput option
+* Supports reading and writing YAML files
 
 
 ## [0.0.4] - 2021-04-14
