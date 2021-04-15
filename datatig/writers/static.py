@@ -35,7 +35,7 @@ class StaticWriter:
             "site_title": self.config.config.get("title", "SITE"),
             "site_description": self.config.config.get("description", ""),
             "site_github_url": self.config.github_url(),
-            "site_github_primary_branch": self.config.github_primary_branch(),
+            "site_githost_primary_branch": self.config.githost_primary_branch(),
             "types": {},
             "datastore": self.datastore,
         }

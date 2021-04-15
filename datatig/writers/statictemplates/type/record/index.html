@@ -80,7 +80,7 @@
             <a href="editspreadsheet/"><button type="button" class="btn btn-primary">Edit in a spreadsheet</button></a>
         {% endif %}
         {% if site_github_url %}
-            <a href="https://github.com/{{ site_github_url }}/edit/{{ site_github_primary_branch }}/{{  item_data.git_filename }}"><button type="button" class="btn btn-primary">Edit Raw data directly on GitHub</button></a>
+            <a href="https://github.com/{{ site_github_url }}/edit/{{ site_githost_primary_branch }}/{{  item_data.git_filename }}"><button type="button" class="btn btn-primary">Edit Raw data directly on GitHub</button></a>
         {% endif %}
     </p>
 {% endif %}
@@ -93,7 +93,7 @@
 
 <p  class="text-right">
     {% if site_github_url %}
-        <a href="https://github.com/{{ site_github_url }}/blob/{{ site_github_primary_branch }}/{{  item_data.git_filename }}"><button type="button" class="btn btn-primary">View on GitHub</button></a>
+        <a href="https://github.com/{{ site_github_url }}/blob/{{ site_githost_primary_branch }}/{{  item_data.git_filename }}"><button type="button" class="btn btn-primary">View on GitHub</button></a>
     {% endif %}
     <a href="data.json"><button type="button" class="btn btn-primary">Download Raw JSON data</button></a>
 </p>

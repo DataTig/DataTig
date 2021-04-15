@@ -34,5 +34,5 @@ class SiteConfig:
     def git_submodule_directory(self):
         return self.config.get("git_submodule_directory")
 
-    def github_primary_branch(self):
-        return "master"
+    def githost_primary_branch(self):
+        return self.config.get("githost", {}).get("primary_branch", "main")

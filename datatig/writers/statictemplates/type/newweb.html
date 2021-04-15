@@ -31,7 +31,7 @@
 {% if site_github_url %}
     <p>Go to the Github page to add a new file in <em>{{ type.directory_in_git_repository }}</em> with a "{{ type.default_format }}" extension and copy and paste in the content above.</p>
     <p class="text-right">
-        <a href="https://github.com/{{ site_github_url }}/new/{{ site_github_primary_branch }}/{{  type.directory_in_git_repository }}" target="_new"><button type="button" class="btn btn-primary">Edit on GitHub</button></a>
+        <a href="https://github.com/{{ site_github_url }}/new/{{ site_githost_primary_branch }}/{{  type.directory_in_git_repository }}" target="_new"><button type="button" class="btn btn-primary">Edit on GitHub</button></a>
     </p>
 {% else %}
     <p>In the git repository, create a new file in <em>{{ type.directory_in_git_repository }}</em> with a "{{ type.default_format }}" extension and copy and paste in the content above.</p>

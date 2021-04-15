@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * **BREAKING CHANGE:** The cli script call for build has changed to have a --staticsiteoutput option.
 * Updated to latest version of json-editor https://github.com/DataTig/DataTig/issues/5
 * Types have a "default_format" option, "json" or "yaml". Previously default was "json", now it is "yaml".
+* New config setting "primary_branch". Previously default was "master", now it is "main".
 
 ### Added
 
