@@ -3,6 +3,7 @@ import os
 
 import yaml
 
+from datatig.models.error import ErrorModel
 from datatig.models.record import RecordModel
 
 
@@ -13,26 +14,31 @@ def process_type(config, type, datastore):
         full_sourcedir = os.path.join(full_sourcedir, config.git_submodule_directory())
     for path, subdirs, files in os.walk(start_dir):
         for name in files:
-            if name.endswith(".json"):
-                full_filename = os.path.abspath(os.path.join(path, name))
-                process_json_file(
-                    config,
-                    type,
-                    full_filename,
-                    full_filename[len(full_sourcedir) + 1 :],
-                    name[:-5],
-                    datastore,
-                )
-            elif name.endswith(".yaml"):
-                full_filename = os.path.abspath(os.path.join(path, name))
-                process_yaml_file(
-                    config,
-                    type,
-                    full_filename,
-                    full_filename[len(full_sourcedir) + 1 :],
-                    name[:-5],
-                    datastore,
-                )
+            full_filename = os.path.abspath(os.path.join(path, name))
+            try:
+                if name.endswith(".json"):
+                    process_json_file(
+                        config,
+                        type,
+                        full_filename,
+                        full_filename[len(full_sourcedir) + 1 :],
+                        name[:-5],
+                        datastore,
+                    )
+                elif name.endswith(".yaml"):
+                    process_yaml_file(
+                        config,
+                        type,
+                        full_filename,
+                        full_filename[len(full_sourcedir) + 1 :],
+                        name[:-5],
+                        datastore,
+                    )
+            except Exception as exception:
+                error = ErrorModel()
+                error.message = str(exception)
+                error.filename = full_filename
+                datastore.store_error(error)
 
 
 def process_json_file(

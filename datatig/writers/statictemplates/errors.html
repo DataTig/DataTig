@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Errors{% endblock %}
+
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Errors</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block body %}
+
+    {% if datastore.get_count_errors() %}
+
+        <table class="table">
+            <tr>
+                <th>Filename</th>
+                <th>Message</th>
+            </tr>
+            {% for error in datastore.get_all_errors_generator() %}
+                <tr>
+                    <td>{{ error.filename }}</td>
+                    <td>{{ error.message }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    {% else %}
+
+        <p>No errors</p>
+
+    {% endif %}
+
+    <p>(Remember to check records for validation errors too)</p>
+
+{% endblock %}
+

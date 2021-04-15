@@ -4,6 +4,7 @@ from contextlib import closing
 
 from .exceptions import DuplicateRecordIdException
 from .jsondeepreaderwriter import JSONDeepReaderWriter
+from .models.error import ErrorModel
 from .models.record import RecordModel
 from .models.record_json_schema_validation_error import (
     RecordJSONSchemaValidationErrorModel,
@@ -20,6 +21,12 @@ class DataStoreSQLite:
 
         # Create table
         with closing(self.connection.cursor()) as cur:
+            cur.execute(
+                """CREATE TABLE error (
+                filename TEXT,
+                message TEXT
+                )"""
+            )
             cur.execute(
                 """CREATE TABLE type (
                 id TEXT PRIMARY KEY,
@@ -192,6 +199,33 @@ class DataStoreSQLite:
                     # Now get value
                     obj = JSONDeepReaderWriter(record.data)
                     return obj.read(type_field.key())
+
+    def store_error(self, error):
+        with closing(self.connection.cursor()) as cur:
+            insert_data = [
+                error.filename,
+                error.message,
+            ]
+            cur.execute(
+                """INSERT INTO error (
+                filename, message
+                ) VALUES (?, ?)""",
+                insert_data,
+            )
+            self.connection.commit()
+
+    def get_all_errors_generator(self):
+        with closing(self.connection.cursor()) as cur:
+            cur.execute("SELECT * FROM error", [])
+            for data in cur.fetchall():
+                m = ErrorModel()
+                m.load_from_database(data)
+                yield m
+
+    def get_count_errors(self):
+        with closing(self.connection.cursor()) as cur:
+            cur.execute("SELECT count(*) AS c FROM error", [])
+            return cur.fetchone()["c"]
 
     def get_file_name(self):
         return self.out_filename

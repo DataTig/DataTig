@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Supports reading and writing YAML files
 * Exception for duplicate ID's
 * Check mode
+* Errors found when loading will now not stop process; process will finish, with errors logged
 
 
 ## [0.0.4] - 2021-04-14

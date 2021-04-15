@@ -62,7 +62,7 @@ class StaticWriter:
         os.makedirs(self.out_dir, exist_ok=True)
 
         # Top Level Static Pages
-        for page in ["robots.txt", "index.html"]:
+        for page in ["robots.txt", "index.html", "errors.html"]:
             self._write_template("", page, page, {})
 
         # Assets
