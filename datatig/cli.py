@@ -33,11 +33,21 @@ def main():
             args.source,
             staticsite_output=staticsite_output,
             sqlite_output=sqlite_output,
+            check_errors=True,
+            check_json_schema_validation_errors=False,
+            verbose=True,
+            sys_exit=True,
         )
 
     elif args.subparser_name == "check":
 
-        datatig.process.check(args.source)
+        datatig.process.go(
+            args.source,
+            check_errors=True,
+            check_json_schema_validation_errors=True,
+            verbose=True,
+            sys_exit=True,
+        )
 
 
 if __name__ == "__main__":
