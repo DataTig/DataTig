@@ -39,3 +39,6 @@ class TypeModel:
 
     def pretty_json_indent(self):
         return self.config.get("pretty_json_indent", 4)
+
+    def default_format(self):
+        return self.config.get("default_format", "yaml")

@@ -50,6 +50,7 @@ class StaticWriter:
                 "guide_form_xlsx": v.guide_form_xlsx(),
                 "json_schema": v.json_schema(),
                 "pretty_json_indent": v.pretty_json_indent(),
+                "default_format": v.default_format(),
             }
             if v.json_schema():
                 with open(os.path.join(self.config.source_dir, v.json_schema())) as fp:
