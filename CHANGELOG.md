@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.1.1] - 2021-04-15
+
 ### Fixed
 
 * Fixed Python packaging error that meant 0.1.0 was not packaged correctly
