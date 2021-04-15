@@ -15,6 +15,9 @@ def main():
     )
     build_parser.add_argument("--sqliteoutput", help="Location of SQLite file Output")
 
+    check_parser = subparsers.add_parser("check")
+    check_parser.add_argument("source")
+
     args = parser.parse_args()
 
     if args.subparser_name == "build":
@@ -31,6 +34,10 @@ def main():
             staticsite_output=staticsite_output,
             sqlite_output=sqlite_output,
         )
+
+    elif args.subparser_name == "check":
+
+        datatig.process.check(args.source)
 
 
 if __name__ == "__main__":

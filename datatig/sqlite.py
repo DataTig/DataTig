@@ -5,6 +5,9 @@ from contextlib import closing
 from .exceptions import DuplicateRecordIdException
 from .jsondeepreaderwriter import JSONDeepReaderWriter
 from .models.record import RecordModel
+from .models.record_json_schema_validation_error import (
+    RecordJSONSchemaValidationErrorModel,
+)
 from .models.type_field import TypeFieldModel
 
 
@@ -132,6 +135,16 @@ class DataStoreSQLite:
                     insert_data,
                 )
             self.connection.commit()
+
+    def get_all_json_schema_validation_errors_generator(self, type_id):
+        with closing(self.connection.cursor()) as cur:
+            cur.execute(
+                "SELECT * FROM record_json_schema_validation_error_" + type_id, []
+            )
+            for data in cur.fetchall():
+                m = RecordJSONSchemaValidationErrorModel()
+                m.load_from_database(data)
+                yield m
 
     def get_ids_in_type(self, type_id):
         with closing(self.connection.cursor()) as cur:
