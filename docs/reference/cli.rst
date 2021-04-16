@@ -1,0 +1,44 @@
+CLI
+===
+
+Call
+----
+
+Call via Python:
+
+.. code-block:: bash
+
+    python -m datatig.cli --help
+
+Build sub-command
+-----------------
+
+This takes a site and builds some outputs for you.
+
+Call with the directory of the data and at least one of these options:
+
+* `--staticsiteoutput` - A directory in which the files of the static site will be placed. This can already exist.
+* `--sqliteoutput` - A location at which a SQL database file will be placed. This should not already exist.
+
+.. code-block:: bash
+
+    python -m datatig.cli build . --staticsiteoutput _site --sqliteoutput database.sqlite
+
+
+Any build errors will be printed to screen. (Data validation errors will not be) If encountered, the process will try to continue ignoring the problem. The exit code of the process will be 0 if a success, or -1 if there were any errors. This means you can use this as part of a C.I./C.D. pipeline and check the response.
+
+Check sub-command
+-----------------
+
+This takes a site and checks it for you.
+
+Call with the directory of the data.
+
+Any build errors or data validation errors will be printed to screen.
+
+The exit code of the process will be 0 if a success, or -1 if there were any errors. This means you can use this as part of a C.I./C.D. pipeline and check the response.
+
+.. code-block:: bash
+
+    python -m datatig.cli check .
+
