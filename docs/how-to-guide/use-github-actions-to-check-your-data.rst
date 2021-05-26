@@ -28,7 +28,7 @@ The contents should be:
     on: [push, pull_request]
 
     jobs:
-      build:
+      check:
         runs-on: ubuntu-latest
         steps:
         - uses: actions/checkout@v2
@@ -62,5 +62,10 @@ To do so:
 #. Click `Branches`
 #. In the `Branch protection rules` section either add a new rule for the branch you want, or edit the existing rule
 #. Select `Require status checks to pass before merging`
-#. Select `build`
+#. Select `check`
 #. Save changes
+
+In Tutorial
+~~~~~~~~~~~
+
+(Note: :doc:`the contents of this section are also available as part of the tutorial <../tutorial/checking-data-automatically>` )

@@ -23,7 +23,7 @@ Set up a DataTig site
 
 In order for DataTig to know that a git repository has data it can process, it needs a configuration file.
 
-In the top level of the repository, create a file `datatig.yml`. It's contents should be:
+In the top level of the repository, create a file `datatig.yaml`. It's contents should be:
 
 .. code-block:: yaml
 
@@ -107,7 +107,7 @@ The tool can do several actions. It can check the data to make sure that it is i
 
     python -m datatig.cli check .
 
-Hopefully this will run and show no errors.
+This should run with no output, meaning there were no errors.
 
 
 Use DataTig to build a website about your data
@@ -123,15 +123,14 @@ First, let's build the website.
 
     python -m datatig.cli build . --staticsiteoutput _site
 
-This should build fine and in the new `_site` directory that just appeared, you should see some files.
+This should build fine (you will not see any output) and in the new `_site` directory that just appeared, you should see some files.
 
 We can serve these so they are easy to open in your web browser.
 
 
 .. code-block:: bash
 
-    cd _site
-    python3 -m http.server
+    sh -c "cd _site && python3 -m http.server"
 
 Now open a web browser and go to http://localhost:8000/
 
