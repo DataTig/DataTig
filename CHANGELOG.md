@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * Removed `datatig-cli.py` - call via `python -m datatig.cli` instead 
 
+### Fixed
+
+* Fixed crash when tool run and a JSON Schema was not specified
+
 ## [0.1.1] - 2021-04-15
 
 ### Fixed

@@ -14,7 +14,7 @@ class JsonSchemaValidator:
             self._validate_type(k, v)
 
     def _validate_type(self, type_id, type_config):
-        if not type_config.json_schema:
+        if not type_config.json_schema():
             return
 
         with open(
