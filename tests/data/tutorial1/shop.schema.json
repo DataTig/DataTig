@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Shop",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "The name of the shop.",
+      "minLength": 1
+    },
+    "url": {
+      "type": "string",
+      "description": "A URL of a website where you can find out about this shop.",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "title",
+    "url"
+  ]
+}

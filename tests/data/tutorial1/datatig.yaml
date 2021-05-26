@@ -1,0 +1,15 @@
+title: Local Cycling Resources in CityCity
+description: Listing all the useful cycling resources in CityCity
+types:
+- id: shops
+  directory: shops
+  json_schema: shop.schema.json
+  fields:
+  - id: title
+    key: title
+    title: Title of Shop
+  - id: url
+    key: url
+    title: URL of Website about Shop
+  list_fields:
+  - title

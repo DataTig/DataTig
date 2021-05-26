@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 * Fixed crash when tool run and a JSON Schema was not specified
+* Use correct JSON Schema validator (previously it always used Draft 3)
 
 ## [0.1.1] - 2021-04-15
 

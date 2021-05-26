@@ -35,7 +35,7 @@ First, create a file called `shop.schema.json`. It's contents should be:
 .. code-block:: json
 
     {
-      "$schema": "http://json-schema.org/draft-03/schema#",
+      "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Shop",
       "type": "object",
       "properties": {

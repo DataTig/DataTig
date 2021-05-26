@@ -21,8 +21,15 @@ class JsonSchemaValidator:
             os.path.join(self.config.source_dir, type_config.json_schema())
         ) as fp:
             schema = json.load(fp)
-        # TODO use correct version of Draft Validator
-        schema_validator = jsonschema.Draft3Validator(schema)
+        schema_version = str(schema.get("$schema", ""))
+        if schema_version.startswith("http://json-schema.org/draft-03/schema"):
+            schema_validator = jsonschema.Draft3Validator(schema)
+        elif schema_version.startswith("http://json-schema.org/draft-04/schema"):
+            schema_validator = jsonschema.Draft4Validator(schema)
+        elif schema_version.startswith("http://json-schema.org/draft-06/schema"):
+            schema_validator = jsonschema.Draft6Validator(schema)
+        else:
+            schema_validator = jsonschema.Draft7Validator(schema)
 
         for item_id in self.datastore.get_ids_in_type(type_id):
             data_item = self.datastore.get_item(type_id, item_id)
