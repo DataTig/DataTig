@@ -28,5 +28,9 @@ def test_json_site():
                 assert (
                     "The id 1 is duplicated in datas/1.json and datas/1.yaml"
                     == error["message"]
+                    or "The id 1 is duplicated in datas/1.yaml and datas/1.json"
+                    == error["message"]
                 )
-                assert error["filename"].endswith("datas/1.json")
+                assert error["filename"].endswith("datas/1.json") or error[
+                    "filename"
+                ].endswith("datas/1.yaml")
