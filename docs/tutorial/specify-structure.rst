@@ -82,14 +82,18 @@ Create a file called `cathy-cathode.yaml` in the `shops` directory. For the cont
 
 (There is no URL because we don't know of a website for Cathy's shop!).
 
-Now run the check function again. This time, the tool should tell you there is a problem with a bit of data.
+Now run the check function again.
 
 .. code-block:: bash
 
     python -m datatig.cli check .
 
+This time, the tool should tell you there is a problem with a bit of data.
 
-TODO put example error output here!
+.. code-block::
+
+    TYPE shops RECORD cathy-cathode HAS VALIDATION ERROR: 'url' is a required property
+    ERRORS OCCURRED- See Above
 
 Adding a JSON Schema also does some other things to encourage contributions, which we will see later.
 
@@ -141,9 +145,14 @@ Now let's build the website again and look at it. This is the same instructions 
 
 Now, when you open a web browser and go to http://localhost:8000/type/shops you should be able to see more information. The titles of the shops should also be on this page now. (The URL's aren't because that was not included in `list_fields`)
 
-TODO screenshot?
+.. image:: tutorial-specify-structure-screenshot-list.png
+  :alt: Screenshot of a list of bike shops
 
 Click on a shop, and you should see some more information again.
+
+.. image:: tutorial-specify-structure-screenshot-detail.png
+  :alt: Screenshot of details of a bike shop
+
 
 Next
 ----

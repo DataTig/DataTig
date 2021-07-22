@@ -58,11 +58,13 @@ Go to your repository on GitHub and click the "Actions" tab.
 
 You may have to wait a minute. But after refreshing the tab a few times, you should see GitHub starting to run your action. After a minute it should go Red, indicating that it has failed and indicating that there is a problem with your data.
 
-TODO Screenshot
+.. image:: tutorial-checking-data-automatically-broken.png
+  :alt: Screenshot of GitHub actions with a broken run
 
-Click on TODO to see the details of the problem.
+Click on the run, then check and expand the broken item to see the details of the problem.
 
-TODO Screenshot
+.. image:: tutorial-checking-data-automatically-broken-details.png
+  :alt: Screenshot of GitHub actions with details of a broken run
 
 Let's try and fix this. We go and ask Cathy and it turns out she does have a website - it's at  http://www.cathy-cathode.co.uk
 
@@ -79,6 +81,9 @@ Commit your file `shops/cathy-cathode.yaml` and push it to GitHub.
 Go to your repository on GitHub and click the "Actions" tab.
 
 Shortly you should see a new job starting and this time, when it has finished it will turn Green, indicating there are no problems with the data.
+
+.. image:: tutorial-checking-data-automatically-pass.png
+  :alt: Screenshot of GitHub actions with a fixed run
 
 GitHub will now automatically check any new data you add, and tell you of any problems.
 
