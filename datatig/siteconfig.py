@@ -7,12 +7,12 @@ from .models.type import TypeModel
 
 
 class SiteConfig:
-    def __init__(self, source_dir):
-        self.config = {}
-        self.types = {}
+    def __init__(self, source_dir: str):
+        self.config: dict = {}
+        self.types: dict = {}
         self.source_dir = source_dir
 
-    def load_from_file(self):
+    def load_from_file(self) -> None:
 
         if os.path.isfile(os.path.join(self.source_dir, "datatig.json")):
             with open(os.path.join(self.source_dir, "datatig.json")) as fp:
@@ -28,11 +28,11 @@ class SiteConfig:
             type_config.load_from_config(config)
             self.types[type_config.id] = type_config
 
-    def github_url(self):
+    def github_url(self) -> str:
         return self.config.get("githost", {}).get("url")
 
     def git_submodule_directory(self):
         return self.config.get("git_submodule_directory")
 
-    def githost_primary_branch(self):
+    def githost_primary_branch(self) -> str:
         return self.config.get("githost", {}).get("primary_branch", "main")

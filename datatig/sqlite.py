@@ -10,10 +10,11 @@ from .models.record_json_schema_validation_error import (
     RecordJSONSchemaValidationErrorModel,
 )
 from .models.type_field import TypeFieldModel
+from .siteconfig import SiteConfig
 
 
 class DataStoreSQLite:
-    def __init__(self, site_config, out_filename):
+    def __init__(self, site_config: SiteConfig, out_filename: str):
         self.site_config = site_config
         self.out_filename = out_filename
         self.connection = sqlite3.connect(out_filename)
@@ -92,7 +93,7 @@ class DataStoreSQLite:
 
             self.connection.commit()
 
-    def store(self, type_id, item_id, record):
+    def store(self, type_id, item_id, record) -> None:
         with closing(self.connection.cursor()) as cur:
             # Check
             cur.execute("SELECT * FROM record_" + type_id + "  WHERE id=?", [item_id])
@@ -124,7 +125,7 @@ class DataStoreSQLite:
             )
             self.connection.commit()
 
-    def store_json_schema_validation_errors(self, type_id, item_id, errors):
+    def store_json_schema_validation_errors(self, type_id, item_id, errors) -> None:
         with closing(self.connection.cursor()) as cur:
             for error in errors:
                 insert_data = [
@@ -153,7 +154,7 @@ class DataStoreSQLite:
                 m.load_from_database(data)
                 yield m
 
-    def get_ids_in_type(self, type_id):
+    def get_ids_in_type(self, type_id) -> list:
         with closing(self.connection.cursor()) as cur:
             cur.execute("SELECT id FROM record_" + type_id, [])
             return [i["id"] for i in cur.fetchall()]
@@ -200,7 +201,7 @@ class DataStoreSQLite:
                     obj = JSONDeepReaderWriter(record.data)
                     return obj.read(type_field.key())
 
-    def store_error(self, error):
+    def store_error(self, error) -> None:
         with closing(self.connection.cursor()) as cur:
             insert_data = [
                 error.filename,
@@ -222,10 +223,10 @@ class DataStoreSQLite:
                 m.load_from_database(data)
                 yield m
 
-    def get_count_errors(self):
+    def get_count_errors(self) -> int:
         with closing(self.connection.cursor()) as cur:
             cur.execute("SELECT count(*) AS c FROM error", [])
             return cur.fetchone()["c"]
 
-    def get_file_name(self):
+    def get_file_name(self) -> str:
         return self.out_filename

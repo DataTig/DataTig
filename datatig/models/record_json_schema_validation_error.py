@@ -5,7 +5,7 @@ class RecordJSONSchemaValidationErrorModel:
         self.data_path = None
         self.schema_path = None
 
-    def load_from_database(self, data):
+    def load_from_database(self, data) -> None:
         self.record_id = data["record_id"]
         self.message = data["message"]
         self.data_path = data["data_path"]

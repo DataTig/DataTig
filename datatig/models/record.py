@@ -11,17 +11,19 @@ class RecordModel:
         self.json_schema_validation_pass = None
         self.format = None
 
-    def load_from_json_file(self, data, git_filename):
+    def load_from_json_file(self, data: dict, git_filename: str) -> None:
         self.data = data
         self.git_filename = git_filename
         self.format = "json"
 
-    def load_from_yaml_file(self, data, git_filename):
+    def load_from_yaml_file(self, data: dict, git_filename: str) -> None:
         self.data = data
         self.git_filename = git_filename
         self.format = "yaml"
 
-    def load_from_database(self, data, json_schema_validation_errors_data=None):
+    def load_from_database(
+        self, data: dict, json_schema_validation_errors_data: list = None
+    ) -> None:
         self.data = json.loads(data["data"])
         self.git_filename = data["git_filename"]
         self.format = data["format"]

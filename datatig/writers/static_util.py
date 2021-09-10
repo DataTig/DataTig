@@ -1,4 +1,4 @@
-import jinja2
+import jinja2  # type: ignore
 
 #### FROM https://stackoverflow.com/questions/12339806/escape-strings-for-javascript-using-jinja2
 _js_escapes = {
@@ -18,7 +18,7 @@ _js_escapes = {
 _js_escapes.update(("%c" % z, "\\u%04X" % z) for z in range(32))
 
 
-def jinja2_escapejs_filter(value):
+def jinja2_escapejs_filter(value: str) -> str:
     retval = []
     for letter in value:
         if letter in _js_escapes:

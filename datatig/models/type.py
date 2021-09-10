@@ -8,7 +8,7 @@ class TypeModel:
         self.fields = {}
         self.siteconfig = siteconfig
 
-    def load_from_config(self, config):
+    def load_from_config(self, config) -> None:
         self.id = config.get("id")
         self.config = config
         self.fields = {}
@@ -17,10 +17,10 @@ class TypeModel:
             field_config.load(config)
             self.fields[field_config.id] = field_config
 
-    def directory(self):
+    def directory(self) -> str:
         return self.config.get("directory")
 
-    def directory_in_git_repository(self):
+    def directory_in_git_repository(self) -> str:
         dir = self.config.get("directory")
         if self.siteconfig.git_submodule_directory() and dir.startswith(
             self.siteconfig.git_submodule_directory()
@@ -28,17 +28,17 @@ class TypeModel:
             dir = dir[len(self.siteconfig.git_submodule_directory()) :]
         return dir
 
-    def guide_form_xlsx(self):
+    def guide_form_xlsx(self) -> str:
         return self.config.get("guide_form_xlsx")
 
-    def list_fields(self):
+    def list_fields(self) -> list:
         return self.config.get("list_fields", [])  # TODO add some sensible defaults
 
-    def json_schema(self):
+    def json_schema(self) -> str:
         return self.config.get("json_schema")
 
-    def pretty_json_indent(self):
+    def pretty_json_indent(self) -> int:
         return self.config.get("pretty_json_indent", 4)
 
-    def default_format(self):
+    def default_format(self) -> str:
         return self.config.get("default_format", "yaml")

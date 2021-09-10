@@ -3,7 +3,7 @@ import argparse
 import datatig.process
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
 
     subparsers = parser.add_subparsers(dest="subparser_name")

@@ -2,26 +2,28 @@ import json
 import os
 import shutil
 
-import pygments
-import pygments.formatters
-import pygments.lexers.data
-from jinja2 import Environment, FileSystemLoader, select_autoescape
-from spreadsheetforms.api import put_data_in_form
+import pygments  # type: ignore
+import pygments.formatters  # type: ignore
+import pygments.lexers.data  # type: ignore
+from jinja2 import Environment, FileSystemLoader, select_autoescape  # type: ignore
+from spreadsheetforms.api import put_data_in_form  # type: ignore
+
+from datatig.siteconfig import SiteConfig
+from datatig.sqlite import DataStoreSQLite
 
 from .static_util import jinja2_escapejs_filter
 
 
 class StaticWriter:
-    def __init__(self, config, datastore, out_dir):
+    def __init__(self, config: SiteConfig, datastore: DataStoreSQLite, out_dir: str):
         self.config = config
         self.datastore = datastore
-        self._template_variables = {}
-        self._jinja2_env = None
+        self._template_variables: dict = {}
         self.out_dir = out_dir
 
-    def go(self):
+    def go(self) -> None:
         # Templates
-        self._jinja2_env = Environment(
+        jinja2_env = Environment(
             loader=FileSystemLoader(
                 searchpath=os.path.join(
                     os.path.dirname(os.path.realpath(__file__)), "statictemplates"
@@ -29,7 +31,7 @@ class StaticWriter:
             ),
             autoescape=select_autoescape(["html", "xml"]),
         )
-        self._jinja2_env.filters["escapejs"] = jinja2_escapejs_filter
+        jinja2_env.filters["escapejs"] = jinja2_escapejs_filter
 
         self._template_variables = {
             "site_title": self.config.config.get("title", "SITE"),
@@ -63,7 +65,7 @@ class StaticWriter:
 
         # Top Level Static Pages
         for page in ["robots.txt", "index.html", "errors.html"]:
-            self._write_template("", page, page, {})
+            self._write_template("", page, page, {}, jinja2_env)
 
         # Assets
         assets_dir = os.path.join(
@@ -97,12 +99,14 @@ class StaticWriter:
                 "index.html",
                 "type/index.html",
                 {"type": self._template_variables["types"][type]},
+                jinja2_env,
             )
             self._write_template(
                 os.path.join("type", type, "newweb"),
                 "index.html",
                 "type/newweb.html",
                 {"type": self._template_variables["types"][type]},
+                jinja2_env,
             )
 
             # Each Item/Record!
@@ -127,12 +131,14 @@ class StaticWriter:
                     "index.html",
                     "type/record/index.html",
                     item_template_vars,
+                    jinja2_env,
                 )
                 self._write_template(
                     os.path.join("type", type, "record", item_id, "editweb"),
                     "index.html",
                     "type/record/editweb.html",
                     item_template_vars,
+                    jinja2_env,
                 )
                 if type_config.guide_form_xlsx():
                     self._write_template(
@@ -142,6 +148,7 @@ class StaticWriter:
                         "index.html",
                         "type/record/editspreadsheet.html",
                         item_template_vars,
+                        jinja2_env,
                     )
                 # data files
                 with open(
@@ -177,8 +184,15 @@ class StaticWriter:
             os.path.join(self.out_dir, "database.sqlite"),
         )
 
-    def _write_template(self, dirname, filename, templatename, variables):
+    def _write_template(
+        self,
+        dirname: str,
+        filename: str,
+        templatename: str,
+        variables: dict,
+        jinja2_env: Environment,
+    ) -> None:
         os.makedirs(os.path.join(self.out_dir, dirname), exist_ok=True)
         variables.update(self._template_variables)
         with open(os.path.join(self.out_dir, dirname, filename), "w") as fp:
-            fp.write(self._jinja2_env.get_template(templatename).render(**variables))
+            fp.write(jinja2_env.get_template(templatename).render(**variables))

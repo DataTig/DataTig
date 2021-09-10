@@ -5,9 +5,11 @@ import yaml
 
 from datatig.models.error import ErrorModel
 from datatig.models.record import RecordModel
+from datatig.siteconfig import SiteConfig
+from datatig.sqlite import DataStoreSQLite
 
 
-def process_type(config, type, datastore):
+def process_type(config: SiteConfig, type: str, datastore: DataStoreSQLite) -> None:
     start_dir = os.path.join(config.source_dir, config.types[type].directory())
     full_sourcedir = os.path.abspath(config.source_dir)
     if config.git_submodule_directory():
@@ -42,8 +44,13 @@ def process_type(config, type, datastore):
 
 
 def process_json_file(
-    config, type, filename_absolute, filename_relative_to_git, id, datastore
-):
+    config: SiteConfig,
+    type: str,
+    filename_absolute: str,
+    filename_relative_to_git: str,
+    id: str,
+    datastore: DataStoreSQLite,
+) -> None:
     with open(filename_absolute) as fp:
         data = json.load(fp)
 
@@ -54,8 +61,13 @@ def process_json_file(
 
 
 def process_yaml_file(
-    config, type, filename_absolute, filename_relative_to_git, id, datastore
-):
+    config: SiteConfig,
+    type: str,
+    filename_absolute: str,
+    filename_relative_to_git: str,
+    id,
+    datastore: DataStoreSQLite,
+) -> None:
     with open(filename_absolute) as fp:
         data = yaml.safe_load(fp)
 

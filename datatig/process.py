@@ -11,14 +11,14 @@ from .writers.static import StaticWriter
 
 
 def go(
-    source_dir,
-    staticsite_output=None,
-    sqlite_output=None,
-    verbose=False,
-    check_errors=False,
-    check_json_schema_validation_errors=False,
-    sys_exit=False,
-):
+    source_dir: str,
+    staticsite_output: str = None,
+    sqlite_output: str = None,
+    verbose: bool = False,
+    check_errors: bool = False,
+    check_json_schema_validation_errors: bool = False,
+    sys_exit: bool = False,
+) -> None:
 
     had_errors = False
 

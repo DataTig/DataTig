@@ -1,19 +1,23 @@
 import json
 import os
 
-import jsonschema
+import jsonschema  # type: ignore
+
+from datatig.models.type import TypeModel
+from datatig.siteconfig import SiteConfig
+from datatig.sqlite import DataStoreSQLite
 
 
 class JsonSchemaValidator:
-    def __init__(self, config, datastore):
+    def __init__(self, config: SiteConfig, datastore: DataStoreSQLite):
         self.config = config
         self.datastore = datastore
 
-    def go(self):
+    def go(self) -> None:
         for k, v in self.config.types.items():
             self._validate_type(k, v)
 
-    def _validate_type(self, type_id, type_config):
+    def _validate_type(self, type_id: str, type_config: TypeModel) -> None:
         if not type_config.json_schema():
             return
 

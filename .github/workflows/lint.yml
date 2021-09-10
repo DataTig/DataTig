@@ -21,3 +21,4 @@ jobs:
     - run: black --check *.py */
     - run: isort --check-only *.py */
     - run: flake8
+    - run: mypy --install-types --non-interactive -p datatig
