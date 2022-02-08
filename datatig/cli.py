@@ -13,6 +13,7 @@ def main() -> None:
     build_parser.add_argument(
         "--staticsiteoutput", help="Location of Static Site Output"
     )
+    build_parser.add_argument("--staticsiteurl", help="URL for Static Site Output")
     build_parser.add_argument("--sqliteoutput", help="Location of SQLite file Output")
 
     check_parser = subparsers.add_parser("check")
@@ -32,6 +33,7 @@ def main() -> None:
         datatig.process.go(
             args.source,
             staticsite_output=staticsite_output,
+            staticsite_url=args.staticsiteurl,
             sqlite_output=sqlite_output,
             check_errors=True,
             check_json_schema_validation_errors=False,

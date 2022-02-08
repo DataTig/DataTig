@@ -27,6 +27,10 @@ Call with the directory of the data and at least one of these options:
 
 Any build errors will be printed to screen. (Data validation errors will not be) If encountered, the process will try to continue ignoring the problem. The exit code of the process will be 0 if a success, or -1 if there were any errors. This means you can use this as part of a C.I./C.D. pipeline and check the response.
 
+If you select static site, you can also pass:
+
+* `--staticsiteurl` - Base URL that resulting website will be hosted at. Should not have a trailing slash. eg 'http://www.example.com/sub-directory'
+
 Check sub-command
 -----------------
 

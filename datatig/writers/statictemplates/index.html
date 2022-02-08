@@ -26,14 +26,14 @@
     {% for type_id, type in types.items() %}
         <tr>
             <td>{{ type.id }}</td>
-            <td><a href="/type/{{ type.id }}/"><button type="button" class="btn btn-link">View</button></a></td>
+            <td><a href="{{ url }}/type/{{ type.id }}/"><button type="button" class="btn btn-link">View</button></a></td>
         </tr>
     {% endfor %}
 </table>
 
 <p class="text-right">
-    <a href="/errors.html"><button type="button" class="btn btn-primary">Errors ({{ datastore.get_count_errors() }})</button></a>
-    <a href="/database.sqlite"><button type="button" class="btn btn-primary">Download SQLite Database</button></a>
+    <a href="{{ url }}/errors.html"><button type="button" class="btn btn-primary">Errors ({{ datastore.get_count_errors() }})</button></a>
+    <a href="{{ url }}/database.sqlite"><button type="button" class="btn btn-primary">Download SQLite Database</button></a>
 </p>
 
 {% endblock %}

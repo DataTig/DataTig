@@ -15,11 +15,18 @@ from .static_util import jinja2_escapejs_filter
 
 
 class StaticWriter:
-    def __init__(self, config: SiteConfig, datastore: DataStoreSQLite, out_dir: str):
+    def __init__(
+        self,
+        config: SiteConfig,
+        datastore: DataStoreSQLite,
+        out_dir: str,
+        url: str = None,
+    ):
         self.config = config
         self.datastore = datastore
         self._template_variables: dict = {}
         self.out_dir = out_dir
+        self._url = url
 
     def go(self) -> None:
         # Templates
@@ -40,6 +47,7 @@ class StaticWriter:
             "site_githost_primary_branch": self.config.githost_primary_branch(),
             "types": {},
             "datastore": self.datastore,
+            "url": self._url,
         }
 
         for k, v in self.config.types.items():

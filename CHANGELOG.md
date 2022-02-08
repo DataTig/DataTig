@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- Data files can be in Markdown (as well as JSON or YAML)
+* Data files can be in Markdown (as well as JSON or YAML)
+* New '--staticsiteurl' option when building
 
 ## [0.2.0] - 2021-07-22
 

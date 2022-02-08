@@ -13,6 +13,7 @@ from .writers.static import StaticWriter
 def go(
     source_dir: str,
     staticsite_output: str = None,
+    staticsite_url: str = None,
     sqlite_output: str = None,
     verbose: bool = False,
     check_errors: bool = False,
@@ -67,7 +68,9 @@ def go(
 
     # Static Site Output
     if staticsite_output:
-        static_writer = StaticWriter(config, datastore, staticsite_output)
+        static_writer = StaticWriter(
+            config, datastore, staticsite_output, url=staticsite_url
+        )
         static_writer.go()
 
     # We have now finished - start clearing up
