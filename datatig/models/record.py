@@ -21,6 +21,11 @@ class RecordModel:
         self.git_filename = git_filename
         self.format = "yaml"
 
+    def load_from_md_file(self, data: dict, git_filename: str) -> None:
+        self.data = data
+        self.git_filename = git_filename
+        self.format = "md"
+
     def load_from_database(
         self, data: dict, json_schema_validation_errors_data: list = None
     ) -> None:

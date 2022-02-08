@@ -42,3 +42,6 @@ class TypeModel:
 
     def default_format(self) -> str:
         return self.config.get("default_format", "yaml")
+
+    def markdown_body_is_field(self) -> str:
+        return self.config.get("markdown_body_is_field", "body")

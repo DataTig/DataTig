@@ -1,0 +1,14 @@
+title: Test register
+description: The data for a test
+types:
+- id: datas
+  directory: datas
+  fields:
+  - id: title
+    key: title
+    title: Title
+  list_fields:
+  - title
+  json_schema: schema.json
+  markdown_body_is_field: markdown_body
+  pretty_json_indent: 2

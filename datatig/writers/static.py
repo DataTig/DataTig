@@ -53,6 +53,7 @@ class StaticWriter:
                 "json_schema": v.json_schema(),
                 "pretty_json_indent": v.pretty_json_indent(),
                 "default_format": v.default_format(),
+                "markdown_body_is_field": v.markdown_body_is_field(),
             }
             if v.json_schema():
                 with open(os.path.join(self.config.source_dir, v.json_schema())) as fp:

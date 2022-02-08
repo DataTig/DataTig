@@ -11,7 +11,16 @@ var editor;
 function update() {
     if (data_format == 'json') {
         $('#raw_data_out').val(JSON.stringify(editor.getValue(),null,pretty_json_indent));
-    } else {
+    } else if (data_format == 'md') {
+        data = editor.getValue();
+        if (markdown_body_is_field) {
+            body = data[markdown_body_is_field].slice(); // slice is used to get a copy
+            delete data[markdown_body_is_field]
+            $('#raw_data_out').val("---\n" + jsyaml.dump(data,{'sortKeys':true,'forceQuotes':true})+"---\n\n"+body);
+        } else {
+            $('#raw_data_out').val("---\n" + jsyaml.dump(data,{'sortKeys':true,'forceQuotes':true})+"---\n");
+        }
+    } else if (data_format == 'json') {
         $('#raw_data_out').val(jsyaml.dump(editor.getValue(),{'sortKeys':true,'forceQuotes':true}));
     }
 };

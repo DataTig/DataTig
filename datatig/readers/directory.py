@@ -36,6 +36,15 @@ def process_type(config: SiteConfig, type: str, datastore: DataStoreSQLite) -> N
                         name[:-5],
                         datastore,
                     )
+                elif name.endswith(".md"):
+                    process_md_file(
+                        config,
+                        type,
+                        full_filename,
+                        full_filename[len(full_sourcedir) + 1 :],
+                        name[:-3],
+                        datastore,
+                    )
             except Exception as exception:
                 error = ErrorModel()
                 error.message = str(exception)
@@ -73,5 +82,34 @@ def process_yaml_file(
 
     record = RecordModel()
     record.load_from_yaml_file(data, filename_relative_to_git)
+
+    datastore.store(type, id, record)
+
+
+def process_md_file(
+    config: SiteConfig,
+    type: str,
+    filename_absolute: str,
+    filename_relative_to_git: str,
+    id,
+    datastore: DataStoreSQLite,
+) -> None:
+    with open(filename_absolute) as fp:
+        raw_data = fp.read()
+
+    markdown_body_is_field: str = config.types[type].markdown_body_is_field()
+    if raw_data.startswith("---"):
+        bits = raw_data.split("---")
+        data = yaml.safe_load(bits[1])
+        if markdown_body_is_field:
+            data[markdown_body_is_field] = bits[2].strip()
+    else:
+        if markdown_body_is_field:
+            data = {markdown_body_is_field: raw_data.strip()}
+        else:
+            data = {}
+
+    record = RecordModel()
+    record.load_from_md_file(data, filename_relative_to_git)
 
     datastore.store(type, id, record)
