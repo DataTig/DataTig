@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * Data files can be in Markdown (as well as JSON or YAML)
 * New '--staticsiteurl' option when building
+* YAML files can have .yml extensions as well as .yaml
 
 ## [0.2.0] - 2021-07-22
 

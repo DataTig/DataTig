@@ -36,6 +36,15 @@ def process_type(config: SiteConfig, type: str, datastore: DataStoreSQLite) -> N
                         name[:-5],
                         datastore,
                     )
+                elif name.endswith(".yml"):
+                    process_yaml_file(
+                        config,
+                        type,
+                        full_filename,
+                        full_filename[len(full_sourcedir) + 1 :],
+                        name[:-4],
+                        datastore,
+                    )
                 elif name.endswith(".md"):
                     process_md_file(
                         config,
