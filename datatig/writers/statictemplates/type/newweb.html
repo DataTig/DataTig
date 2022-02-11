@@ -41,7 +41,7 @@
 
 
 {% block javascript %}
-{% if type.default_format == 'yaml' %}
+{% if type.default_format == 'yaml' or type.default_format == 'md' %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.0.0/js-yaml.min.js" integrity="sha512-dYHhQSvQ3Lepc2xDidh80aADfrIAaVTs52W5JSFlE47SJgcwD+YY+iY0XmXD9UX3k0YOPvoyugS/ieGjpu5M/Q==" crossorigin="anonymous"></script>
 {% endif %}
 <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@2.2.1/dist/jsoneditor.min.js"></script>
@@ -50,6 +50,7 @@
     var schema = JSON.parse("{{ type.json_schema_string | escapejs }}");
     var pretty_json_indent = {{ type.pretty_json_indent }};
     var data_format = "{{ type.default_format }}";
+    var markdown_body_is_field = "{{ type.markdown_body_is_field| escapejs }}";
 </script>
-<script src="/web-edit-or-new.js"></script>
+<script src="{{ url }}/web-edit-or-new.js"></script>
 {% endblock %}
