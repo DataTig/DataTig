@@ -26,7 +26,7 @@ Previously we have run checks manually by running:
 
 This is great, but it's not great we have to remember to do this! It would be very easy to forget.
 
-Fortunately, using a free FitHub feature called Actions we can get GitHub to check our data automatically.
+Fortunately, using a free GitHub feature called Actions we can get GitHub to check our data automatically.
 
 Create a directory called "`.github`". Inside that, create a directory called "`workflows`". Inside that, create a file called "`check.yml`", with the contents:
 
