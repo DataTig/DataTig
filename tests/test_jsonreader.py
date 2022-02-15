@@ -38,3 +38,51 @@ def test_json_site():
                 cur.execute("SELECT * FROM type")
                 type = cur.fetchone()
                 assert "datas" == type["id"]
+        # Test API
+        with open(os.path.join(staticsite_dir, "api.json")) as fp:
+            api = json.load(fp)
+            assert {
+                "description": "The data for a test",
+                "title": "Test register",
+                "types": {
+                    "datas": {
+                        "api_url": "/type/datas/api.json",
+                        "human_url": "/type/datas/",
+                        "id": "datas",
+                    }
+                },
+            } == api
+        with open(os.path.join(staticsite_dir, "type", "datas", "api.json")) as fp:
+            type_api = json.load(fp)
+            assert {
+                "fields": {
+                    "code": {"id": "code", "type": "string"},
+                    "title": {"id": "title", "type": "string"},
+                },
+                "id": "datas",
+                "records_api_url": "/type/datas/records_api.json",
+            } == type_api
+
+        with open(
+            os.path.join(staticsite_dir, "type", "datas", "records_api.json")
+        ) as fp:
+            type_records_api = json.load(fp)
+            assert {
+                "records": {
+                    "1": {
+                        "api_url": "/type/datas/record/1/api.json",
+                        "data_api_url": "/type/datas/record/1/data.json",
+                        "id": "1",
+                    },
+                    "2": {
+                        "api_url": "/type/datas/record/2/api.json",
+                        "data_api_url": "/type/datas/record/2/data.json",
+                        "id": "2",
+                    },
+                }
+            } == type_records_api
+        with open(
+            os.path.join(staticsite_dir, "type", "datas", "record", "1", "api.json")
+        ) as fp:
+            record_api = json.load(fp)
+            assert {"data_api_url": "/type/datas/record/1/data.json"} == record_api

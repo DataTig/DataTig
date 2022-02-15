@@ -24,6 +24,8 @@ Go to the website that Netlify is building for you.
 
 On the home page is a button to "Download SQLite Database". This downloads a database file that includes all the data. It can be opened it a tool like https://sqlitebrowser.org/
 
+On the home page is an "API" button. This is a JSON API that contains data, and links to more API URL's to find more data.
+
 Click on "Shops" then any shop. There is a button to "Download Raw JSON Data". This will give you the data for that shop in JSON form.
 
 In themselves, these things may not seem very useful. What will someone do with these?
