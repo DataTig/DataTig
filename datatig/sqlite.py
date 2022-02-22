@@ -9,7 +9,7 @@ from .models.record import RecordModel
 from .models.record_json_schema_validation_error import (
     RecordJSONSchemaValidationErrorModel,
 )
-from .models.type_field import TypeFieldModel
+from .models.type_field import get_type_field_model_for_type
 from .siteconfig import SiteConfig
 
 
@@ -187,7 +187,7 @@ class DataStoreSQLite:
             )
             data = cur.fetchone()
             if data:
-                type_field = TypeFieldModel()
+                type_field = get_type_field_model_for_type(data["type"])
                 type_field.load_from_database(data)
                 # Load Record
                 cur.execute(

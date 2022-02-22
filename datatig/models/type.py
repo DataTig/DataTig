@@ -1,4 +1,4 @@
-from .type_field import TypeFieldModel
+from .type_field import get_type_field_model_for_type
 
 
 class TypeModel:
@@ -13,7 +13,7 @@ class TypeModel:
         self.config = config
         self.fields = {}
         for config in self.config.get("fields", []):
-            field_config = TypeFieldModel()
+            field_config = get_type_field_model_for_type(config.get("type"))
             field_config.load(config)
             self.fields[field_config.id] = field_config
 
