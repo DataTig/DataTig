@@ -43,3 +43,10 @@ def test_json_site():
                 cur.execute("SELECT * FROM type")
                 type = cur.fetchone()
                 assert "datas" == type["id"]
+            with closing(connection.cursor()) as cur:
+                cur.execute("SELECT * FROM record_datas WHERE id='1'")
+                type = cur.fetchone()
+                assert "1" == type["id"]
+                assert "One" == type["field_title"]
+                assert "datas/1.md" == type["git_filename"]
+                assert "md" == type["format"]

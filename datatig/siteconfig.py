@@ -36,3 +36,6 @@ class SiteConfig:
 
     def githost_primary_branch(self) -> str:
         return self.config.get("githost", {}).get("primary_branch", "main")
+
+    def get_type(self, type_id: str):
+        return self.types.get(type_id)

@@ -91,6 +91,16 @@ class DataStoreSQLite:
                         ],
                     )
 
+                    if type_field.type() in ["url", "string"]:
+                        cur.execute(
+                            """ALTER TABLE record_"""
+                            + type.id
+                            + """ ADD field_"""
+                            + type_field_id
+                            + """ TEXT """,
+                            [],
+                        )
+
             self.connection.commit()
 
     def store(self, type_id, item_id, record) -> None:
@@ -123,6 +133,19 @@ class DataStoreSQLite:
                 ) VALUES (?, ?, ?,  ?)""",
                 insert_data,
             )
+
+            for field in self.site_config.get_type(type_id).fields.values():
+                value = JSONDeepReaderWriter(record.data).read(field.key())
+                if field.type() in ["url", "string"] and value:
+                    cur.execute(
+                        """UPDATE record_"""
+                        + type_id
+                        + """ SET field_"""
+                        + field.id
+                        + """ = ? WHERE id=?""",
+                        [value, item_id],
+                    )
+
             self.connection.commit()
 
     def store_json_schema_validation_errors(self, type_id, item_id, errors) -> None:
