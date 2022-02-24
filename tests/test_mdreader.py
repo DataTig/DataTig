@@ -40,6 +40,10 @@ def test_json_site():
         ) as connection:
             connection.row_factory = sqlite3.Row
             with closing(connection.cursor()) as cur:
+                cur.execute("SELECT COUNT(*) AS c FROM error")
+                error = cur.fetchone()
+                assert 0 == error["c"]
+            with closing(connection.cursor()) as cur:
                 cur.execute("SELECT * FROM type")
                 type = cur.fetchone()
                 assert "datas" == type["id"]

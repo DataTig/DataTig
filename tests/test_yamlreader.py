@@ -35,6 +35,10 @@ def test_yaml_site():
         ) as connection:
             connection.row_factory = sqlite3.Row
             with closing(connection.cursor()) as cur:
+                cur.execute("SELECT COUNT(*) AS c FROM error")
+                error = cur.fetchone()
+                assert 0 == error["c"]
+            with closing(connection.cursor()) as cur:
                 cur.execute("SELECT * FROM type")
                 type = cur.fetchone()
                 assert "datas" == type["id"]
@@ -54,3 +58,27 @@ def test_yaml_site():
                 assert "Cats" == field_value["value"]
                 field_value = cur.fetchone()
                 assert "Dogs" == field_value["value"]
+            with closing(connection.cursor()) as cur:
+                cur.execute("SELECT * FROM record_datas WHERE id='2'")
+                record = cur.fetchone()
+                assert "2" == record["id"]
+                assert "Two" == record["field_title"]
+                assert None == record["field_tags"]
+                assert "datas/2.yml" == record["git_filename"]
+                assert "yaml" == record["format"]
+            with closing(connection.cursor()) as cur:
+                cur.execute("SELECT * FROM record_datas WHERE id='3'")
+                record = cur.fetchone()
+                assert "3" == record["id"]
+                assert None == record["field_title"]
+                assert None == record["field_tags"]
+                assert "datas/3.yaml" == record["git_filename"]
+                assert "yaml" == record["format"]
+            with closing(connection.cursor()) as cur:
+                cur.execute("SELECT * FROM record_datas WHERE id='4'")
+                record = cur.fetchone()
+                assert "4" == record["id"]
+                assert "Four" == record["field_title"]
+                assert None == record["field_tags"]
+                assert "datas/4.yaml" == record["git_filename"]
+                assert "yaml" == record["format"]

@@ -86,3 +86,12 @@ def test_json_site():
         ) as fp:
             record_api = json.load(fp)
             assert {"data_api_url": "/type/datas/record/1/data.json"} == record_api
+        # Test database
+        with closing(
+            sqlite3.connect(os.path.join(staticsite_dir, "database.sqlite"))
+        ) as connection:
+            connection.row_factory = sqlite3.Row
+            with closing(connection.cursor()) as cur:
+                cur.execute("SELECT COUNT(*) AS c FROM error")
+                error = cur.fetchone()
+                assert 0 == error["c"]

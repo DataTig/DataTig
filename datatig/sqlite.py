@@ -145,7 +145,7 @@ class DataStoreSQLite:
 
             for field in self.site_config.get_type(type_id).fields.values():
                 value = JSONDeepReaderWriter(record.data).read(field.key())
-                if field.type() in ["url", "string"] and value:
+                if field.type() in ["url", "string"] and isinstance(value, str):
                     cur.execute(
                         """UPDATE record_"""
                         + type_id
@@ -154,7 +154,7 @@ class DataStoreSQLite:
                         + """ = ? WHERE id=?""",
                         [value, item_id],
                     )
-                if field.type() in ["list-strings"] and value:
+                if field.type() in ["list-strings"] and isinstance(value, list):
                     cur.execute(
                         """UPDATE record_"""
                         + type_id
