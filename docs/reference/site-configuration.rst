@@ -71,6 +71,7 @@ Allowed types are:
 
 * `string`
 * `url`
+* `list-strings`
 
 A YAML example:
 

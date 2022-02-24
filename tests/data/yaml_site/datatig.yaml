@@ -4,14 +4,14 @@ types:
 - id: datas
   directory: datas
   fields:
-  - id: code
-    key: code
-    title: Code
   - id: title
     key: title
     title: Title
+  - id: tags
+    key: tags
+    title: Tags
+    type: list-strings
   list_fields:
-  - code
   - title
   json_schema: schema.json
   pretty_json_indent: 2

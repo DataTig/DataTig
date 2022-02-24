@@ -23,7 +23,7 @@ def test_yaml_site():
             os.path.join(staticsite_dir, "type", "datas", "record", "1", "data.json")
         ) as fp:
             one_json = json.load(fp)
-            assert {"title": "One"} == one_json
+            assert {"title": "One", "tags": ["Cats", "Dogs"]} == one_json
         with open(
             os.path.join(staticsite_dir, "type", "datas", "record", "2", "data.json")
         ) as fp:
@@ -38,3 +38,19 @@ def test_yaml_site():
                 cur.execute("SELECT * FROM type")
                 type = cur.fetchone()
                 assert "datas" == type["id"]
+            with closing(connection.cursor()) as cur:
+                cur.execute("SELECT * FROM record_datas WHERE id='1'")
+                record = cur.fetchone()
+                assert "1" == record["id"]
+                assert "One" == record["field_title"]
+                assert "Cats, Dogs" == record["field_tags"]
+                assert "datas/1.yaml" == record["git_filename"]
+                assert "yaml" == record["format"]
+            with closing(connection.cursor()) as cur:
+                cur.execute(
+                    "SELECT * FROM record_datas_field_tags WHERE record_id='1' ORDER BY value"
+                )
+                field_value = cur.fetchone()
+                assert "Cats" == field_value["value"]
+                field_value = cur.fetchone()
+                assert "Dogs" == field_value["value"]

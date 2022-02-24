@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * YAML files can have .yml extensions as well as .yaml
 * JSON API to static site
 * Added field columns to record tables in SQLite database
+* New field type: "list-strings"
 
 ## [0.2.0] - 2021-07-22
 

@@ -31,8 +31,15 @@ class TypeURLFieldModel(TypeFieldModel):
         return "url"
 
 
+class TypeListStringsFieldModel(TypeFieldModel):
+    def type(self) -> str:
+        return "list-strings"
+
+
 def get_type_field_model_for_type(type: str) -> TypeFieldModel:
     if type == "url":
         return TypeURLFieldModel()
+    elif type == "list-strings":
+        return TypeListStringsFieldModel()
     else:
         return TypeStringFieldModel()

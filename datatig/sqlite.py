@@ -91,13 +91,22 @@ class DataStoreSQLite:
                         ],
                     )
 
-                    if type_field.type() in ["url", "string"]:
+                    if type_field.type() in ["url", "string", "list-strings"]:
                         cur.execute(
                             """ALTER TABLE record_"""
                             + type.id
                             + """ ADD field_"""
                             + type_field_id
                             + """ TEXT """,
+                            [],
+                        )
+                    if type_field.type() in ["list-strings"]:
+                        cur.execute(
+                            """CREATE TABLE record_"""
+                            + type.id
+                            + """_field_"""
+                            + type_field_id
+                            + """ (record_id TEXT, value TEXT) """,
                             [],
                         )
 
@@ -145,6 +154,24 @@ class DataStoreSQLite:
                         + """ = ? WHERE id=?""",
                         [value, item_id],
                     )
+                if field.type() in ["list-strings"] and value:
+                    cur.execute(
+                        """UPDATE record_"""
+                        + type_id
+                        + """ SET field_"""
+                        + field.id
+                        + """ = ? WHERE id=?""",
+                        [", ".join(value), item_id],
+                    )
+                    for v in value:
+                        cur.execute(
+                            """INSERT INTO  record_"""
+                            + type_id
+                            + """_field_"""
+                            + field.id
+                            + """ (record_id, value) VALUES (?, ?) """,
+                            [item_id, v],
+                        )
 
             self.connection.commit()
 
@@ -223,6 +250,14 @@ class DataStoreSQLite:
                     # Now get value
                     obj = JSONDeepReaderWriter(record.data)
                     return obj.read(type_field.key())
+
+    def get_field_as_list(self, type_id, item_id, field_id) -> list:
+        value = self.get_field(type_id, item_id, field_id)
+        if value is None:
+            return []
+        if not isinstance(value, list):
+            return [value]
+        return value
 
     def store_error(self, error) -> None:
         with closing(self.connection.cursor()) as cur:
