@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * New field type: "list-strings"
 * If JSON Schema not supplied, build one automatically from fields. This means the edit features and validation are now always available.
 
+### Fixed
+
+* Fields of different types are shown correctly when listing records on a type page
+
 ## [0.2.0] - 2021-07-22
 
 ### Changed

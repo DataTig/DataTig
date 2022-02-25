@@ -27,9 +27,19 @@
         <tr>
             <td>{{ item_id }}</td>
             {% for field_name in type.list_fields %}
+                {% set field = type.fields[field_name] %}
                 <td>
-                    {# Get Field Type, display accordingly #}
-                    {{ datastore.get_field(type.id, item_id, field_name) }}
+                    {% if field.type() == 'url' %}
+                        <a href="{{ datastore.get_field(type.id, item_id, field_name) }}">{{ datastore.get_field(type.id, item_id, field_name) }}</a>
+                    {% elif field.type() == 'list-strings' %}
+                        <ul>
+                            {% for value in datastore.get_field_as_list(type.id, item_id, field_name) %}
+                                <li>{{ value }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        {{ datastore.get_field(type.id, item_id, field_name) }}
+                    {% endif %}
                 </td>
             {% endfor %}
             <td><a href="{{ url }}/type/{{ type.id }}/record/{{ item_id }}/"><button type="button" class="btn btn-link">View</button></a></td>
