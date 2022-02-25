@@ -37,14 +37,10 @@
     {% endfor %}
 </table>
 
-{% if type.json_schema %}
-    <h3>New</h3>
-    <p class="text-right">
-        {% if type.json_schema %}
-            <a href="newweb/"><button type="button" class="btn btn-primary">New</button></a>
-        {% endif %}
-    </p>
-{% endif %}
+<h3>New</h3>
+<p class="text-right">
+    <a href="newweb/"><button type="button" class="btn btn-primary">New</button></a>
+</p>
 
 <p class="text-right">
     <a href="{{ url }}/type/{{ type.id }}/api.json"><button type="button" class="btn btn-secondary">API</button></a>

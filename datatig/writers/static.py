@@ -61,16 +61,11 @@ class StaticWriter:
                 "directory": v.directory(),
                 "directory_in_git_repository": v.directory_in_git_repository(),
                 "guide_form_xlsx": v.guide_form_xlsx(),
-                "json_schema": v.json_schema(),
                 "pretty_json_indent": v.pretty_json_indent(),
                 "default_format": v.default_format(),
                 "markdown_body_is_field": v.markdown_body_is_field(),
+                "json_schema_string": json.dumps(v.json_schema_as_dict()),
             }
-            if v.json_schema():
-                with open(os.path.join(self.config.source_dir, v.json_schema())) as fp:
-                    self._template_variables["types"][k][
-                        "json_schema_string"
-                    ] = fp.read()
 
         # Out Dir
         os.makedirs(self.out_dir, exist_ok=True)

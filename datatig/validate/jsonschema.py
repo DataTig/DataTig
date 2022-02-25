@@ -1,6 +1,3 @@
-import json
-import os
-
 import jsonschema  # type: ignore
 
 from datatig.models.type import TypeModel
@@ -18,13 +15,7 @@ class JsonSchemaValidator:
             self._validate_type(k, v)
 
     def _validate_type(self, type_id: str, type_config: TypeModel) -> None:
-        if not type_config.json_schema():
-            return
-
-        with open(
-            os.path.join(self.config.source_dir, type_config.json_schema())
-        ) as fp:
-            schema = json.load(fp)
+        schema = type_config.json_schema_as_dict()
         schema_version = str(schema.get("$schema", ""))
         if schema_version.startswith("http://json-schema.org/draft-03/schema"):
             schema_validator = jsonschema.Draft3Validator(schema)

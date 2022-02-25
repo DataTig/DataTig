@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * JSON API to static site
 * Added field columns to record tables in SQLite database
 * New field type: "list-strings"
+* If JSON Schema not supplied, build one automatically from fields. This means the edit features and validation are now always available.
 
 ## [0.2.0] - 2021-07-22
 

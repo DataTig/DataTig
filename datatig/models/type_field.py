@@ -25,15 +25,31 @@ class TypeStringFieldModel(TypeFieldModel):
     def type(self) -> str:
         return "string"
 
+    def json_schema(self) -> dict:
+        return {
+            "type": "string",
+            "title": self._title,
+        }
+
 
 class TypeURLFieldModel(TypeFieldModel):
     def type(self) -> str:
         return "url"
 
+    def json_schema(self) -> dict:
+        return {
+            "type": "string",
+            "format": "uri",
+            "title": self._title,
+        }
+
 
 class TypeListStringsFieldModel(TypeFieldModel):
     def type(self) -> str:
         return "list-strings"
+
+    def json_schema(self) -> dict:
+        return {"title": self._title, "type": "array", "items": {"type": "string"}}
 
 
 def get_type_field_model_for_type(type: str) -> TypeFieldModel:

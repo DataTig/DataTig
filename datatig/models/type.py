@@ -1,3 +1,8 @@
+import json
+import os.path
+
+from datatig.jsonschemabuilder import build_json_schema
+
 from .type_field import get_type_field_model_for_type
 
 
@@ -34,8 +39,15 @@ class TypeModel:
     def list_fields(self) -> list:
         return self.config.get("list_fields", [])  # TODO add some sensible defaults
 
-    def json_schema(self) -> str:
-        return self.config.get("json_schema")
+    def json_schema_as_dict(self) -> dict:
+        if self.config.get("json_schema"):
+            with open(
+                os.path.join(self.siteconfig.source_dir, self.config.get("json_schema"))
+            ) as fp:
+                return json.load(fp)
+        else:
+            results = build_json_schema(self.fields.values())
+            return results.json_schema()
 
     def pretty_json_indent(self) -> int:
         return self.config.get("pretty_json_indent", 4)
