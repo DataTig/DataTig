@@ -14,6 +14,12 @@
         "id": "title",
         "key": "title",
         "title": "Title"
+      },
+      {
+        "id": "tags",
+        "key": "tags",
+        "title": "Tags",
+        "type": "list-strings"
       }
     ],
     "list_fields": [ "code", "title" ],

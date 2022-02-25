@@ -58,6 +58,7 @@ def test_json_site():
                 "fields": {
                     "code": {"id": "code", "type": "string"},
                     "title": {"id": "title", "type": "string"},
+                    "tags": {"id": "tags", "type": "list-strings"},
                 },
                 "id": "datas",
                 "records_api_url": "/type/datas/records_api.json",
@@ -78,6 +79,11 @@ def test_json_site():
                         "api_url": "/type/datas/record/2/api.json",
                         "data_api_url": "/type/datas/record/2/data.json",
                         "id": "2",
+                    },
+                    "3": {
+                        "api_url": "/type/datas/record/3/api.json",
+                        "data_api_url": "/type/datas/record/3/data.json",
+                        "id": "3",
                     },
                 }
             } == type_records_api

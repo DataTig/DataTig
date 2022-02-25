@@ -161,7 +161,7 @@ class DataStoreSQLite:
                         + """ SET field_"""
                         + field.id
                         + """ = ? WHERE id=?""",
-                        [", ".join(value), item_id],
+                        [", ".join([str(v) for v in value]), item_id],
                     )
                     for v in value:
                         cur.execute(
@@ -170,7 +170,7 @@ class DataStoreSQLite:
                             + """_field_"""
                             + field.id
                             + """ (record_id, value) VALUES (?, ?) """,
-                            [item_id, v],
+                            [item_id, str(v)],
                         )
 
             self.connection.commit()

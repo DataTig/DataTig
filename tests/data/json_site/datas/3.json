@@ -1,0 +1,12 @@
+{
+  "title": "Two",
+  "tags": [
+    "this tag list is deliberately made up of not just strings to make sure that doesn't cause a crash",
+    [
+      " a list within a list when it's meant to be a string! oh no!"
+    ],
+    {
+      "data": "a dict is also bad"
+    }
+  ]
+}
