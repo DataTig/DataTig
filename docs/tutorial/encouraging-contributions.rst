@@ -32,7 +32,7 @@ Commit this change and push to GitHub.
 
 Now wait a minute until the new version of your static site is rebuilt and deployed.
 
-Go and click on a page for a bike shop. There is a new section, `Edit`.
+Go and click on a page for a bike shop. Look in the `Edit` section.
 
 There is a new button, `Edit Raw data directly on GitHub`. This will take you direct to the relevant file on GitHub.
 

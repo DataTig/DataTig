@@ -134,8 +134,12 @@ We can serve these so they are easy to open in your web browser.
 
 Now open a web browser and go to http://localhost:8000/
 
-You should see a basic website with a link for shops, then a page for each of the 2 shops you entered earlier.
+You should see a basic website with a link for shops.
 
+.. image:: tutorial-setting-up-site-and-adding-first-data-home.png
+  :alt: Screenshot of DataTig site
+
+Clicking on "shops" will let you explore the 2 shops we just added. But it only shows us basic information - let's see if we can make that more helpfull.
 
 
 Next

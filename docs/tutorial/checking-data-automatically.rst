@@ -66,17 +66,16 @@ Click on the run, then check and expand the broken item to see the details of th
 .. image:: tutorial-checking-data-automatically-broken-details.png
   :alt: Screenshot of GitHub actions with details of a broken run
 
-Let's try and fix this. We go and ask Cathy and it turns out she does have a website - it's at  http://www.cathy-cathode.co.uk
+Let's try and fix this. We can only list one URL - so let's remove the Facebook one.
 
-Edit the file called `shops/cathy-cathode.yaml`. Add the URL:
+Edit the file called `shops/digital-dan.yaml`. Add the URL:
 
 .. code-block:: yaml
 
-    title: Cathy Cathode
-    url: http://www.cathy-cathode.co.uk
+    title: Digital Dan's Bike Shop
+    url: http://www.digital-dans-bike-shop.com
 
-
-Commit your file `shops/cathy-cathode.yaml` and push it to GitHub.
+Commit your file `shops/digital-dan.yaml` and push it to GitHub.
 
 Go to your repository on GitHub and click the "Actions" tab.
 
