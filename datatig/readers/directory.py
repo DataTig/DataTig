@@ -8,6 +8,8 @@ from datatig.models.record import RecordModel
 from datatig.siteconfig import SiteConfig
 from datatig.sqlite import DataStoreSQLite
 
+# import traceback
+
 
 def process_type(config: SiteConfig, type: str, datastore: DataStoreSQLite) -> None:
     start_dir = os.path.join(config.source_dir, config.types[type].directory())
@@ -55,6 +57,10 @@ def process_type(config: SiteConfig, type: str, datastore: DataStoreSQLite) -> N
                         datastore,
                     )
             except Exception as exception:
+                # If debugging, it's sometimes useful to see a stacktrace. Uncomment this print and the import above.
+                # But don't check those changes into Git!
+                # TODO make this some kind of verbose mode?
+                # print(traceback.format_exc())
                 error = ErrorModel()
                 error.message = str(exception)
                 error.filename = full_filename
