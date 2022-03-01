@@ -23,7 +23,11 @@ def test_json_site():
             os.path.join(staticsite_dir, "type", "datas", "record", "1", "data.json")
         ) as fp:
             one_json = json.load(fp)
-            assert {"title": "One", "markdown_body": "A page about 1."} == one_json
+            assert {
+                "title": "One",
+                "markdown_body": "A page about 1.",
+                "birthday": "2019-09-30",
+            } == one_json
         with open(
             os.path.join(staticsite_dir, "type", "datas", "record", "2", "data.json")
         ) as fp:

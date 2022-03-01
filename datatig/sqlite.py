@@ -112,7 +112,7 @@ class DataStoreSQLite:
 
             self.connection.commit()
 
-    def store(self, type_id, item_id, record) -> None:
+    def store(self, type_id: str, item_id: str, record: RecordModel) -> None:
         with closing(self.connection.cursor()) as cur:
             # Check
             cur.execute("SELECT * FROM record_" + type_id + "  WHERE id=?", [item_id])
@@ -130,7 +130,7 @@ class DataStoreSQLite:
             # Store
             insert_data = [
                 item_id,
-                json.dumps(record.data),
+                json.dumps(record.data, default=str),
                 record.git_filename,
                 record.format,
             ]
