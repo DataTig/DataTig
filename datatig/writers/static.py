@@ -65,6 +65,7 @@ class StaticWriter:
                 "default_format": v.default_format(),
                 "markdown_body_is_field": v.markdown_body_is_field(),
                 "json_schema_string": json.dumps(v.json_schema_as_dict()),
+                "new_item_json_string": json.dumps(v.get_new_item_json()),
             }
 
         # Out Dir

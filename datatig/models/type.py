@@ -1,6 +1,7 @@
 import json
 import os.path
 
+from datatig.jsondeepreaderwriter import JSONDeepReaderWriter
 from datatig.jsonschemabuilder import build_json_schema
 
 from .type_field import get_type_field_model_for_type
@@ -57,3 +58,9 @@ class TypeModel:
 
     def markdown_body_is_field(self) -> str:
         return self.config.get("markdown_body_is_field", "body")
+
+    def get_new_item_json(self) -> dict:
+        out: JSONDeepReaderWriter = JSONDeepReaderWriter({})
+        for field in self.fields.values():
+            out.write(field.key(), field.get_new_item_json())
+        return out.get_json()

@@ -31,6 +31,9 @@ class TypeStringFieldModel(TypeFieldModel):
             "title": self._title,
         }
 
+    def get_new_item_json(self):
+        return None
+
 
 class TypeURLFieldModel(TypeFieldModel):
     def type(self) -> str:
@@ -43,6 +46,9 @@ class TypeURLFieldModel(TypeFieldModel):
             "title": self._title,
         }
 
+    def get_new_item_json(self):
+        return None
+
 
 class TypeListStringsFieldModel(TypeFieldModel):
     def type(self) -> str:
@@ -50,6 +56,9 @@ class TypeListStringsFieldModel(TypeFieldModel):
 
     def json_schema(self) -> dict:
         return {"title": self._title, "type": "array", "items": {"type": "string"}}
+
+    def get_new_item_json(self):
+        return []
 
 
 def get_type_field_model_for_type(type: str) -> TypeFieldModel:

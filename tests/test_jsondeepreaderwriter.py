@@ -18,3 +18,23 @@ def test_read_level1_all_keys():
     )
     assert obj.read("cat/noise") == "Miaow"
     assert obj.read("cat/tail") == True
+
+
+def test_write_root_key():
+    obj = JSONDeepReaderWriter({})
+    obj.write("cat", "Miaow")
+    assert {"cat": "Miaow"} == obj.get_json()
+
+
+def test_write_level1():
+    obj = JSONDeepReaderWriter({})
+    obj.write("cat/noise", "Miaow")
+    obj.write("cat/tail", "True")
+    obj.write("cat/swims", None)
+    assert {
+        "cat": {
+            "tail": "True",
+            "noise": "Miaow",
+            "swims": None,
+        }
+    } == obj.get_json()

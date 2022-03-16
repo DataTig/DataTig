@@ -46,7 +46,7 @@
 {% endif %}
 <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@2.2.1/dist/jsoneditor.min.js"></script>
 <script>
-    var data = {};
+    var data = JSON.parse("{{ type.new_item_json_string | escapejs }}");
     var schema = JSON.parse("{{ type.json_schema_string | escapejs }}");
     var pretty_json_indent = {{ type.pretty_json_indent }};
     var data_format = "{{ type.default_format }}";
