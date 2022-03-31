@@ -56,5 +56,6 @@ def test_json_site():
                 type = cur.fetchone()
                 assert "1" == type["id"]
                 assert "One" == type["field_title"]
+                assert "2019-09-30" == type["field_birthday"]
                 assert "datas/1.md" == type["git_filename"]
                 assert "md" == type["format"]

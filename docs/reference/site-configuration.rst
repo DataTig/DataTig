@@ -72,6 +72,7 @@ Allowed types are:
 * `string`
 * `url`
 * `list-strings`
+* `date`
 
 A YAML example:
 

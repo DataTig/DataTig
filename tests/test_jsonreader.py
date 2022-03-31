@@ -23,7 +23,7 @@ def test_json_site():
             os.path.join(staticsite_dir, "type", "datas", "record", "1", "data.json")
         ) as fp:
             one_json = json.load(fp)
-            assert {"title": "One"} == one_json
+            assert {"title": "One", "birthday": "2022-10-01"} == one_json
         with open(
             os.path.join(staticsite_dir, "type", "datas", "record", "2", "data.json")
         ) as fp:
@@ -59,6 +59,7 @@ def test_json_site():
                     "code": {"id": "code", "type": "string"},
                     "title": {"id": "title", "type": "string"},
                     "tags": {"id": "tags", "type": "list-strings"},
+                    "birthday": {"id": "birthday", "type": "date"},
                 },
                 "id": "datas",
                 "records_api_url": "/type/datas/records_api.json",
@@ -101,3 +102,11 @@ def test_json_site():
                 cur.execute("SELECT COUNT(*) AS c FROM error")
                 error = cur.fetchone()
                 assert 0 == error["c"]
+            with closing(connection.cursor()) as cur:
+                cur.execute("SELECT * FROM record_datas WHERE id='1'")
+                type = cur.fetchone()
+                assert "1" == type["id"]
+                assert "One" == type["field_title"]
+                assert "2022-10-01" == type["field_birthday"]
+                assert "datas/1.json" == type["git_filename"]
+                assert "json" == type["format"]

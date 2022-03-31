@@ -10,7 +10,7 @@ types:
   - id: birthday
     key: birthday
     title: Birthday
-    # type: date
+    type: date
   list_fields:
   - title
   json_schema: schema.json

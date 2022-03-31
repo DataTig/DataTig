@@ -50,6 +50,21 @@ class TypeURLFieldModel(TypeFieldModel):
         return None
 
 
+class TypeDateFieldModel(TypeFieldModel):
+    def type(self) -> str:
+        return "date"
+
+    def json_schema(self) -> dict:
+        return {
+            "type": "string",
+            "format": "date",
+            "title": self._title,
+        }
+
+    def get_new_item_json(self):
+        return None
+
+
 class TypeListStringsFieldModel(TypeFieldModel):
     def type(self) -> str:
         return "list-strings"
@@ -66,5 +81,7 @@ def get_type_field_model_for_type(type: str) -> TypeFieldModel:
         return TypeURLFieldModel()
     elif type == "list-strings":
         return TypeListStringsFieldModel()
+    elif type == "date":
+        return TypeDateFieldModel()
     else:
         return TypeStringFieldModel()

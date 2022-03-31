@@ -20,6 +20,12 @@
         "key": "tags",
         "title": "Tags",
         "type": "list-strings"
+      },
+      {
+        "id": "birthday",
+        "key": "birthday",
+        "title": "Birthday",
+        "type": "date"
       }
     ],
     "list_fields": [ "code", "title" ],

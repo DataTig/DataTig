@@ -23,7 +23,11 @@ def test_yaml_site():
             os.path.join(staticsite_dir, "type", "datas", "record", "1", "data.json")
         ) as fp:
             one_json = json.load(fp)
-            assert {"title": "One", "tags": ["Cats", "Dogs"]} == one_json
+            assert {
+                "title": "One",
+                "tags": ["Cats", "Dogs"],
+                "birthday": "2019-09-30",
+            } == one_json
         with open(
             os.path.join(staticsite_dir, "type", "datas", "record", "2", "data.json")
         ) as fp:
@@ -48,6 +52,7 @@ def test_yaml_site():
                 assert "1" == record["id"]
                 assert "One" == record["field_title"]
                 assert "Cats, Dogs" == record["field_tags"]
+                assert "2019-09-30" == record["field_birthday"]
                 assert "datas/1.yaml" == record["git_filename"]
                 assert "yaml" == record["format"]
             with closing(connection.cursor()) as cur:
