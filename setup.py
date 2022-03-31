@@ -19,7 +19,13 @@ setuptools.setup(
         "": ["*.html", "*.txt", "*.css", "*.js"],
     },
     classifiers=[],
-    install_requires=["Jinja2", "spreadsheetforms", "jsonschema", "Pygments", "pyyaml"],
+    install_requires=[
+        "Jinja2<3.1",
+        "spreadsheetforms",
+        "jsonschema",
+        "Pygments",
+        "pyyaml",
+    ],
     extras_require={"Dev": ["pytest", "black", "isort", "flake8", "mypy"]},
     python_requires=">=3.6",
 )

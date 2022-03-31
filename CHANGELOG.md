@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+* Lock Jinja2 to less than 3.1 as that removes code we use (`jinja2.Markup`)
 * A date field in a markdown file does not cause a crash
 * On web form for new item, don't have to open "properties" and select keys now
 
