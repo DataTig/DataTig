@@ -51,6 +51,9 @@ class StaticWriter:
             "types": {},
             "datastore": self.datastore,
             "url": self._url,
+            "datastore_file_size_bytes": os.path.getsize(
+                self.datastore.get_file_name()
+            ),
         }
 
         for k, v in self.config.types.items():

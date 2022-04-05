@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 * New field type, "date"
+* Static site: Show size of SQLite database
 
 ## [0.3.1] - 2022-03-31
 
