@@ -6,8 +6,8 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url }}/">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ url }}/type/{{ type.id }}/">{{ type.id }}</a></li>
-        <li class="breadcrumb-item"><a href="{{ url }}/type/{{ type.id }}/record/{{ item_id }}/">{{ item_id }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ url }}/type/{{ type.get_id() }}/">{{ type.get_id() }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ url }}/type/{{ type.get_id() }}/record/{{ item.get_id() }}/">{{ item.get_id() }}</a></li>
         <li class="breadcrumb-item active" aria-current="page">Edit in Spreadsheet</li>
       </ol>
     </nav>
@@ -15,7 +15,7 @@
 
 {% block body %}
 
-<h2>Edit {{ item_id }} - {{ type.id }}</h2>
+<h2>Edit {{ item.get_id() }} - {{ type.get_id() }}</h2>
 
 <p>Download this spreadsheet and edit it.</p>
 
@@ -27,15 +27,15 @@
 
 <p>TODO</p>
 
-{% if site_github_url %}
-    <p>Go to the Github page to edit <em>{{  item_data.git_filename }}</em> and copy and paste in the JSON.</p>
+{% if site.get_github_url() %}
+    <p>Go to the Github page to edit <em>{{  item.get_git_filename() }}</em> and copy and paste in the JSON.</p>
     <p class="text-right">
-        <a href="https://github.com/{{ site_github_url }}/edit/{{ site_githost_primary_branch }}/{{  item_data.git_filename }}" target="_new"><button type="button" class="btn btn-primary">Edit on GitHub</button></a>
+        <a href="https://github.com/{{ site.get_github_url() }}/edit/{{ site.get_githost_primary_branch() }}/{{  item.get_git_filename() }}" target="_new"><button type="button" class="btn btn-primary">Edit on GitHub</button></a>
     </p>
     <p>Or open a issue?</p>
     <p>Button TODO</p>
 {% else %}
-    <p>In the git repository, edit <em>{{  item_data.git_filename }}</em> and copy and paste in the JSON.</p>
+    <p>In the git repository, edit <em>{{  item.get_git_filename() }}</em> and copy and paste in the JSON.</p>
 {% endif %}
 
 {% endblock %}

@@ -3,8 +3,9 @@ import shutil
 import sys
 import tempfile
 
+from datatig.models.siteconfig import SiteConfigModel
+
 from .readers.directory import process_type
-from .siteconfig import SiteConfig
 from .sqlite import DataStoreSQLite
 from .validate.jsonschema import JsonSchemaValidator
 from .writers.static import StaticWriter
@@ -24,7 +25,7 @@ def go(
     had_errors = False
 
     # Config
-    config = SiteConfig(source_dir)
+    config = SiteConfigModel(source_dir)
     config.load_from_file()
 
     # SQLite - we always create a SQLite DB. If not requested, we just make it in temp directory and delete after
@@ -35,7 +36,7 @@ def go(
     datastore = DataStoreSQLite(config, sqlite_output)
 
     # Load data
-    for type in config.types.keys():
+    for type in config.get_types().values():
         process_type(config, type, datastore)
 
     # Validate data
@@ -46,12 +47,17 @@ def go(
     if check_errors:
         for error in datastore.get_all_errors_generator():
             if verbose:
-                print("FILENAME " + error.filename + " HAS ERROR: " + error.message)
+                print(
+                    "FILENAME "
+                    + error.get_filename()
+                    + " HAS ERROR: "
+                    + error.get_message()
+                )
             had_errors = True
 
     # Look for validation errors
     if check_json_schema_validation_errors:
-        for type in config.types.keys():
+        for type in config.get_types().keys():
             for error in datastore.get_all_json_schema_validation_errors_generator(
                 type
             ):
@@ -60,9 +66,9 @@ def go(
                         "TYPE "
                         + type
                         + " RECORD "
-                        + error.record_id
+                        + error.get_record_id()
                         + " HAS VALIDATION ERROR: "
-                        + error.message
+                        + error.get_message()
                     )
                 had_errors = True
 

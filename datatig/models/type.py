@@ -4,63 +4,93 @@ import os.path
 from datatig.jsondeepreaderwriter import JSONDeepReaderWriter
 from datatig.jsonschemabuilder import build_json_schema
 
-from .type_field import get_type_field_model_for_type
+from .field import FieldConfigModel
+from .field_date import FieldDateConfigModel
+from .field_datetime import FieldDateTimeConfigModel
+from .field_list_strings import FieldListStringsConfigModel
+from .field_string import FieldStringConfigModel
+from .field_url import FieldURLConfigModel
 
 
 class TypeModel:
     def __init__(self, siteconfig):
-        self.id = None
-        self.config = None
-        self.fields = {}
-        self.siteconfig = siteconfig
+        self._id = None
+        self._config = None
+        self._fields = {}
+        self._siteconfig = siteconfig
 
     def load_from_config(self, config) -> None:
-        self.id = config.get("id")
-        self.config = config
-        self.fields = {}
-        for config in self.config.get("fields", []):
-            field_config = get_type_field_model_for_type(config.get("type"))
+        self._id = config.get("id")
+        self._config = config
+        self._fields = {}
+        for config in self._config.get("fields", []):
+            field_config: FieldConfigModel = FieldStringConfigModel()
+            if config.get("type") == "url":
+                field_config = FieldURLConfigModel()
+            elif config.get("type") == "list-strings":
+                field_config = FieldListStringsConfigModel()
+            elif config.get("type") == "date":
+                field_config = FieldDateConfigModel()
+            elif config.get("type") == "datetime":
+                field_config = FieldDateTimeConfigModel()
             field_config.load(config)
-            self.fields[field_config.id] = field_config
+            self._fields[field_config.get_id()] = field_config
 
-    def directory(self) -> str:
-        return self.config.get("directory")
+    def get_directory(self) -> str:
+        return self._config.get("directory")
 
-    def directory_in_git_repository(self) -> str:
-        dir = self.config.get("directory")
-        if self.siteconfig.git_submodule_directory() and dir.startswith(
-            self.siteconfig.git_submodule_directory()
+    def get_directory_in_git_repository(self) -> str:
+        dir = self._config.get("directory")
+        if self._siteconfig.get_git_submodule_directory() and dir.startswith(
+            self._siteconfig.get_git_submodule_directory()
         ):
-            dir = dir[len(self.siteconfig.git_submodule_directory()) :]
+            dir = dir[len(self._siteconfig.get_git_submodule_directory()) :]
         return dir
 
-    def guide_form_xlsx(self) -> str:
-        return self.config.get("guide_form_xlsx")
+    def get_guide_form_xlsx(self) -> str:
+        return self._config.get("guide_form_xlsx")
 
-    def list_fields(self) -> list:
-        return self.config.get("list_fields", [])  # TODO add some sensible defaults
+    def get_list_fields(self) -> list:
+        return self._config.get("list_fields", [])  # TODO add some sensible defaults
 
-    def json_schema_as_dict(self) -> dict:
-        if self.config.get("json_schema"):
+    def get_json_schema_as_dict(self) -> dict:
+        if self._config.get("json_schema"):
             with open(
-                os.path.join(self.siteconfig.source_dir, self.config.get("json_schema"))
+                os.path.join(
+                    self._siteconfig.get_source_dir(), self._config.get("json_schema")
+                )
             ) as fp:
                 return json.load(fp)
         else:
-            results = build_json_schema(self.fields.values())
-            return results.json_schema()
+            results = build_json_schema(self._fields.values())
+            return results.get_json_schema()
 
-    def pretty_json_indent(self) -> int:
-        return self.config.get("pretty_json_indent", 4)
+    def get_json_schema_as_string(self) -> str:
+        return json.dumps(self.get_json_schema_as_dict())
 
-    def default_format(self) -> str:
-        return self.config.get("default_format", "yaml")
+    def get_pretty_json_indent(self) -> int:
+        return self._config.get("pretty_json_indent", 4)
 
-    def markdown_body_is_field(self) -> str:
-        return self.config.get("markdown_body_is_field", "body")
+    def get_default_format(self) -> str:
+        return self._config.get("default_format", "yaml")
+
+    def get_markdown_body_is_field(self) -> str:
+        return self._config.get("markdown_body_is_field", "body")
 
     def get_new_item_json(self) -> dict:
         out: JSONDeepReaderWriter = JSONDeepReaderWriter({})
-        for field in self.fields.values():
-            out.write(field.key(), field.get_new_item_json())
+        for field in self._fields.values():
+            out.write(field.get_key(), field.get_new_item_json())
         return out.get_json()
+
+    def get_new_item_json_as_string(self) -> str:
+        return json.dumps(self.get_new_item_json())
+
+    def get_id(self) -> str:
+        return self._id
+
+    def get_fields(self) -> dict:
+        return self._fields
+
+    def get_field(self, field_id) -> FieldConfigModel:
+        return self._fields.get(field_id)

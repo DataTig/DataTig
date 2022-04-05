@@ -3,6 +3,8 @@ import json
 import sqlite3
 from contextlib import closing
 
+from datatig.models.siteconfig import SiteConfigModel
+
 from .exceptions import DuplicateRecordIdException
 from .jsondeepreaderwriter import JSONDeepReaderWriter
 from .models.error import ErrorModel
@@ -10,19 +12,17 @@ from .models.record import RecordModel
 from .models.record_json_schema_validation_error import (
     RecordJSONSchemaValidationErrorModel,
 )
-from .models.type_field import get_type_field_model_for_type
-from .siteconfig import SiteConfig
 
 
 class DataStoreSQLite:
-    def __init__(self, site_config: SiteConfig, out_filename: str):
-        self.site_config = site_config
-        self.out_filename = out_filename
-        self.connection = sqlite3.connect(out_filename)
-        self.connection.row_factory = sqlite3.Row
+    def __init__(self, site_config: SiteConfigModel, out_filename: str):
+        self._site_config: SiteConfigModel = site_config
+        self._out_filename: str = out_filename
+        self._connection = sqlite3.connect(out_filename)
+        self._connection.row_factory = sqlite3.Row
 
         # Create table
-        with closing(self.connection.cursor()) as cur:
+        with closing(self._connection.cursor()) as cur:
             cur.execute(
                 """CREATE TABLE error (
                 filename TEXT,
@@ -46,17 +46,17 @@ class DataStoreSQLite:
                 )"""
             )
 
-            for type in site_config.types.values():
+            for type in site_config.get_types().values():
                 cur.execute(
                     """INSERT INTO type (
                     id 
                     ) VALUES (?)""",
-                    [type.id],
+                    [type.get_id()],
                 )
 
                 cur.execute(
                     """CREATE TABLE record_"""
-                    + type.id
+                    + type.get_id()
                     + """  (
                                   id TEXT PRIMARY KEY,
                                   data TEXT,
@@ -68,7 +68,7 @@ class DataStoreSQLite:
 
                 cur.execute(
                     """CREATE TABLE record_json_schema_validation_error_"""
-                    + type.id
+                    + type.get_id()
                     + """  (
                                   record_id TEXT,
                                   message TEXT,
@@ -78,21 +78,21 @@ class DataStoreSQLite:
                     [],
                 )
 
-                for type_field_id, type_field in type.fields.items():
+                for type_field_id, type_field in type.get_fields().items():
                     cur.execute(
                         """INSERT INTO type_field (
                         type_id , id, key, type, title
                         ) VALUES (?, ?, ?, ?, ?)""",
                         [
-                            type.id,
+                            type.get_id(),
                             type_field_id,
-                            type_field.key(),
-                            type_field.type(),
-                            type_field.title(),
+                            type_field.get_key(),
+                            type_field.get_type(),
+                            type_field.get_title(),
                         ],
                     )
 
-                    if type_field.type() in [
+                    if type_field.get_type() in [
                         "url",
                         "string",
                         "list-strings",
@@ -101,109 +101,117 @@ class DataStoreSQLite:
                     ]:
                         cur.execute(
                             """ALTER TABLE record_"""
-                            + type.id
+                            + type.get_id()
                             + """ ADD field_"""
                             + type_field_id
                             + """ TEXT """,
                             [],
                         )
-                    if type_field.type() in ["list-strings"]:
+                    if type_field.get_type() in ["list-strings"]:
                         cur.execute(
                             """CREATE TABLE record_"""
-                            + type.id
+                            + type.get_id()
                             + """_field_"""
                             + type_field_id
                             + """ (record_id TEXT, value TEXT) """,
                             [],
                         )
 
-            self.connection.commit()
+            self._connection.commit()
 
-    def store(self, type_id: str, item_id: str, record: RecordModel) -> None:
-        with closing(self.connection.cursor()) as cur:
+    def store(self, record: RecordModel) -> None:
+        with closing(self._connection.cursor()) as cur:
             # Check
-            cur.execute("SELECT * FROM record_" + type_id + "  WHERE id=?", [item_id])
+            cur.execute(
+                "SELECT * FROM record_" + record.get_type().get_id() + "  WHERE id=?",
+                [record.get_id()],
+            )
             data = cur.fetchone()
             if data:
                 raise DuplicateRecordIdException(
                     "The id "
-                    + item_id
+                    + record.get_id()
                     + " is duplicated in "
-                    + record.git_filename
+                    + record.get_git_filename()
                     + " and "
                     + data["git_filename"]
                 )
 
             # Store
             insert_data = [
-                item_id,
-                json.dumps(record.data, default=str),
-                record.git_filename,
-                record.format,
+                record.get_id(),
+                json.dumps(record.get_data(), default=str),
+                record.get_git_filename(),
+                record.get_format(),
             ]
             cur.execute(
                 """INSERT INTO record_"""
-                + type_id
+                + record.get_type().get_id()
                 + """ (
                 id, data, git_filename, format
                 ) VALUES (?, ?, ?,  ?)""",
                 insert_data,
             )
 
-            for field in self.site_config.get_type(type_id).fields.values():
-                value = JSONDeepReaderWriter(record.data).read(field.key())
-                if field.type() in ["url", "string", "date", "datetime"] and isinstance(
-                    value, str
+            for field in record.get_type().get_fields().values():
+                value = JSONDeepReaderWriter(record.get_data()).read(field.get_key())
+                if field.get_type() in [
+                    "url",
+                    "string",
+                    "date",
+                    "datetime",
+                ] and isinstance(value, str):
+                    cur.execute(
+                        """UPDATE record_"""
+                        + record.get_type().get_id()
+                        + """ SET field_"""
+                        + field.get_id()
+                        + """ = ? WHERE id=?""",
+                        [value, record.get_id()],
+                    )
+                if field.get_type() == "date" and isinstance(value, datetime.date):
+                    cur.execute(
+                        """UPDATE record_"""
+                        + record.get_type().get_id()
+                        + """ SET field_"""
+                        + field.get_id()
+                        + """ = ? WHERE id=?""",
+                        [value.isoformat(), record.get_id()],
+                    )
+                if field.get_type() == "datetime" and isinstance(
+                    value, datetime.datetime
                 ):
                     cur.execute(
                         """UPDATE record_"""
-                        + type_id
+                        + record.get_type().get_id()
                         + """ SET field_"""
-                        + field.id
+                        + field.get_id()
                         + """ = ? WHERE id=?""",
-                        [value, item_id],
+                        [value.isoformat(), record.get_id()],
                     )
-                if field.type() == "date" and isinstance(value, datetime.date):
+                if field.get_type() in ["list-strings"] and isinstance(value, list):
                     cur.execute(
                         """UPDATE record_"""
-                        + type_id
+                        + record.get_type().get_id()
                         + """ SET field_"""
-                        + field.id
+                        + field.get_id()
                         + """ = ? WHERE id=?""",
-                        [value.isoformat(), item_id],
-                    )
-                if field.type() == "datetime" and isinstance(value, datetime.datetime):
-                    cur.execute(
-                        """UPDATE record_"""
-                        + type_id
-                        + """ SET field_"""
-                        + field.id
-                        + """ = ? WHERE id=?""",
-                        [value.isoformat(), item_id],
-                    )
-                if field.type() in ["list-strings"] and isinstance(value, list):
-                    cur.execute(
-                        """UPDATE record_"""
-                        + type_id
-                        + """ SET field_"""
-                        + field.id
-                        + """ = ? WHERE id=?""",
-                        [", ".join([str(v) for v in value]), item_id],
+                        [", ".join([str(v) for v in value]), record.get_id()],
                     )
                     for v in value:
                         cur.execute(
                             """INSERT INTO  record_"""
-                            + type_id
+                            + record.get_type().get_id()
                             + """_field_"""
-                            + field.id
+                            + field.get_id()
                             + """ (record_id, value) VALUES (?, ?) """,
-                            [item_id, str(v)],
+                            [record.get_id(), str(v)],
                         )
 
-            self.connection.commit()
+            self._connection.commit()
 
     def store_json_schema_validation_errors(self, type_id, item_id, errors) -> None:
-        with closing(self.connection.cursor()) as cur:
+        with closing(self._connection.cursor()) as cur:
             for error in errors:
                 insert_data = [
                     item_id,
@@ -219,10 +227,10 @@ class DataStoreSQLite:
                     ) VALUES (?, ?, ?,  ?)""",
                     insert_data,
                 )
-            self.connection.commit()
+            self._connection.commit()
 
     def get_all_json_schema_validation_errors_generator(self, type_id):
-        with closing(self.connection.cursor()) as cur:
+        with closing(self._connection.cursor()) as cur:
             cur.execute(
                 "SELECT * FROM record_json_schema_validation_error_" + type_id, []
             )
@@ -232,12 +240,12 @@ class DataStoreSQLite:
                 yield m
 
     def get_ids_in_type(self, type_id) -> list:
-        with closing(self.connection.cursor()) as cur:
+        with closing(self._connection.cursor()) as cur:
             cur.execute("SELECT id FROM record_" + type_id, [])
             return [i["id"] for i in cur.fetchall()]
 
     def get_item(self, type_id, item_id):
-        with closing(self.connection.cursor()) as cur:
+        with closing(self._connection.cursor()) as cur:
             cur.execute("SELECT * FROM record_" + type_id + "  WHERE id=?", [item_id])
             data = cur.fetchone()
             if data:
@@ -248,49 +256,20 @@ class DataStoreSQLite:
                     [item_id],
                 )
                 json_schema_validation_errors_data = cur.fetchall()
-                record = RecordModel()
+                record = RecordModel(
+                    type=self._site_config.get_type(type_id), id=item_id
+                )
                 record.load_from_database(
                     data,
                     json_schema_validation_errors_data=json_schema_validation_errors_data,
                 )
                 return record
 
-    def get_field(self, type_id, item_id, field_id):
-        with closing(self.connection.cursor()) as cur:
-            # Load Field Type
-            cur.execute(
-                "SELECT * FROM type_field  WHERE type_id=? AND id=?",
-                [type_id, field_id],
-            )
-            data = cur.fetchone()
-            if data:
-                type_field = get_type_field_model_for_type(data["type"])
-                type_field.load_from_database(data)
-                # Load Record
-                cur.execute(
-                    "SELECT * FROM record_" + type_id + "  WHERE id=?", [item_id]
-                )
-                data = cur.fetchone()
-                if data:
-                    record = RecordModel()
-                    record.load_from_database(data)
-                    # Now get value
-                    obj = JSONDeepReaderWriter(record.data)
-                    return obj.read(type_field.key())
-
-    def get_field_as_list(self, type_id, item_id, field_id) -> list:
-        value = self.get_field(type_id, item_id, field_id)
-        if value is None:
-            return []
-        if not isinstance(value, list):
-            return [value]
-        return value
-
     def store_error(self, error) -> None:
-        with closing(self.connection.cursor()) as cur:
+        with closing(self._connection.cursor()) as cur:
             insert_data = [
-                error.filename,
-                error.message,
+                error.get_filename(),
+                error.get_message(),
             ]
             cur.execute(
                 """INSERT INTO error (
@@ -298,10 +277,10 @@ class DataStoreSQLite:
                 ) VALUES (?, ?)""",
                 insert_data,
             )
-            self.connection.commit()
+            self._connection.commit()
 
     def get_all_errors_generator(self):
-        with closing(self.connection.cursor()) as cur:
+        with closing(self._connection.cursor()) as cur:
             cur.execute("SELECT * FROM error", [])
             for data in cur.fetchall():
                 m = ErrorModel()
@@ -309,9 +288,9 @@ class DataStoreSQLite:
                 yield m
 
     def get_count_errors(self) -> int:
-        with closing(self.connection.cursor()) as cur:
+        with closing(self._connection.cursor()) as cur:
             cur.execute("SELECT count(*) AS c FROM error", [])
             return cur.fetchone()["c"]
 
     def get_file_name(self) -> str:
-        return self.out_filename
+        return self._out_filename

@@ -23,8 +23,8 @@
             </tr>
             {% for error in datastore.get_all_errors_generator() %}
                 <tr>
-                    <td>{{ error.filename }}</td>
-                    <td>{{ error.message }}</td>
+                    <td>{{ error.get_filename() }}</td>
+                    <td>{{ error.get_message() }}</td>
                 </tr>
             {% endfor %}
         </table>

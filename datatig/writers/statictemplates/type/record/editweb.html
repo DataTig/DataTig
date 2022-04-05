@@ -6,8 +6,8 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url }}/">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ url }}/type/{{ type.id }}/">{{ type.id }}</a></li>
-        <li class="breadcrumb-item"><a href="{{ url }}/type/{{ type.id }}/record/{{ item_id }}/">{{ item_id }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ url }}/type/{{ type.get_id() }}/">{{ type.get_id() }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ url }}/type/{{ type.get_id() }}/record/{{ item.get_id() }}/">{{ item.get_id() }}</a></li>
         <li class="breadcrumb-item active" aria-current="page">Edit in Browser</li>
       </ol>
     </nav>
@@ -15,7 +15,7 @@
 
 {% block body %}
 
-<h2>Edit {{ item_id }} - {{ type.id }}</h2>
+<h2>Edit {{ item.get_id() }} - {{ type.get_id() }}</h2>
 
 <div id="editor_holder">
 </div>
@@ -29,29 +29,29 @@
 <p class="text-right">
     <a href="#" onclick="copy(); return false;"><button type="button" class="btn btn-primary">Copy Data</button></a>
 </p>
-{% if site_github_url %}
-    <p>Go to the Github page to edit <em>{{  item_data.git_filename }}</em> and copy and paste in the content above.</p>
+{% if site.get_github_url() %}
+    <p>Go to the Github page to edit <em>{{  item.get_git_filename() }}</em> and copy and paste in the content above.</p>
     <p class="text-right">
-        <a href="https://github.com/{{ site_github_url }}/edit/{{ site_githost_primary_branch }}/{{  item_data.git_filename }}" target="_new"><button type="button" class="btn btn-primary">Edit on GitHub</button></a>
+        <a href="https://github.com/{{ site.get_github_url() }}/edit/{{ site.get_githost_primary_branch() }}/{{  item.get_git_filename() }}" target="_new"><button type="button" class="btn btn-primary">Edit on GitHub</button></a>
     </p>
 {% else %}
-    <p>In the git repository, edit <em>{{  item_data.git_filename }}</em> and copy and paste in the content above.</p>
+    <p>In the git repository, edit <em>{{  item.get_git_filename() }}</em> and copy and paste in the content above.</p>
 {% endif %}
 
 {% endblock %}
 
 
 {% block javascript %}
-{% if item_data.format == 'yaml' or item_data.format == 'md' %}
+{% if item.get_format() == 'yaml' or item.get_format() == 'md' %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.0.0/js-yaml.min.js" integrity="sha512-dYHhQSvQ3Lepc2xDidh80aADfrIAaVTs52W5JSFlE47SJgcwD+YY+iY0XmXD9UX3k0YOPvoyugS/ieGjpu5M/Q==" crossorigin="anonymous"></script>
 {% endif %}
 <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@2.5.3/dist/jsoneditor.min.js"></script>
 <script>
-    var data = JSON.parse("{{ item_data_json_string | escapejs }}");
-    var schema = JSON.parse("{{ type.json_schema_string | escapejs }}");
-    var pretty_json_indent = {{ type.pretty_json_indent }};
-    var data_format = "{{ item_data.format }}";
-    var markdown_body_is_field = "{{ type.markdown_body_is_field| escapejs }}";
+    var data = JSON.parse("{{ item.get_data_as_json_string() | escapejs }}");
+    var schema = JSON.parse("{{ type.get_json_schema_as_string() | escapejs }}");
+    var pretty_json_indent = {{ type.get_pretty_json_indent() }};
+    var data_format = "{{ item.get_format() }}";
+    var markdown_body_is_field = "{{ type.get_markdown_body_is_field()| escapejs }}";
 </script>
 <script src="{{ url }}/web-edit-or-new.js"></script>
 {% endblock %}
