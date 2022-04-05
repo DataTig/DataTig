@@ -92,7 +92,13 @@ class DataStoreSQLite:
                         ],
                     )
 
-                    if type_field.type() in ["url", "string", "list-strings", "date"]:
+                    if type_field.type() in [
+                        "url",
+                        "string",
+                        "list-strings",
+                        "date",
+                        "datetime",
+                    ]:
                         cur.execute(
                             """ALTER TABLE record_"""
                             + type.id
@@ -146,7 +152,9 @@ class DataStoreSQLite:
 
             for field in self.site_config.get_type(type_id).fields.values():
                 value = JSONDeepReaderWriter(record.data).read(field.key())
-                if field.type() in ["url", "string", "date"] and isinstance(value, str):
+                if field.type() in ["url", "string", "date", "datetime"] and isinstance(
+                    value, str
+                ):
                     cur.execute(
                         """UPDATE record_"""
                         + type_id
@@ -156,6 +164,15 @@ class DataStoreSQLite:
                         [value, item_id],
                     )
                 if field.type() == "date" and isinstance(value, datetime.date):
+                    cur.execute(
+                        """UPDATE record_"""
+                        + type_id
+                        + """ SET field_"""
+                        + field.id
+                        + """ = ? WHERE id=?""",
+                        [value.isoformat(), item_id],
+                    )
+                if field.type() == "datetime" and isinstance(value, datetime.datetime):
                     cur.execute(
                         """UPDATE record_"""
                         + type_id

@@ -65,6 +65,21 @@ class TypeDateFieldModel(TypeFieldModel):
         return None
 
 
+class TypeDateTimeFieldModel(TypeFieldModel):
+    def type(self) -> str:
+        return "datetime"
+
+    def json_schema(self) -> dict:
+        return {
+            "type": "string",
+            "format": "date-time",
+            "title": self._title,
+        }
+
+    def get_new_item_json(self):
+        return None
+
+
 class TypeListStringsFieldModel(TypeFieldModel):
     def type(self) -> str:
         return "list-strings"
@@ -83,5 +98,7 @@ def get_type_field_model_for_type(type: str) -> TypeFieldModel:
         return TypeListStringsFieldModel()
     elif type == "date":
         return TypeDateFieldModel()
+    elif type == "datetime":
+        return TypeDateTimeFieldModel()
     else:
         return TypeStringFieldModel()

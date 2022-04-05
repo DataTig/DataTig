@@ -1,0 +1,22 @@
+title: Events Site
+description: The data for a test
+types:
+- id: events
+  directory: events
+  fields:
+  - id: title
+    key: title
+    title: Title
+  - id: start
+    key: start
+    title: Start
+    type: datetime
+  - id: end
+    key: end
+    title: End
+    type: datetime
+  list_fields:
+  - title
+  - start
+  - end
+  pretty_json_indent: 2
