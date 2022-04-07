@@ -229,11 +229,9 @@ class DataStoreSQLite:
                 )
             self._connection.commit()
 
-    def get_all_json_schema_validation_errors_generator(self, type_id):
+    def get_all_record_errors_generator_in_type(self, type_id):
         with closing(self._connection.cursor()) as cur:
-            cur.execute(
-                "SELECT * FROM record_json_schema_validation_error_" + type_id, []
-            )
+            cur.execute("SELECT * FROM record_error_" + type_id, [])
             for data in cur.fetchall():
                 m = RecordErrorModel()
                 m.load_from_database(data)

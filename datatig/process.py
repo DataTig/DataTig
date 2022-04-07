@@ -18,7 +18,7 @@ def go(
     sqlite_output: str = None,
     verbose: bool = False,
     check_errors: bool = False,
-    check_json_schema_validation_errors: bool = False,
+    check_record_errors: bool = False,
     sys_exit: bool = False,
 ) -> None:
 
@@ -56,11 +56,9 @@ def go(
             had_errors = True
 
     # Look for validation errors
-    if check_json_schema_validation_errors:
+    if check_record_errors:
         for type in config.get_types().keys():
-            for error in datastore.get_all_json_schema_validation_errors_generator(
-                type
-            ):
+            for error in datastore.get_all_record_errors_generator_in_type(type):
                 if verbose:
                     print(
                         "TYPE "

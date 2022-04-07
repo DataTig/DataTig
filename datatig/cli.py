@@ -36,7 +36,7 @@ def main() -> None:
             staticsite_url=args.staticsiteurl,
             sqlite_output=sqlite_output,
             check_errors=True,
-            check_json_schema_validation_errors=False,
+            check_record_errors=False,
             verbose=True,
             sys_exit=True,
         )
@@ -46,7 +46,7 @@ def main() -> None:
         datatig.process.go(
             args.source,
             check_errors=True,
-            check_json_schema_validation_errors=True,
+            check_record_errors=True,
             verbose=True,
             sys_exit=True,
         )
