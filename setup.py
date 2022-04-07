@@ -27,5 +27,5 @@ setuptools.setup(
         "pyyaml",
     ],
     extras_require={"Dev": ["pytest", "black", "isort", "flake8", "mypy"]},
-    python_requires=">=3.6",
+    python_requires=">=3.7",
 )
