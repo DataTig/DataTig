@@ -244,6 +244,18 @@ class DataStoreSQLite:
             cur.execute("SELECT id FROM record_" + type_id, [])
             return [i["id"] for i in cur.fetchall()]
 
+    def get_ids_in_type_with_record_error(self, type_id) -> list:
+        with closing(self._connection.cursor()) as cur:
+            cur.execute(
+                "SELECT r.id FROM record_"
+                + type_id
+                + " AS r  JOIN record_error_"
+                + type_id
+                + " AS re ON r.id = re.record_id GROUP BY r.id ",
+                [],
+            )
+            return [i["id"] for i in cur.fetchall()]
+
     def get_item(self, type_id, item_id):
         with closing(self._connection.cursor()) as cur:
             cur.execute("SELECT * FROM record_" + type_id + "  WHERE id=?", [item_id])
@@ -285,10 +297,24 @@ class DataStoreSQLite:
                 m.load_from_database(data)
                 yield m
 
-    def get_count_errors(self) -> int:
+    def get_count_site_errors(self) -> int:
         with closing(self._connection.cursor()) as cur:
             cur.execute("SELECT count(*) AS c FROM error", [])
             return cur.fetchone()["c"]
+
+    def get_count_record_errors_for_type(self, type_id) -> int:
+        # must check type_id passed is valid, or this could be an SQL injection issue
+        if not type_id in self._site_config.get_types().keys():
+            raise Exception("That type_id is not known!")
+        with closing(self._connection.cursor()) as cur:
+            cur.execute("SELECT count(*) AS c FROM record_error_" + type_id, [])
+            return cur.fetchone()["c"]
+
+    def get_count_record_errors(self) -> int:
+        count = 0
+        for type in self._site_config.get_types().values():
+            count += self.get_count_record_errors_for_type(type.get_id())
+        return count
 
     def get_file_name(self) -> str:
         return self._out_filename

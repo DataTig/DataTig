@@ -32,7 +32,7 @@
 </table>
 
 <p class="text-right">
-    <a href="{{ url }}/errors.html"><button type="button" class="btn btn-primary">Errors ({{ datastore.get_count_errors() }})</button></a>
+    <a href="{{ url }}/errors.html"><button type="button" class="btn btn-primary">Errors ({{ datastore.get_count_site_errors() + datastore.get_count_record_errors() }})</button></a>
     <a href="{{ url }}/database.sqlite"><button type="button" class="btn btn-primary">Download SQLite Database ({{ datastore_file_size_bytes }} bytes)</button></a>
 </p>
 
