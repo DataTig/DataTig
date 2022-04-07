@@ -1,6 +1,6 @@
 import json
 
-from .record_json_schema_validation_error import RecordJSONSchemaValidationErrorModel
+from .record_error import RecordErrorModel
 from .type import TypeModel
 
 
@@ -10,8 +10,7 @@ class RecordModel:
         self._id: str = id
         self._data = None
         self._git_filename = None
-        self._json_schema_validation_errors = []
-        self._json_schema_validation_pass = None
+        self._errors = []
         self._format = None
         self._field_values: dict = {}
 
@@ -42,9 +41,7 @@ class RecordModel:
         self._git_filename = git_filename
         self._format = "md"
 
-    def load_from_database(
-        self, data: dict, json_schema_validation_errors_data: list = None
-    ) -> None:
+    def load_from_database(self, data: dict, errors_data: list = None) -> None:
         self._data = json.loads(data["data"])
         for field_id, field_config in self._type.get_fields().items():
             self._field_values[field_id] = field_config.get_value_object_from_record(
@@ -52,17 +49,11 @@ class RecordModel:
             )
         self._git_filename = data["git_filename"]
         self._format = data["format"]
-        if json_schema_validation_errors_data is not None:
-            if json_schema_validation_errors_data:
-                for (
-                    json_schema_validation_error_data
-                ) in json_schema_validation_errors_data:
-                    m = RecordJSONSchemaValidationErrorModel()
-                    m.load_from_database(json_schema_validation_error_data)
-                    self._json_schema_validation_errors.append(m)
-                self._json_schema_validation_pass = False
-            else:
-                self._json_schema_validation_pass = True
+        if errors_data is not None:
+            for error_data in errors_data:
+                m = RecordErrorModel()
+                m.load_from_database(error_data)
+                self._errors.append(m)
 
     def get_format(self) -> str:
         return self._format
@@ -82,11 +73,8 @@ class RecordModel:
     def get_id(self) -> str:
         return self._id
 
-    def get_json_schema_validation_pass(self) -> bool:
-        return self._json_schema_validation_pass
-
-    def get_json_schema_validation_errors(self) -> list:
-        return self._json_schema_validation_errors
+    def get_errors(self) -> list:
+        return self._errors
 
     def get_field_value(self, field_id):
         return self._field_values.get(field_id)

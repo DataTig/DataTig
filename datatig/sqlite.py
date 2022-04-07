@@ -9,9 +9,7 @@ from .exceptions import DuplicateRecordIdException
 from .jsondeepreaderwriter import JSONDeepReaderWriter
 from .models.error import ErrorModel
 from .models.record import RecordModel
-from .models.record_json_schema_validation_error import (
-    RecordJSONSchemaValidationErrorModel,
-)
+from .models.record_error import RecordErrorModel
 
 
 class DataStoreSQLite:
@@ -67,13 +65,14 @@ class DataStoreSQLite:
                 )
 
                 cur.execute(
-                    """CREATE TABLE record_json_schema_validation_error_"""
+                    """CREATE TABLE record_error_"""
                     + type.get_id()
                     + """  (
                                   record_id TEXT,
                                   message TEXT,
                                   data_path TEXT,
-                                  schema_path TEXT
+                                  schema_path TEXT,
+                                  generator TEXT
                               )""",
                     [],
                 )
@@ -218,13 +217,14 @@ class DataStoreSQLite:
                     error["message"],
                     error["path_str"],
                     error["schema_path_str"],
+                    "jsonschema",
                 ]
                 cur.execute(
-                    """INSERT INTO record_json_schema_validation_error_"""
+                    """INSERT INTO record_error_"""
                     + type_id
                     + """ (
-                    record_id, message, data_path, schema_path 
-                    ) VALUES (?, ?, ?,  ?)""",
+                    record_id, message, data_path, schema_path, generator
+                    ) VALUES (?, ?, ?,  ?, ?)""",
                     insert_data,
                 )
             self._connection.commit()
@@ -235,7 +235,7 @@ class DataStoreSQLite:
                 "SELECT * FROM record_json_schema_validation_error_" + type_id, []
             )
             for data in cur.fetchall():
-                m = RecordJSONSchemaValidationErrorModel()
+                m = RecordErrorModel()
                 m.load_from_database(data)
                 yield m
 
@@ -250,18 +250,16 @@ class DataStoreSQLite:
             data = cur.fetchone()
             if data:
                 cur.execute(
-                    "SELECT * FROM record_json_schema_validation_error_"
-                    + type_id
-                    + "  WHERE record_id=?",
+                    "SELECT * FROM record_error_" + type_id + "  WHERE record_id=?",
                     [item_id],
                 )
-                json_schema_validation_errors_data = cur.fetchall()
+                errors_data = cur.fetchall()
                 record = RecordModel(
                     type=self._site_config.get_type(type_id), id=item_id
                 )
                 record.load_from_database(
                     data,
-                    json_schema_validation_errors_data=json_schema_validation_errors_data,
+                    errors_data=errors_data,
                 )
                 return record
 

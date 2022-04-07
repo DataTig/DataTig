@@ -24,9 +24,10 @@ def test_tutorial1():
         ) as connection:
             connection.row_factory = sqlite3.Row
             with closing(connection.cursor()) as cur:
-                cur.execute("SELECT * FROM record_json_schema_validation_error_shops")
+                cur.execute("SELECT * FROM record_error_shops")
                 error = cur.fetchone()
                 assert "cathy-cathode" == error["record_id"]
                 assert "'url' is a required property" == error["message"]
                 assert "" == error["data_path"]
                 assert "required" == error["schema_path"]
+                assert "jsonschema" == error["generator"]

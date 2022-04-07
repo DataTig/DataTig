@@ -10,7 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * Refactored internal Python API
 * Dropped support for Python 3.6 as that isn't supported any more.
-
+* Change record_json_schema_validation_error_* table to record_error_*
+* Change how record errors shown in static website so it looks more general
+ 
 ### Added
 
 * New field type, "date"
