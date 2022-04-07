@@ -26,6 +26,12 @@
         "key": "birthday",
         "title": "Birthday",
         "type": "date"
+      },
+      {
+        "id": "has_cat",
+        "key": "has_cat",
+        "title": "Has Cat",
+        "type": "boolean"
       }
     ],
     "list_fields": [ "code", "title" ],

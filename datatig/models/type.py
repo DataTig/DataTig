@@ -5,6 +5,7 @@ from datatig.jsondeepreaderwriter import JSONDeepReaderWriter
 from datatig.jsonschemabuilder import build_json_schema
 
 from .field import FieldConfigModel
+from .field_boolean import FieldBooleanConfigModel
 from .field_date import FieldDateConfigModel
 from .field_datetime import FieldDateTimeConfigModel
 from .field_list_strings import FieldListStringsConfigModel
@@ -33,6 +34,8 @@ class TypeModel:
                 field_config = FieldDateConfigModel()
             elif config.get("type") == "datetime":
                 field_config = FieldDateTimeConfigModel()
+            elif config.get("type") == "boolean":
+                field_config = FieldBooleanConfigModel()
             field_config.load(config)
             self._fields[field_config.get_id()] = field_config
 

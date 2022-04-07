@@ -27,12 +27,17 @@ def test_json_site():
                 "title": "One",
                 "markdown_body": "A page about 1.",
                 "birthday": "2019-09-30",
+                "has_cat": True,
             } == one_json
         with open(
             os.path.join(staticsite_dir, "type", "datas", "record", "2", "data.json")
         ) as fp:
             two_json = json.load(fp)
-            assert {"title": "Two", "markdown_body": "A page about 2."} == two_json
+            assert {
+                "title": "Two",
+                "markdown_body": "A page about 2.",
+                "has_cat": "true",
+            } == two_json
         with open(
             os.path.join(staticsite_dir, "type", "datas", "record", "3", "data.json")
         ) as fp:
@@ -57,5 +62,6 @@ def test_json_site():
                 assert "1" == type["id"]
                 assert "One" == type["field_title"]
                 assert "2019-09-30" == type["field_birthday"]
+                assert 1 == type["field_has_cat"]
                 assert "datas/1.md" == type["git_filename"]
                 assert "md" == type["format"]

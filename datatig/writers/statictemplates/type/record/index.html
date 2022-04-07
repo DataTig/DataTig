@@ -31,6 +31,12 @@
                             <li>{{ value }}</li>
                         {% endfor %}
                     </ul>
+                {% elif field.get_type() == 'boolean' %}
+                    {% if item.get_field_value(field_id).is_value_true() %}
+                        True
+                    {% elif item.get_field_value(field_id).is_value_false() %}
+                        False
+                    {% endif %}
                 {% else %}
                     {{ item.get_field_value(field_id).get_value() }}
                 {% endif %}

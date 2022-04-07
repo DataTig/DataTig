@@ -74,6 +74,7 @@ Allowed types are:
 * `list-strings`
 * `date`
 * `datetime`
+* `boolean`
 
 A YAML example:
 

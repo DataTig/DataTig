@@ -106,6 +106,15 @@ class DataStoreSQLite:
                             + """ TEXT """,
                             [],
                         )
+                    if type_field.get_type() == "boolean":
+                        cur.execute(
+                            """ALTER TABLE record_"""
+                            + type.get_id()
+                            + """ ADD field_"""
+                            + type_field_id
+                            + """ INTEGER """,
+                            [],
+                        )
                     if type_field.get_type() in ["list-strings"]:
                         cur.execute(
                             """CREATE TABLE record_"""
@@ -206,6 +215,15 @@ class DataStoreSQLite:
                             + """ (record_id, value) VALUES (?, ?) """,
                             [record.get_id(), str(v)],
                         )
+                if field.get_type() == "boolean" and isinstance(value, bool):
+                    cur.execute(
+                        """UPDATE record_"""
+                        + record.get_type().get_id()
+                        + """ SET field_"""
+                        + field.get_id()
+                        + """ = ? WHERE id=?""",
+                        [1 if value else 0, record.get_id()],
+                    )
 
             self._connection.commit()
 

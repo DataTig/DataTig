@@ -27,12 +27,13 @@ def test_yaml_site():
                 "title": "One",
                 "tags": ["Cats", "Dogs"],
                 "birthday": "2019-09-30",
+                "has_cat": "true",
             } == one_json
         with open(
             os.path.join(staticsite_dir, "type", "datas", "record", "2", "data.json")
         ) as fp:
             two_json = json.load(fp)
-            assert {"title": "Two"} == two_json
+            assert {"title": "Two", "has_cat": 1} == two_json
         # Test database
         with closing(
             sqlite3.connect(os.path.join(staticsite_dir, "database.sqlite"))
@@ -53,6 +54,7 @@ def test_yaml_site():
                 assert "One" == record["field_title"]
                 assert "Cats, Dogs" == record["field_tags"]
                 assert "2019-09-30" == record["field_birthday"]
+                # assert 1 == record["field_has_cat"] Should be true - this is a bug to fix!
                 assert "datas/1.yaml" == record["git_filename"]
                 assert "yaml" == record["format"]
             with closing(connection.cursor()) as cur:
@@ -69,6 +71,7 @@ def test_yaml_site():
                 assert "2" == record["id"]
                 assert "Two" == record["field_title"]
                 assert None == record["field_tags"]
+                # assert 1 == record["field_has_cat"] Should be true - this is a bug to fix!
                 assert "datas/2.yml" == record["git_filename"]
                 assert "yaml" == record["format"]
             with closing(connection.cursor()) as cur:
@@ -77,6 +80,7 @@ def test_yaml_site():
                 assert "3" == record["id"]
                 assert None == record["field_title"]
                 assert None == record["field_tags"]
+                assert None == record["field_has_cat"]
                 assert "datas/3.yaml" == record["git_filename"]
                 assert "yaml" == record["format"]
             with closing(connection.cursor()) as cur:
@@ -85,5 +89,6 @@ def test_yaml_site():
                 assert "4" == record["id"]
                 assert "Four" == record["field_title"]
                 assert None == record["field_tags"]
+                assert None == record["field_has_cat"]
                 assert "datas/4.yaml" == record["git_filename"]
                 assert "yaml" == record["format"]

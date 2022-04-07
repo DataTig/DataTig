@@ -23,12 +23,16 @@ def test_json_site():
             os.path.join(staticsite_dir, "type", "datas", "record", "1", "data.json")
         ) as fp:
             one_json = json.load(fp)
-            assert {"title": "One", "birthday": "2022-10-01"} == one_json
+            assert {
+                "title": "One",
+                "birthday": "2022-10-01",
+                "has_cat": True,
+            } == one_json
         with open(
             os.path.join(staticsite_dir, "type", "datas", "record", "2", "data.json")
         ) as fp:
             two_json = json.load(fp)
-            assert {"title": "Two"} == two_json
+            assert {"title": "Two", "has_cat": False} == two_json
         # Test database
         with closing(
             sqlite3.connect(os.path.join(staticsite_dir, "database.sqlite"))
@@ -60,6 +64,7 @@ def test_json_site():
                     "title": {"id": "title", "type": "string"},
                     "tags": {"id": "tags", "type": "list-strings"},
                     "birthday": {"id": "birthday", "type": "date"},
+                    "has_cat": {"id": "has_cat", "type": "boolean"},
                 },
                 "id": "datas",
                 "records_api_url": "/type/datas/records_api.json",
@@ -108,5 +113,6 @@ def test_json_site():
                 assert "1" == type["id"]
                 assert "One" == type["field_title"]
                 assert "2022-10-01" == type["field_birthday"]
+                assert 1 == type["field_has_cat"]
                 assert "datas/1.json" == type["git_filename"]
                 assert "json" == type["format"]

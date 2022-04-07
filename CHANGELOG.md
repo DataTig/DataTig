@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * New field type, "date"
 * New field type, "datetime"
+* New field type, "boolean"
 * Static site: 
   * Show size of SQLite database
   * Errors page shows all errors, site and record
