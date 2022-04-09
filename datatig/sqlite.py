@@ -6,7 +6,6 @@ from contextlib import closing
 from datatig.models.siteconfig import SiteConfigModel
 
 from .exceptions import DuplicateRecordIdException
-from .jsondeepreaderwriter import JSONDeepReaderWriter
 from .models.error import ErrorModel
 from .models.record import RecordModel
 from .models.record_error import RecordErrorModel
@@ -162,7 +161,8 @@ class DataStoreSQLite:
             )
 
             for field in record.get_type().get_fields().values():
-                value = JSONDeepReaderWriter(record.get_data()).read(field.get_key())
+                value_object = record.get_field_value(field.get_id())
+                value = value_object.get_value()
                 if field.get_type() in [
                     "url",
                     "string",
@@ -197,7 +197,11 @@ class DataStoreSQLite:
                         + """ = ? WHERE id=?""",
                         [value.isoformat(), record.get_id()],
                     )
-                if field.get_type() in ["list-strings"] and isinstance(value, list):
+                if (
+                    field.get_type() in ["list-strings"]
+                    and isinstance(value, list)
+                    and len(value) > 0
+                ):
                     cur.execute(
                         """UPDATE record_"""
                         + record.get_type().get_id()
