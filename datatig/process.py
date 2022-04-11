@@ -8,9 +8,11 @@ from datatig.models.siteconfig import SiteConfigModel
 from .readers.directory import process_type
 from .repository_access import RepositoryAccess
 from .sqlite import DataStoreSQLite
+from .sqliteversioned import DataStoreSQLiteVersioned
 from .validate.jsonschema import JsonSchemaValidator
 from .writers.frictionless.frictionless import FrictionlessWriter
 from .writers.static.static import StaticWriter
+from .writers.staticversioned.staticversioned import StaticVersionedWriter
 
 
 def go(
@@ -47,7 +49,8 @@ def go(
             config,
             repository_access,
             type,
-            datastore,
+            lambda record: datastore.store(record),
+            lambda error: datastore.store_error(error),
         )
 
     # Validate data
@@ -109,3 +112,60 @@ def go(
     else:
         if sys_exit:
             sys.exit(0)
+
+
+def versioned_build(
+    source_dir: str,
+    staticsite_output: str = None,
+    staticsite_url: str = None,
+    sqlite_output: str = None,
+    refs_str: str = "HEAD",
+) -> None:
+
+    refs: list = refs_str.split(",")
+
+    # SQLite - we always create a SQLite DB. If not requested, we just make it in temp directory and delete after
+    temp_dir = None
+    if sqlite_output is None:
+        temp_dir = tempfile.mkdtemp()
+        sqlite_output = os.path.join(temp_dir, "database.sqlite")
+    datastore = DataStoreSQLiteVersioned(sqlite_output)
+
+    # Repository Access
+    repository_access = RepositoryAccess(source_dir)
+
+    # Config
+    config = SiteConfigModel(source_dir)
+    config.load_from_file()
+    config_id: int = datastore.store_config(
+        config, repository_access.get_current_commit().get_commit_hash()
+    )
+
+    # For each ref
+    for ref in refs:
+        # Set the commit we want
+        repository_access.set_commit_hash(ref)
+        # Commit
+        git_commit = repository_access.get_current_commit()
+        datastore.store_git_commit(git_commit)
+
+        # Load data
+        for type in config.get_types().values():
+            process_type(
+                config,
+                repository_access,
+                type,
+                lambda record: datastore.store_record(config_id, git_commit, record),
+                lambda error: datastore.store_error(error),
+            )
+
+    # Static Site Output
+    if staticsite_output:
+        static_writer = StaticVersionedWriter(
+            datastore, staticsite_output, url=staticsite_url
+        )
+        static_writer.go()
+
+    # Delete temp
+    if temp_dir:
+        shutil.rmtree(temp_dir)

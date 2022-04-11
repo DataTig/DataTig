@@ -47,3 +47,8 @@ The exit code of the process will be 0 if a success, or -1 if there were any err
 
     python -m datatig.cli check .
 
+Versioned Build sub-command
+---------------------------
+
+This is currently used for internal testing and is not documented
+

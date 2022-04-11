@@ -11,10 +11,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Frictionless Data Export
   * Can get via new CLI option to build
   * Included in static site
+* New CLI command "versionedbuild" - currently used for internal testing
 
 ### Changed
 
-* Refactored internal Python API - Moved static writer into new package
+* Refactored internal Python API
+  * Moved static writer into new package
+  * datatig/readers/directory - def process_type has changed parameters
 
 ## [0.4.0] - 2022-05-05
 

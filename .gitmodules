@@ -1,0 +1,3 @@
+[submodule "tests/data-submodules/site-example-1"]
+	path = tests/data-submodules/site-example-1
+	url = https://github.com/DataTig/site-example-1.git
