@@ -6,6 +6,7 @@ import tempfile
 from datatig.models.siteconfig import SiteConfigModel
 
 from .readers.directory import process_type
+from .repository_access import RepositoryAccess
 from .sqlite import DataStoreSQLite
 from .validate.jsonschema import JsonSchemaValidator
 from .writers.static import StaticWriter
@@ -35,9 +36,17 @@ def go(
         sqlite_output = os.path.join(temp_dir, "database.sqlite")
     datastore = DataStoreSQLite(config, sqlite_output)
 
+    # Repository Access
+    repository_access = RepositoryAccess(source_dir)
+
     # Load data
     for type in config.get_types().values():
-        process_type(config, type, datastore)
+        process_type(
+            config,
+            repository_access,
+            type,
+            datastore,
+        )
 
     # Validate data
     validate_json_schema = JsonSchemaValidator(config, datastore)
