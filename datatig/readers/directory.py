@@ -17,10 +17,6 @@ def process_type(
 ) -> None:
     start_dir = os.path.join(config.get_source_dir(), type.get_directory())
     full_sourcedir = os.path.abspath(config.get_source_dir())
-    if config.get_git_submodule_directory():
-        full_sourcedir = os.path.join(
-            full_sourcedir, config.get_git_submodule_directory()
-        )
     for path, subdirs, files in os.walk(start_dir):
         for name in files:
             full_filename = os.path.abspath(os.path.join(path, name))

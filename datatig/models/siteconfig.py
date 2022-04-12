@@ -31,9 +31,6 @@ class SiteConfigModel:
     def get_github_url(self) -> str:
         return self._config.get("githost", {}).get("url")
 
-    def get_git_submodule_directory(self):
-        return self._config.get("git_submodule_directory")
-
     def get_githost_primary_branch(self) -> str:
         return self._config.get("githost", {}).get("primary_branch", "main")
 

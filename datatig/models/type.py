@@ -43,12 +43,7 @@ class TypeModel:
         return self._config.get("directory")
 
     def get_directory_in_git_repository(self) -> str:
-        dir = self._config.get("directory")
-        if self._siteconfig.get_git_submodule_directory() and dir.startswith(
-            self._siteconfig.get_git_submodule_directory()
-        ):
-            dir = dir[len(self._siteconfig.get_git_submodule_directory()) :]
-        return dir
+        return self._config.get("directory")
 
     def get_guide_form_xlsx(self) -> str:
         return self._config.get("guide_form_xlsx")
