@@ -13,6 +13,7 @@ from datatig.models.record import RecordModel
 from datatig.models.siteconfig import SiteConfigModel
 from datatig.models.type import TypeModel
 from datatig.sqlite import DataStoreSQLite
+from datatig.writers.frictionless.frictionless import FrictionlessWriter
 
 from .static_util import jinja2_escapejs_filter
 
@@ -54,6 +55,17 @@ class StaticWriter:
 
         # Out Dir
         os.makedirs(self._out_dir, exist_ok=True)
+
+        # Frictionless
+        frictionless_writer = FrictionlessWriter(
+            self._config,
+            self._datastore,
+            os.path.join(self._out_dir, "frictionless.zip"),
+        )
+        frictionless_writer.go()
+        self._template_variables["frictionless_file_size_bytes"] = os.path.getsize(
+            os.path.join(self._out_dir, "frictionless.zip")
+        )
 
         # Top Level Static Pages
         for page in ["robots.txt", "index.html", "errors.html"]:

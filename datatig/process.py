@@ -9,6 +9,7 @@ from .readers.directory import process_type
 from .repository_access import RepositoryAccess
 from .sqlite import DataStoreSQLite
 from .validate.jsonschema import JsonSchemaValidator
+from .writers.frictionless.frictionless import FrictionlessWriter
 from .writers.static import StaticWriter
 
 
@@ -17,6 +18,7 @@ def go(
     staticsite_output: str = None,
     staticsite_url: str = None,
     sqlite_output: str = None,
+    frictionless_output: str = None,
     verbose: bool = False,
     check_errors: bool = False,
     check_record_errors: bool = False,
@@ -79,7 +81,13 @@ def go(
                     )
                 had_errors = True
 
+    # Frictionless Output
+    if frictionless_output:
+        frictionless_writer = FrictionlessWriter(config, datastore, frictionless_output)
+        frictionless_writer.go()
+
     # Static Site Output
+    # TODO if frictionless_output is set, should pass it somehow. Otherwise StaticWriter will run it again, which is wastefull.
     if staticsite_output:
         static_writer = StaticWriter(
             config, datastore, staticsite_output, url=staticsite_url

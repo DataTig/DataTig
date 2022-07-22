@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+* Frictionless Data Export
+  * Can get via new CLI option to build
+  * Included in static site
+
 ## [0.4.0] - 2022-05-05
 
 ### Changed

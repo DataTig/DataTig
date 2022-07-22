@@ -19,6 +19,7 @@ Call with the directory of the data and at least one of these options:
 
 * `--staticsiteoutput` - A directory in which the files of the static site will be placed. This can already exist.
 * `--sqliteoutput` - A location at which a SQL database file will be placed. This should not already exist.
+* `--frictionlessoutput` - A location at which a Frictionless Data Zip file will be placed. This should not already exist.
 
 .. code-block:: bash
 

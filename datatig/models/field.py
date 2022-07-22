@@ -26,8 +26,15 @@ class FieldConfigModel(ABC):
     def get_title(self) -> str:
         return self._title
 
+    def get_frictionless_csv_field_specifications(self):
+        return []
+
 
 class FieldValueModel(ABC):
     def __init__(self, record=None, field_id=None):
         self._record = record
         self._field_id = field_id
+
+    def get_frictionless_csv_data_values(self):
+        """Should return a list of exactly the same number of elements as get_frictionless_csv_field_specifications() returns."""
+        return []

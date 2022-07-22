@@ -15,6 +15,9 @@ def main() -> None:
     )
     build_parser.add_argument("--staticsiteurl", help="URL for Static Site Output")
     build_parser.add_argument("--sqliteoutput", help="Location of SQLite file Output")
+    build_parser.add_argument(
+        "--frictionlessoutput", help="Location of Frictionless Data file Output"
+    )
 
     check_parser = subparsers.add_parser("check")
     check_parser.add_argument("source")
@@ -25,8 +28,9 @@ def main() -> None:
 
         staticsite_output = args.staticsiteoutput
         sqlite_output = args.sqliteoutput
+        frictionless_output = args.frictionlessoutput
 
-        if not staticsite_output and not sqlite_output:
+        if not staticsite_output and not sqlite_output and not frictionless_output:
             print("You must specify one of the build options when running build.")
             exit(-1)
 
@@ -35,6 +39,7 @@ def main() -> None:
             staticsite_output=staticsite_output,
             staticsite_url=args.staticsiteurl,
             sqlite_output=sqlite_output,
+            frictionless_output=frictionless_output,
             check_errors=True,
             check_record_errors=False,
             verbose=True,

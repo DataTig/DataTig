@@ -21,6 +21,15 @@ class FieldBooleanConfigModel(FieldConfigModel):
         v.set_value(obj.read(self._key))
         return v
 
+    def get_frictionless_csv_field_specifications(self):
+        return [
+            {
+                "name": "field_" + self.get_id(),
+                "title": self.get_title(),
+                "type": " boolean",
+            }
+        ]
+
 
 class FieldBooleanValueModel(FieldValueModel):
     def set_value(self, value):
@@ -44,3 +53,11 @@ class FieldBooleanValueModel(FieldValueModel):
 
     def is_value_false(self):
         return isinstance(self._value, bool) and not self._value
+
+    def get_frictionless_csv_data_values(self):
+        if self.is_value_true():
+            return ["true"]
+        elif self.is_value_false():
+            return ["false"]
+        else:
+            return [""]
