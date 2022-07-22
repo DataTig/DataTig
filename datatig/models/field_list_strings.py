@@ -27,6 +27,16 @@ class FieldListStringsConfigModel(FieldConfigModel):
             }
         ]
 
+    def get_frictionless_csv_resource_specifications(self) -> list:
+        return [
+            {
+                "name": "values",
+                "fields": [
+                    {"name": "value", "title": "Value", "type": "string"},
+                ],
+            }
+        ]
+
 
 class FieldListStringsValueModel(FieldValueModel):
     def set_value(self, value):
@@ -44,3 +54,9 @@ class FieldListStringsValueModel(FieldValueModel):
             return [", ".join([str(i) for i in self._value])]
         else:
             return [self._value]
+
+    def get_frictionless_csv_resource_data_values(self, resource_name: str) -> list:
+        if isinstance(self._value, list):
+            return [[str(i)] for i in self._value]
+        else:
+            return [[self._value]]

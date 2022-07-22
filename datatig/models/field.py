@@ -26,7 +26,10 @@ class FieldConfigModel(ABC):
     def get_title(self) -> str:
         return self._title
 
-    def get_frictionless_csv_field_specifications(self):
+    def get_frictionless_csv_field_specifications(self) -> list:
+        return []
+
+    def get_frictionless_csv_resource_specifications(self) -> list:
         return []
 
 
@@ -35,6 +38,10 @@ class FieldValueModel(ABC):
         self._record = record
         self._field_id = field_id
 
-    def get_frictionless_csv_data_values(self):
+    def get_frictionless_csv_data_values(self) -> list:
         """Should return a list of exactly the same number of elements as get_frictionless_csv_field_specifications() returns."""
+        return []
+
+    def get_frictionless_csv_resource_data_values(self, resource_name: str) -> list:
+        """Should return a list of items. Each item should be a list of exactly the same number of elements as fields this resource has."""
         return []
