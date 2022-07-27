@@ -144,7 +144,7 @@ def versioned_build(
     # For each ref
     for ref in refs:
         # Set the commit we want
-        repository_access.set_commit_hash(ref)
+        repository_access.set_ref(ref)
         # Commit
         git_commit = repository_access.get_current_commit()
         datastore.store_git_commit(git_commit)

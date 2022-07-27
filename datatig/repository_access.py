@@ -8,16 +8,16 @@ from datatig.models.git_commit import GitCommitModel
 class RepositoryAccess:
     def __init__(self, source_dir: str):
         self._source_dir = source_dir
-        self._commit_hash: Optional[str] = None
+        self._ref: Optional[str] = None
 
-    def set_commit_hash(self, commit_hash: str) -> None:
-        self._commit_hash = commit_hash if commit_hash != "HEAD" else None
+    def set_ref(self, ref: str) -> None:
+        self._ref = ref if ref != "HEAD" else None
 
     def list_files_in_directory(self, directory_name: str):
         out = []
-        if self._commit_hash:
+        if self._ref:
             process = subprocess.Popen(
-                ["git", "ls-tree", "-r", self._commit_hash],
+                ["git", "ls-tree", "-r", self._ref],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 cwd=self._source_dir,
@@ -51,9 +51,9 @@ class RepositoryAccess:
         return out
 
     def get_contents_of_file(self, file_name: str):
-        if self._commit_hash:
+        if self._ref:
             process = subprocess.Popen(
-                ["git", "show", self._commit_hash + ":" + file_name],
+                ["git", "show", self._ref + ":" + file_name],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 cwd=self._source_dir,
@@ -65,15 +65,13 @@ class RepositoryAccess:
                 return fp.read()
 
     def get_current_commit(self):
-        if self._commit_hash:
-            return GitCommitModel(self._commit_hash)
-        else:
-            process = subprocess.Popen(
-                ["git", "rev-parse", "HEAD"],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                cwd=self._source_dir,
-            )
-            stdout, stderr = process.communicate()
-            output = stdout.decode("utf-8").strip()
-            return GitCommitModel(output)
+        process = subprocess.Popen(
+            ["git", "rev-parse", self._ref if self._ref else "HEAD"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            cwd=self._source_dir,
+        )
+        stdout, stderr = process.communicate()
+        output = stdout.decode("utf-8").strip()
+        refs = [self._ref] if self._ref != output else []
+        return GitCommitModel(output, refs)

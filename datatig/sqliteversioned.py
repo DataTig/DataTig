@@ -27,6 +27,12 @@ class DataStoreSQLiteVersioned:
                 )"""
             )
             cur.execute(
+                """CREATE TABLE git_ref (
+                id TEXT PRIMARY KEY ON CONFLICT REPLACE,
+                commit_id TEXT
+                )"""
+            )
+            cur.execute(
                 """CREATE TABLE config (
                 id INTEGER PRIMARY KEY,
                 hash TEXT UNIQUE
@@ -98,6 +104,15 @@ class DataStoreSQLiteVersioned:
                 """INSERT INTO git_commit (id) VALUES (?)""",
                 [git_commit.get_commit_hash()],
             )
+
+            # Refs!
+            for ref in git_commit.get_refs():
+                cur.execute(
+                    """INSERT INTO git_ref (id,  commit_id) VALUES (?, ?)""",
+                    [ref, git_commit.get_commit_hash()],
+                )
+
+            # Done
             self._connection.commit()
 
     def store_record(
