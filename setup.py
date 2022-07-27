@@ -26,6 +26,14 @@ setuptools.setup(
         "Pygments",
         "pyyaml",
     ],
-    extras_require={"Dev": ["pytest", "black", "isort", "flake8", "mypy"]},
+    extras_require={
+        "Dev": [
+            "pytest==7.1.2",
+            "black==22.6.0",
+            "isort==5.10.1",
+            "flake8==4.0.1",
+            "mypy==0.971",
+        ]
+    },
     python_requires=">=3.7",
 )
