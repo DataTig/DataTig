@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   * Can get via new CLI option to build
   * Included in static site
 
+### Changed
+
+* Refactored internal Python API - Moved static writer into new package
+
 ## [0.4.0] - 2022-05-05
 
 ### Changed

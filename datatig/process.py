@@ -10,7 +10,7 @@ from .repository_access import RepositoryAccess
 from .sqlite import DataStoreSQLite
 from .validate.jsonschema import JsonSchemaValidator
 from .writers.frictionless.frictionless import FrictionlessWriter
-from .writers.static import StaticWriter
+from .writers.static.static import StaticWriter
 
 
 def go(
