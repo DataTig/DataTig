@@ -123,6 +123,9 @@ def versioned_build(
 ) -> None:
 
     refs: list = refs_str.split(",")
+    # Make list unique.
+    # Might use something like "main,$BRANCH" in build servers, and then you might get passed "main,main"
+    refs = list(set(refs))
 
     # SQLite - we always create a SQLite DB. If not requested, we just make it in temp directory and delete after
     temp_dir = None
