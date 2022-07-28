@@ -78,13 +78,32 @@ class StaticVersionedWriter:
         git_commit,
         jinja2_env: Environment,
     ):
-        self._write_template(
-            os.path.join("ref", git_commit.get_ref()),
-            "index.html",
-            "ref/index.html",
-            {"git_commit": git_commit},
-            jinja2_env,
-        )
+        if self._default_ref == git_commit.get_ref():
+            self._write_template(
+                os.path.join("ref", git_commit.get_ref()),
+                "index.html",
+                "ref/index.default.html",
+                {"git_commit": git_commit},
+                jinja2_env,
+            )
+        elif not self._datastore.is_config_same_between_refs(
+            git_commit.get_commit_hash(), self._default_ref
+        ):
+            self._write_template(
+                os.path.join("ref", git_commit.get_ref()),
+                "index.html",
+                "ref/index.configdifferent.html",
+                {"git_commit": git_commit},
+                jinja2_env,
+            )
+        else:
+            self._write_template(
+                os.path.join("ref", git_commit.get_ref()),
+                "index.html",
+                "ref/index.html",
+                {"git_commit": git_commit},
+                jinja2_env,
+            )
 
     def _write_template(
         self,

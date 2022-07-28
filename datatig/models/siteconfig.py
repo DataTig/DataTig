@@ -1,3 +1,4 @@
+import hashlib
 import json
 
 import yaml
@@ -49,3 +50,13 @@ class SiteConfigModel:
 
     def get_description(self) -> str:
         return self._config.get("description", "")
+
+    def get_serialised(self) -> dict:
+        return self._config
+
+    def get_hash(self) -> str:
+        return hashlib.md5(
+            json.dumps(self.get_serialised(), default=str, sort_keys=True).encode(
+                "utf-8"
+            )
+        ).hexdigest()

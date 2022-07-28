@@ -22,20 +22,22 @@ class DataStoreSQLiteVersioned:
 
         with closing(self._connection.cursor()) as cur:
             cur.execute(
+                """CREATE TABLE config (
+                id INTEGER PRIMARY KEY,
+                data TEXT,
+                hash TEXT UNIQUE
+                )"""
+            )
+            cur.execute(
                 """CREATE TABLE git_commit (
-                id TEXT PRIMARY KEY
+                id TEXT PRIMARY KEY,     
+                config_id INTEGER           
                 )"""
             )
             cur.execute(
                 """CREATE TABLE git_ref (
                 id TEXT PRIMARY KEY ON CONFLICT REPLACE,
                 commit_id TEXT
-                )"""
-            )
-            cur.execute(
-                """CREATE TABLE config (
-                id INTEGER PRIMARY KEY,
-                hash TEXT UNIQUE
                 )"""
             )
             cur.execute(
@@ -53,29 +55,29 @@ class DataStoreSQLiteVersioned:
                 )"""
             )
             cur.execute(
-                """CREATE TABLE config_commit_type_record (
-                config_id INTEGER,
+                """CREATE TABLE commit_type_record (
                 commit_id TEXT,
                 type_id TEXT,
                 record_id TEXT,
                 data_id INTEGER,
-                PRIMARY KEY(config_id, commit_id, type_id, record_id)
+                PRIMARY KEY(commit_id, type_id, record_id)
                 )"""
             )
             self._connection.commit()
 
-    def store_config(self, site_config: SiteConfigModel, commit_hash: str) -> int:
+    def store_config(self, site_config: SiteConfigModel) -> int:
+        config_hash: str = site_config.get_hash()
         with closing(self._connection.cursor()) as cur:
             # Look for existing
-            cur.execute("SELECT id FROM config WHERE hash=?", [commit_hash])
+            cur.execute("SELECT id FROM config WHERE hash=?", [config_hash])
             row = cur.fetchone()
             if row:
                 return row["id"]
 
             # Add new
             cur.execute(
-                """INSERT INTO config (hash) VALUES (?)""",
-                [commit_hash],
+                """INSERT INTO config (hash, data) VALUES (?, ?)""",
+                [config_hash, json.dumps(site_config.get_serialised())],
             )
             config_id: int = cur.lastrowid  # type: ignore
 
@@ -89,7 +91,7 @@ class DataStoreSQLiteVersioned:
 
         return config_id
 
-    def store_git_commit(self, git_commit: GitCommitModel):
+    def store_git_commit(self, git_commit: GitCommitModel, config_id: int):
         with closing(self._connection.cursor()) as cur:
             # Look for existing
             cur.execute(
@@ -101,8 +103,8 @@ class DataStoreSQLiteVersioned:
 
             # Add new
             cur.execute(
-                """INSERT INTO git_commit (id) VALUES (?)""",
-                [git_commit.get_commit_hash()],
+                """INSERT INTO git_commit (id, config_id) VALUES (?, ?)""",
+                [git_commit.get_commit_hash(), config_id],
             )
 
             # Refs!
@@ -119,10 +121,10 @@ class DataStoreSQLiteVersioned:
         self, config_id: int, git_commit: GitCommitModel, record: RecordModel
     ):
         with closing(self._connection.cursor()) as cur:
-            data_str = json.dumps(record.get_data(), default=str)
-            data_hash = hashlib.md5(data_str.encode()).hexdigest()  # TODO sort keys
+            data_str = json.dumps(record.get_data(), default=str, sort_keys=True)
+            data_hash = hashlib.md5(data_str.encode()).hexdigest()
 
-            # data - exisiting or new
+            # data - existing or new
             cur.execute("SELECT id FROM data WHERE hash=?", [data_hash])
             row = cur.fetchone()
             if row:
@@ -136,9 +138,8 @@ class DataStoreSQLiteVersioned:
 
             # config_commit_type_record  - exisiting or new
             cur.execute(
-                "SELECT * FROM config_commit_type_record WHERE config_id=? AND commit_id=? AND type_id=? AND  record_id=?",
+                "SELECT * FROM commit_type_record WHERE commit_id=? AND type_id=? AND  record_id=?",
                 [
-                    config_id,
                     git_commit.get_commit_hash(),
                     record.get_type().get_id(),
                     record.get_id(),
@@ -149,10 +150,9 @@ class DataStoreSQLiteVersioned:
                 pass
             else:
                 cur.execute(
-                    """INSERT INTO config_commit_type_record (config_id,  commit_id, type_id, record_id, data_id) 
-                    VALUES (?, ?, ?, ?, ?)""",
+                    """INSERT INTO commit_type_record (commit_id, type_id, record_id, data_id) 
+                    VALUES (?, ?, ?, ?)""",
                     [
-                        config_id,
                         git_commit.get_commit_hash(),
                         record.get_type().get_id(),
                         record.get_id(),
@@ -196,3 +196,40 @@ class DataStoreSQLiteVersioned:
                 return True
 
         return False
+
+    def resolve_ref(self, ref) -> str:
+        with closing(self._connection.cursor()) as cur:
+            # Ref?
+            cur.execute(
+                "SELECT commit_id FROM git_ref WHERE id=?",
+                [ref],
+            )
+            row = cur.fetchone()
+            if row:
+                return row["commit_id"]
+
+            # Could have just been passed a commit?
+            cur.execute(
+                "SELECT id FROM git_commit WHERE id=?",
+                [ref],
+            )
+            row = cur.fetchone()
+            if row:
+                return row["id"]
+
+        # We failed
+        raise Exception("Ref not found!")
+
+    def is_config_same_between_refs(self, ref1: str, ref2: str) -> bool:
+        with closing(self._connection.cursor()) as cur:
+            cur.execute(
+                "SELECT config_id FROM git_commit WHERE id=?",
+                [self.resolve_ref(ref1)],
+            )
+            config1: int = cur.fetchone()["config_id"]
+            cur.execute(
+                "SELECT config_id FROM git_commit WHERE id=?",
+                [self.resolve_ref(ref2)],
+            )
+            config2: int = cur.fetchone()["config_id"]
+            return config1 == config2

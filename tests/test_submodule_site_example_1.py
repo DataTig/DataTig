@@ -1,9 +1,9 @@
 import os
-import sqlite3
 import tempfile
-from contextlib import closing
 
 import datatig.process
+
+from .utils import DataStoreSQLiteVersionedForTesting
 
 LAST_COMMIT_ID = "43f044bd87f36bc622097ebcd9a48e617a049373"
 
@@ -20,16 +20,30 @@ def test_first_to_last_commit():
         datatig.process.versioned_build(
             SOURCE_DIR,
             sqlite_output=os.path.join(staticsite_dir, "database.sqlite"),
-            refs_str="59be90b698ae03caf7890827e1fa15af2aa8e9d4,HEAD",
+            refs_str="f613b6ff02508bb24af0bccd03123293c6264878,HEAD",
         )
         # Check
-        with closing(
-            sqlite3.connect(os.path.join(staticsite_dir, "database.sqlite"))
-        ) as connection:
-            connection.row_factory = sqlite3.Row
-            with closing(connection.cursor()) as cur:
-                cur.execute("SELECT * FROM git_commit ORDER BY id ASC")
-                row = cur.fetchone()
-                assert LAST_COMMIT_ID == row["id"]
-                row = cur.fetchone()
-                assert "59be90b698ae03caf7890827e1fa15af2aa8e9d4" == row["id"]
+        datastore = DataStoreSQLiteVersionedForTesting(
+            os.path.join(staticsite_dir, "database.sqlite")
+        )
+        assert not datastore.is_config_same_between_refs(
+            "f613b6ff02508bb24af0bccd03123293c6264878", "HEAD"
+        )
+
+
+def test_content_edit_only():
+    with tempfile.TemporaryDirectory() as staticsite_dir:
+        # Process
+        datatig.process.versioned_build(
+            SOURCE_DIR,
+            sqlite_output=os.path.join(staticsite_dir, "database.sqlite"),
+            refs_str="43f044bd87f36bc622097ebcd9a48e617a049373,fdd46cf24487407918e5eac24aee12bbf82b7135",
+        )
+        # Check
+        datastore = DataStoreSQLiteVersionedForTesting(
+            os.path.join(staticsite_dir, "database.sqlite")
+        )
+        assert datastore.is_config_same_between_refs(
+            "43f044bd87f36bc622097ebcd9a48e617a049373",
+            "fdd46cf24487407918e5eac24aee12bbf82b7135",
+        )

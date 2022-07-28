@@ -128,6 +128,8 @@ def versioned_build(
     # Might use something like "main,$BRANCH" in build servers, and then you might get passed "main,main"
     refs = list(set(refs))
 
+    # TODO if no refs passed, error
+
     # SQLite - we always create a SQLite DB. If not requested, we just make it in temp directory and delete after
     temp_dir = None
     if sqlite_output is None:
@@ -138,26 +140,24 @@ def versioned_build(
     # Repository Access
     repository_access = RepositoryAccessLocalGit(source_dir)
 
-    # Config
-    config = SiteConfigModel(source_dir)
-    config.load_from_file(repository_access)
-    config_id: int = datastore.store_config(
-        config, repository_access.get_current_commit().get_commit_hash()
-    )
-
-    # TODO if no refs passed, error
-
     # For each ref
     for ref in refs:
-        # Set the commit we want
+        # Set the commit we want, get info
         repository_access.set_ref(ref)
-        # Commit
         git_commit = repository_access.get_current_commit()
-        datastore.store_git_commit(git_commit)
+
         # TODO if commit hash is already known to us, don't load data, it is already there
         # (2 branches / refs can point to same commit)
 
-        # Load data
+        # Config
+        config = SiteConfigModel(source_dir)
+        config.load_from_file(repository_access)
+        config_id: int = datastore.store_config(config)
+
+        # Save commit
+        datastore.store_git_commit(git_commit, config_id)
+
+        # Process data
         for type in config.get_types().values():
             process_type(
                 config,
