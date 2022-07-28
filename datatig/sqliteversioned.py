@@ -240,3 +240,31 @@ class DataStoreSQLiteVersioned:
             )
             config2: int = cur.fetchone()["config_id"]
             return config1 == config2
+
+    def get_data_differences_between_refs(self, ref1: str, ref2: str) -> list:
+        commit1 = self.resolve_ref(ref1)
+        commit2 = self.resolve_ref(ref2)
+        out = []
+        with closing(self._connection.cursor()) as cur:
+
+            # compare data items that exist in both
+            cur.execute(
+                "SELECT  c1.type_id, c1.record_id FROM commit_type_record AS c1 "
+                + "JOIN commit_type_record AS c2 ON c1.type_id = c2.type_id AND c1.record_id = c2.record_id "
+                + "WHERE c1.commit_id=? AND c2.commit_id = ? "
+                + "AND c1.data_id != c2.data_id",
+                [commit1, commit2],
+            )
+            for row in cur.fetchall():
+                out.append(
+                    {
+                        "type_id": row["type_id"],
+                        "record_id": row["record_id"],
+                    }
+                )
+
+            # Add items that only exist in one
+            # TODO
+
+        # return
+        return out

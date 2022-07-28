@@ -18,4 +18,25 @@
 
 <h3>Comparison to default ref, {{  default_ref_str }}</h3>
 
+<table class="table">
+    <tr>
+        <th>Type</th>
+        <th>Record</th>
+        <th>&nbsp;</th>
+    </tr>
+    {% for data_difference_between_refs in data_differences_between_refs %}
+        <tr>
+            <td>
+                {{ data_difference_between_refs['record_id'] }}
+            </td>
+            <td>
+                {{ data_difference_between_refs['type_id'] }}
+            </td>
+            <td>
+                &nbsp;
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
 {% endblock %}

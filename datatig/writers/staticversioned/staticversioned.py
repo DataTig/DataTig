@@ -101,7 +101,12 @@ class StaticVersionedWriter:
                 os.path.join("ref", git_commit.get_ref()),
                 "index.html",
                 "ref/index.html",
-                {"git_commit": git_commit},
+                {
+                    "git_commit": git_commit,
+                    "data_differences_between_refs": self._datastore.get_data_differences_between_refs(
+                        git_commit.get_commit_hash(), self._default_ref
+                    ),
+                },
                 jinja2_env,
             )
 
