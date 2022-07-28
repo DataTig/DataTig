@@ -166,3 +166,11 @@ class DataStoreSQLiteVersioned:
 
     def get_file_name(self) -> str:
         return self._out_filename
+
+    def get_git_refs(self) -> list:
+        with closing(self._connection.cursor()) as cur:
+            cur.execute(
+                "SELECT * FROM git_ref",
+                [],
+            )
+            return [GitCommitModel(i["commit_id"], [i["id"]]) for i in cur.fetchall()]

@@ -36,6 +36,7 @@ class StaticVersionedWriter:
             "datastore_file_size_bytes": os.path.getsize(
                 self._datastore.get_file_name()
             ),
+            "git_commits_with_refs": self._datastore.get_git_refs(),
         }
 
         # Out Dir

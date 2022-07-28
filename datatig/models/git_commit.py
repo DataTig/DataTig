@@ -6,5 +6,8 @@ class GitCommitModel:
     def get_commit_hash(self):
         return self._commit_hash
 
-    def get_refs(self):
+    def get_refs(self) -> list:
         return self._refs
+
+    def get_refs_str(self) -> str:
+        return ", ".join(self._refs)

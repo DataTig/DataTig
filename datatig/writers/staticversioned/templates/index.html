@@ -13,6 +13,21 @@
 
 {% block body %}
 
+<table class="table">
+    <tr>
+        <th>Ref</th>
+        <th>Commit</th>
+        <th>&nbsp;</th>
+    </tr>
+    {% for git_commit_with_refs in git_commits_with_refs %}
+        <tr>
+            <td>{{ git_commit_with_refs.get_refs_str() }}</td>
+            <td>{{ git_commit_with_refs.get_commit_hash() }}</td>
+            <td>&nbsp;</td>
+        </tr>
+    {% endfor %}
+</table>
+
 <p class="text-right">
     <a href="{{ url }}/database.sqlite"><button type="button" class="btn btn-primary">Download SQLite Database ({{ datastore_file_size_bytes }} bytes)</button></a>
 </p>
