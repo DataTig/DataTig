@@ -63,10 +63,27 @@ class StaticVersionedWriter:
                     os.path.join(self._out_dir, filename),
                 )
 
+        # Refs
+        for git_commit in self._datastore.get_git_refs():
+            self._go_ref(git_commit, jinja2_env)
+
         # All Data
         shutil.copy(
             self._datastore.get_file_name(),
             os.path.join(self._out_dir, "database.sqlite"),
+        )
+
+    def _go_ref(
+        self,
+        git_commit,
+        jinja2_env: Environment,
+    ):
+        self._write_template(
+            os.path.join("ref", git_commit.get_ref()),
+            "index.html",
+            "ref/index.html",
+            {"git_commit": git_commit},
+            jinja2_env,
         )
 
     def _write_template(

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Ref {{ git_commit.get_refs_str() }}{% endblock %}
+
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url }}/">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Ref {{ git_commit.get_refs_str() }}</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block body %}
+
+<h2>Ref {{ git_commit.get_refs_str() }}</h2>
+
+{% endblock %}

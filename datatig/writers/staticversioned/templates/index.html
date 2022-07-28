@@ -26,7 +26,9 @@
                 {% if git_commit_with_refs.has_ref(default_ref_str) %} (Default) {% endif %}
             </td>
             <td>{{ git_commit_with_refs.get_commit_hash() }}</td>
-            <td>&nbsp;</td>
+            <td>
+                <a href="{{ url }}/ref/{{ git_commit_with_refs.get_ref() }}/"><button type="button" class="btn btn-link">View</button></a>
+            </td>
         </tr>
     {% endfor %}
 </table>
