@@ -21,7 +21,10 @@
     </tr>
     {% for git_commit_with_refs in git_commits_with_refs %}
         <tr>
-            <td>{{ git_commit_with_refs.get_refs_str() }}</td>
+            <td>
+                {{ git_commit_with_refs.get_refs_str() }}
+                {% if git_commit_with_refs.has_ref(default_ref_str) %} (Default) {% endif %}
+            </td>
             <td>{{ git_commit_with_refs.get_commit_hash() }}</td>
             <td>&nbsp;</td>
         </tr>

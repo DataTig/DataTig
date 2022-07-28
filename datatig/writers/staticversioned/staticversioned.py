@@ -12,12 +12,14 @@ class StaticVersionedWriter:
         self,
         datastore: DataStoreSQLiteVersioned,
         out_dir: str,
+        default_ref: str,
         url: Optional[str] = None,
     ):
         self._datastore: DataStoreSQLiteVersioned = datastore
         self._template_variables: dict = {}
         self._out_dir: str = out_dir
         self._url: str = url or ""
+        self._default_ref: str = default_ref
 
     def go(self) -> None:
         # Templates
@@ -37,6 +39,7 @@ class StaticVersionedWriter:
                 self._datastore.get_file_name()
             ),
             "git_commits_with_refs": self._datastore.get_git_refs(),
+            "default_ref_str": self._default_ref,
         }
 
         # Out Dir

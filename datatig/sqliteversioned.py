@@ -174,3 +174,25 @@ class DataStoreSQLiteVersioned:
                 [],
             )
             return [GitCommitModel(i["commit_id"], [i["id"]]) for i in cur.fetchall()]
+
+    def is_ref_known(self, ref) -> bool:
+        with closing(self._connection.cursor()) as cur:
+            # ref?
+            cur.execute(
+                "SELECT * FROM git_ref WHERE id=?",
+                [ref],
+            )
+            row = cur.fetchone()
+            if row:
+                return True
+
+            # A commit can be a ref too?
+            cur.execute(
+                "SELECT * FROM git_commit WHERE id=?",
+                [ref],
+            )
+            row = cur.fetchone()
+            if row:
+                return True
+
+        return False

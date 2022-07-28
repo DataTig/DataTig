@@ -120,6 +120,7 @@ def versioned_build(
     staticsite_url: str = None,
     sqlite_output: str = None,
     refs_str: str = "HEAD",
+    default_ref: str = "HEAD",
 ) -> None:
 
     refs: list = refs_str.split(",")
@@ -144,6 +145,8 @@ def versioned_build(
         config, repository_access.get_current_commit().get_commit_hash()
     )
 
+    # TODO if no refs passed, error
+
     # For each ref
     for ref in refs:
         # Set the commit we want
@@ -151,6 +154,8 @@ def versioned_build(
         # Commit
         git_commit = repository_access.get_current_commit()
         datastore.store_git_commit(git_commit)
+        # TODO if commit hash is already known to us, don't load data, it is already there
+        # (2 branches / refs can point to same commit)
 
         # Load data
         for type in config.get_types().values():
@@ -162,10 +167,14 @@ def versioned_build(
                 lambda error: datastore.store_error(error),
             )
 
+    # If default ref not one of the refs we found ...
+    if not datastore.is_ref_known(default_ref):
+        default_ref = refs[0]
+
     # Static Site Output
     if staticsite_output:
         static_writer = StaticVersionedWriter(
-            datastore, staticsite_output, url=staticsite_url
+            datastore, staticsite_output, url=staticsite_url, default_ref=default_ref
         )
         static_writer.go()
 

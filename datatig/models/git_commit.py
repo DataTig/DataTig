@@ -11,3 +11,6 @@ class GitCommitModel:
 
     def get_refs_str(self) -> str:
         return ", ".join(self._refs)
+
+    def has_ref(self, ref) -> bool:
+        return ref in self._refs
