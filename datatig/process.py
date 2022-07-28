@@ -29,9 +29,12 @@ def go(
 
     had_errors = False
 
+    # Repository Access
+    repository_access = RepositoryAccessLocalFiles(source_dir)
+
     # Config
     config = SiteConfigModel(source_dir)
-    config.load_from_file()
+    config.load_from_file(repository_access)
 
     # SQLite - we always create a SQLite DB. If not requested, we just make it in temp directory and delete after
     temp_dir = None
@@ -39,9 +42,6 @@ def go(
         temp_dir = tempfile.mkdtemp()
         sqlite_output = os.path.join(temp_dir, "database.sqlite")
     datastore = DataStoreSQLite(config, sqlite_output)
-
-    # Repository Access
-    repository_access = RepositoryAccessLocalFiles(source_dir)
 
     # Load data
     for type in config.get_types().values():
@@ -140,7 +140,7 @@ def versioned_build(
 
     # Config
     config = SiteConfigModel(source_dir)
-    config.load_from_file()
+    config.load_from_file(repository_access)
     config_id: int = datastore.store_config(
         config, repository_access.get_current_commit().get_commit_hash()
     )

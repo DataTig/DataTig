@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   * Moved static writer into new package
   * datatig/readers/directory - def process_type has changed parameters
   * RepositoryAccess split into multiple classes
+  * SiteConfigModel, load_from_file now needs a RepositoryAccess instance passed
 
 ## [0.4.0] - 2022-05-05
 

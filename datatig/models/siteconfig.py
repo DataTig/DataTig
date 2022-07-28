@@ -1,9 +1,9 @@
 import json
-import os
 
 import yaml
 
 from datatig.models.type import TypeModel
+from datatig.repository_access import RepositoryAccess
 
 
 class SiteConfigModel:
@@ -12,14 +12,15 @@ class SiteConfigModel:
         self._types: dict = {}
         self._source_dir: str = source_dir
 
-    def load_from_file(self) -> None:
-
-        if os.path.isfile(os.path.join(self._source_dir, "datatig.json")):
-            with open(os.path.join(self._source_dir, "datatig.json")) as fp:
-                self._config = json.load(fp)
-        elif os.path.isfile(os.path.join(self._source_dir, "datatig.yaml")):
-            with open(os.path.join(self._source_dir, "datatig.yaml")) as fp:
-                self._config = yaml.safe_load(fp)
+    def load_from_file(self, repository_access: RepositoryAccess) -> None:
+        if repository_access.has_file("datatig.json"):
+            self._config = json.loads(
+                repository_access.get_contents_of_file("datatig.json")
+            )
+        elif repository_access.has_file("datatig.yaml"):
+            self._config = yaml.safe_load(
+                repository_access.get_contents_of_file("datatig.yaml")
+            )
         else:
             raise Exception("No Config File!")
 
