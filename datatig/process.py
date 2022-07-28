@@ -6,7 +6,7 @@ import tempfile
 from datatig.models.siteconfig import SiteConfigModel
 
 from .readers.directory import process_type
-from .repository_access import RepositoryAccess
+from .repository_access import RepositoryAccessLocalFiles, RepositoryAccessLocalGit
 from .sqlite import DataStoreSQLite
 from .sqliteversioned import DataStoreSQLiteVersioned
 from .validate.jsonschema import JsonSchemaValidator
@@ -41,7 +41,7 @@ def go(
     datastore = DataStoreSQLite(config, sqlite_output)
 
     # Repository Access
-    repository_access = RepositoryAccess(source_dir)
+    repository_access = RepositoryAccessLocalFiles(source_dir)
 
     # Load data
     for type in config.get_types().values():
@@ -135,7 +135,7 @@ def versioned_build(
     datastore = DataStoreSQLiteVersioned(sqlite_output)
 
     # Repository Access
-    repository_access = RepositoryAccess(source_dir)
+    repository_access = RepositoryAccessLocalGit(source_dir)
 
     # Config
     config = SiteConfigModel(source_dir)
