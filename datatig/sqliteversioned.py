@@ -24,6 +24,8 @@ class DataStoreSQLiteVersioned:
             cur.execute(
                 """CREATE TABLE config (
                 id INTEGER PRIMARY KEY,
+                title TEXT,
+                description TEXT,
                 data TEXT,
                 hash TEXT UNIQUE
                 )"""
@@ -76,8 +78,13 @@ class DataStoreSQLiteVersioned:
 
             # Add new
             cur.execute(
-                """INSERT INTO config (hash, data) VALUES (?, ?)""",
-                [config_hash, json.dumps(site_config.get_serialised())],
+                """INSERT INTO config (hash, data, title, description) VALUES (?, ?, ?, ?)""",
+                [
+                    config_hash,
+                    json.dumps(site_config.get_serialised()),
+                    site_config.get_title(),
+                    site_config.get_description(),
+                ],
             )
             config_id: int = cur.lastrowid  # type: ignore
 
