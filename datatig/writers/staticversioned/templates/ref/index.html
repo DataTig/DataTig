@@ -22,6 +22,7 @@
     <tr>
         <th>Type</th>
         <th>Record</th>
+        <th>Action</th>
         <th>&nbsp;</th>
     </tr>
     {% for data_difference_between_refs in data_differences_between_refs %}
@@ -31,6 +32,9 @@
             </td>
             <td>
                 {{ data_difference_between_refs['type_id'] }}
+            </td>
+            <td>
+                {{ data_difference_between_refs['action'] }}
             </td>
             <td>
                 &nbsp;

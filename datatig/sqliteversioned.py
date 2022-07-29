@@ -260,11 +260,29 @@ class DataStoreSQLiteVersioned:
                     {
                         "type_id": row["type_id"],
                         "record_id": row["record_id"],
+                        "action": "edited",
                     }
                 )
 
-            # Add items that only exist in one
-            # TODO
-
+            # Items that have been removed or added
+            for params, action in [
+                ([commit2, commit1], "removed"),
+                ([commit1, commit2], "added"),
+            ]:
+                cur.execute(
+                    "SELECT  c1.type_id, c1.record_id FROM commit_type_record AS c1 "
+                    + "LEFT JOIN commit_type_record AS c2 ON c1.type_id = c2.type_id AND c1.record_id = c2.record_id AND c2.commit_id = ? "
+                    + "WHERE c1.commit_id=?  "
+                    + "AND c2.data_id IS NULL",
+                    params,
+                )
+                for row in cur.fetchall():
+                    out.append(
+                        {
+                            "type_id": row["type_id"],
+                            "record_id": row["record_id"],
+                            "action": action,
+                        }
+                    )
         # return
         return out
