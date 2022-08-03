@@ -24,7 +24,13 @@ class SiteConfigModel:
             )
         else:
             raise Exception("No Config File!")
+        self._after_load()
 
+    def load_from_serialised(self, config: dict):
+        self._config = config
+        self._after_load()
+
+    def _after_load(self):
         for type_config in self._config.get("types", []):
             type_config_model = TypeModel(self)
             type_config_model.load_from_config(type_config)

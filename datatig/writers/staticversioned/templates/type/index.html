@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}{{ type.id }}{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url }}/">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ type.get_id() }}</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block body %}
+
+<h2>{{ type.id }}</h2>
+
+<table class="table">
+    <tr>
+        <th>id</th>
+        {% for field_name in type.get_list_fields() %}
+            <th>{{ field_name }}</th>
+        {% endfor %}
+        <th>&nbsp;</th>
+    </tr>
+    {% for item_id in datastore.get_ids_in_type(default_ref_str, type.get_id()) %}
+        {% set item = datastore.get_item(default_ref_str, type.get_id(), item_id) %}
+        <tr>
+            <td>{{ item_id }}</td>
+            {% for field_name in type.get_list_fields() %}
+                {% set field = type.get_field(field_name) %}
+                <td>
+                    {% if field.get_type() == 'url' %}
+                        <a href="{{ item.get_field_value(field_name).get_value() }}">{{ item.get_field_value(field_name).get_value() }}</a>
+                    {% elif field.get_type() == 'list-strings' %}
+                        <ul>
+                            {% for value in item.get_field_value(field_name).get_value() %}
+                                <li>{{ value }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% elif field.get_type() == 'boolean' %}
+                        {% if item.get_field_value(field_name).is_value_true() %}
+                            True
+                        {% elif item.get_field_value(field_name).is_value_false() %}
+                            False
+                        {% endif %}
+                    {% else %}
+                        {{ item.get_field_value(field_name).get_value() }}
+                    {% endif %}
+                </td>
+            {% endfor %}
+            <td><a href="{{ url }}/type/{{ type.get_id() }}/record/{{ item_id }}/"><button type="button" class="btn btn-link">View</button></a></td>
+        </tr>
+    {% endfor %}
+</table>
+
+
+{% endblock %}

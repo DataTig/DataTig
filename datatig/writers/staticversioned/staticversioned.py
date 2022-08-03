@@ -1,9 +1,16 @@
+import json
 import os
 import shutil
 from typing import Optional
 
+import pygments  # type: ignore
+import pygments.formatters  # type: ignore
+import pygments.lexers.data  # type: ignore
 from jinja2 import Environment, FileSystemLoader, select_autoescape  # type: ignore
 
+from datatig.models.record import RecordModel
+from datatig.models.siteconfig import SiteConfigModel
+from datatig.models.type import TypeModel
 from datatig.sqliteversioned import DataStoreSQLiteVersioned
 
 
@@ -20,6 +27,7 @@ class StaticVersionedWriter:
         self._out_dir: str = out_dir
         self._url: str = url or ""
         self._default_ref: str = default_ref
+        self._default_config: SiteConfigModel = datastore.get_config(default_ref)
 
     def go(self) -> None:
         # Templates
@@ -40,6 +48,7 @@ class StaticVersionedWriter:
             ),
             "git_commits_with_refs": self._datastore.get_git_refs(),
             "default_ref_str": self._default_ref,
+            "default_config": self._default_config,
         }
 
         # Out Dir
@@ -63,9 +72,17 @@ class StaticVersionedWriter:
                     os.path.join(self._out_dir, filename),
                 )
 
+        # Asset - Pygments
+        with open(os.path.join(self._out_dir, "pygments.css"), "w") as fp:
+            fp.write(pygments.formatters.HtmlFormatter().get_style_defs(".highlight"))
+
         # Refs
         for git_commit in self._datastore.get_git_refs():
             self._go_ref(git_commit, jinja2_env)
+
+        # Types
+        for type in self._default_config.get_types().values():
+            self._go_type(type, jinja2_env)
 
         # All Data
         shutil.copy(
@@ -109,6 +126,58 @@ class StaticVersionedWriter:
                 },
                 jinja2_env,
             )
+
+    def _go_type(self, type: TypeModel, jinja2_env: Environment):
+        # pages
+        self._write_template(
+            os.path.join("type", type.get_id()),
+            "index.html",
+            "type/index.html",
+            {"type": type},
+            jinja2_env,
+        )
+
+        # Each Item/Record!
+        for item_id in self._datastore.get_ids_in_type(
+            self._default_ref, type.get_id()
+        ):
+            self._go_record(type, item_id, jinja2_env)
+
+    def _go_record(self, type: TypeModel, record_id: str, jinja2_env: Environment):
+        # vars
+        record: RecordModel = self._datastore.get_item(
+            self._default_ref, type.get_id(), record_id
+        )
+        item_template_vars = {
+            "type": type,
+            "item": record,
+        }
+        item_template_vars["record_data_html"] = pygments.highlight(
+            json.dumps(record.get_data(), indent=4),
+            pygments.lexers.data.JsonLexer(),
+            pygments.formatters.HtmlFormatter(),
+        )
+        # pages
+        self._write_template(
+            os.path.join("type", type.get_id(), "record", record_id),
+            "index.html",
+            "type/record/index.html",
+            item_template_vars,
+            jinja2_env,
+        )
+        # data files
+        with open(
+            os.path.join(
+                self._out_dir,
+                "type",
+                type.get_id(),
+                "record",
+                record_id,
+                "data.json",
+            ),
+            "w",
+        ) as fp:
+            json.dump(record.get_data(), fp, indent=2)
 
     def _write_template(
         self,

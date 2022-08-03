@@ -13,6 +13,23 @@
 
 {% block body %}
 
+<h3>Types</h3>
+
+<table class="table">
+    <tr>
+        <th>id</th>
+        <th>&nbsp;</th>
+    </tr>
+    {% for type_id, type in default_config.get_types().items() %}
+        <tr>
+            <td>{{ type_id }}</td>
+            <td><a href="{{ url }}/type/{{ type_id }}/"><button type="button" class="btn btn-link">View</button></a></td>
+        </tr>
+    {% endfor %}
+</table>
+
+<h3>Git References</h3>
+
 <table class="table">
     <tr>
         <th>Ref</th>

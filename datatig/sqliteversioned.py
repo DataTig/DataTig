@@ -286,3 +286,50 @@ class DataStoreSQLiteVersioned:
                     )
         # return
         return out
+
+    def get_config(self, ref_or_commit: str):
+        with closing(self._connection.cursor()) as cur:
+            cur.execute(
+                "SELECT config_id FROM git_commit WHERE id=?",
+                [self.resolve_ref(ref_or_commit)],
+            )
+            config_id: int = cur.fetchone()["config_id"]
+            cur.execute(
+                "SELECT data FROM config WHERE id=?",
+                [config_id],
+            )
+            config_row = cur.fetchone()
+            config: SiteConfigModel = SiteConfigModel("/source_dir_does_not_exist")
+            config.load_from_serialised(json.loads(config_row["data"]))
+            return config
+
+    def get_ids_in_type(self, ref_or_commit: str, type_id: str):
+        with closing(self._connection.cursor()) as cur:
+            cur.execute(
+                "SELECT record_id FROM commit_type_record WHERE type_id=? AND commit_id=?",
+                [type_id, self.resolve_ref(ref_or_commit)],
+            )
+            return [i["record_id"] for i in cur.fetchall()]
+
+    def get_item(self, ref_or_commit: str, type_id: str, record_id: str):
+        with closing(self._connection.cursor()) as cur:
+            cur.execute(
+                "SELECT * FROM commit_type_record WHERE commit_id=? AND type_id=? AND record_id=?",
+                [self.resolve_ref(ref_or_commit), type_id, record_id],
+            )
+            commit_type_record_row = cur.fetchone()
+            if commit_type_record_row:
+                cur.execute(
+                    "SELECT data FROM data  WHERE id=?",
+                    [commit_type_record_row["data_id"]],
+                )
+                data_row = cur.fetchone()
+                record = RecordModel(
+                    # TODO self.get_config().get_type() is very ineffeicent, would be better if type class instance was passed instead of type_id
+                    type=self.get_config(self.resolve_ref(ref_or_commit)).get_type(
+                        type_id
+                    ),
+                    id=record_id,
+                )
+                record.load_from_versioned_database(commit_type_record_row, data_row)
+                return record
