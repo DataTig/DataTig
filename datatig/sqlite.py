@@ -259,7 +259,7 @@ class DataStoreSQLite:
                 m.load_from_database(data)
                 yield m
 
-    def get_ids_in_type(self, type_id) -> list:
+    def get_ids_in_type(self, type_id: str) -> list:
         with closing(self._connection.cursor()) as cur:
             cur.execute("SELECT id FROM record_" + type_id, [])
             return [i["id"] for i in cur.fetchall()]
@@ -276,7 +276,7 @@ class DataStoreSQLite:
             )
             return [i["id"] for i in cur.fetchall()]
 
-    def get_item(self, type_id, item_id):
+    def get_item(self, type_id: str, item_id: str):
         with closing(self._connection.cursor()) as cur:
             cur.execute("SELECT * FROM record_" + type_id + "  WHERE id=?", [item_id])
             data = cur.fetchone()
