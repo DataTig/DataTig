@@ -33,20 +33,23 @@ class DataStoreSQLiteVersioned:
             cur.execute(
                 """CREATE TABLE git_commit (
                 id TEXT PRIMARY KEY,     
-                config_id INTEGER           
+                config_id INTEGER,
+                FOREIGN KEY(config_id) REFERENCES config(id)
                 )"""
             )
             cur.execute(
                 """CREATE TABLE git_ref (
                 id TEXT PRIMARY KEY ON CONFLICT REPLACE,
-                commit_id TEXT
+                commit_id TEXT,
+                FOREIGN KEY(commit_id) REFERENCES git_commit(id)
                 )"""
             )
             cur.execute(
                 """CREATE TABLE type (
                 config_id INTEGER,
                 id TEXT ,
-                PRIMARY KEY(config_id, id)
+                PRIMARY KEY(config_id, id),
+                FOREIGN KEY(config_id) REFERENCES config(id)
                 )"""
             )
             cur.execute(
@@ -62,7 +65,11 @@ class DataStoreSQLiteVersioned:
                 type_id TEXT,
                 record_id TEXT,
                 data_id INTEGER,
-                PRIMARY KEY(commit_id, type_id, record_id)
+                PRIMARY KEY(commit_id, type_id, record_id),
+                FOREIGN KEY(commit_id) REFERENCES git_commit(id),
+                FOREIGN KEY(type_id) REFERENCES type(id),
+                FOREIGN KEY(record_id) REFERENCES record(id)
+                FOREIGN KEY(data_id) REFERENCES data(id)
                 )"""
             )
             self._connection.commit()
