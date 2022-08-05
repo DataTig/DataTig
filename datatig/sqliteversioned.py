@@ -64,6 +64,8 @@ class DataStoreSQLiteVersioned:
                 commit_id TEXT,
                 type_id TEXT,
                 record_id TEXT,
+                git_filename TEXT,
+                format TEXT,
                 data_id INTEGER,
                 PRIMARY KEY(commit_id, type_id, record_id),
                 FOREIGN KEY(commit_id) REFERENCES git_commit(id),
@@ -164,13 +166,15 @@ class DataStoreSQLiteVersioned:
                 pass
             else:
                 cur.execute(
-                    """INSERT INTO commit_type_record (commit_id, type_id, record_id, data_id) 
-                    VALUES (?, ?, ?, ?)""",
+                    """INSERT INTO commit_type_record (commit_id, type_id, record_id, data_id, git_filename, format) 
+                    VALUES (?, ?, ?, ?, ?, ?)""",
                     [
                         git_commit.get_commit_hash(),
                         record.get_type().get_id(),
                         record.get_id(),
                         data_id,
+                        record.get_git_filename(),
+                        record.get_format(),
                     ],
                 )
             self._connection.commit()

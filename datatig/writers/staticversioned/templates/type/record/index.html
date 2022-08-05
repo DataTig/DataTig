@@ -53,6 +53,9 @@
 </div>
 
 <p  class="text-right">
+    {% if default_config.get_github_url() %}
+        <a href="https://github.com/{{ default_config.get_github_url() }}/blob/{{ default_ref_str }}/{{  item.get_git_filename() }}"><button type="button" class="btn btn-primary">View on GitHub</button></a>
+    {% endif %}
     <a href="data.json"><button type="button" class="btn btn-primary">Download Raw JSON data</button></a>
 </p>
 

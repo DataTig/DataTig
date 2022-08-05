@@ -63,8 +63,8 @@ class RecordModel:
             self._field_values[field_id] = field_config.get_value_object_from_record(
                 record=self
             )
-        self._git_filename = None  # TODO
-        self._format = None  # TODO
+        self._git_filename = commit_type_record_row["git_filename"]
+        self._format = commit_type_record_row["format"]
 
     def get_format(self) -> str:
         return self._format
