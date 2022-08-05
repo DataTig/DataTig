@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Frictionless Data Export
   * Can get via new CLI option to build
   * Included in static site
+* SQLite database has foreign keys
 * New CLI command "versionedbuild" - currently used for internal testing
 
 ### Changed

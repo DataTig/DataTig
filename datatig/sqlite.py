@@ -39,7 +39,8 @@ class DataStoreSQLite:
                 key TEXT,
                 type TEXT,
                 title TEXT,
-                PRIMARY KEY(type_id, id)
+                PRIMARY KEY(type_id, id),
+                FOREIGN KEY(type_id) REFERENCES type(id)
                 )"""
             )
 
@@ -52,27 +53,28 @@ class DataStoreSQLite:
                 )
 
                 cur.execute(
-                    """CREATE TABLE record_"""
-                    + type.get_id()
-                    + """  (
+                    """CREATE TABLE record_{type} (
                                   id TEXT PRIMARY KEY,
                                   data TEXT,
                                   git_filename TEXT,
                                   format TEXT
-                              )""",
+                              )""".format(
+                        type=type.get_id()
+                    ),
                     [],
                 )
 
                 cur.execute(
-                    """CREATE TABLE record_error_"""
-                    + type.get_id()
-                    + """  (
+                    """CREATE TABLE record_error_{type} (
                                   record_id TEXT,
                                   message TEXT,
                                   data_path TEXT,
                                   schema_path TEXT,
-                                  generator TEXT
-                              )""",
+                                  generator TEXT,
+                                  FOREIGN KEY(record_id) REFERENCES record_{type}(id)
+                              )""".format(
+                        type=type.get_id()
+                    ),
                     [],
                 )
 
@@ -116,11 +118,14 @@ class DataStoreSQLite:
                         )
                     if type_field.get_type() in ["list-strings"]:
                         cur.execute(
-                            """CREATE TABLE record_"""
-                            + type.get_id()
-                            + """_field_"""
-                            + type_field_id
-                            + """ (record_id TEXT, value TEXT) """,
+                            """CREATE TABLE record_{type}_field_{field} (
+                                record_id TEXT, 
+                                value TEXT,
+                                FOREIGN KEY(record_id) REFERENCES record_{type}(id)
+                                ) 
+                                """.format(
+                                type=type.get_id(), field=type_field_id
+                            ),
                             [],
                         )
 
