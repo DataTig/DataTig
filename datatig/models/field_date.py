@@ -41,3 +41,6 @@ class FieldDateValueModel(FieldValueModel):
 
     def get_frictionless_csv_data_values(self):
         return [self._value]
+
+    def different_to(self, other_field_value):
+        return self._value != other_field_value._value

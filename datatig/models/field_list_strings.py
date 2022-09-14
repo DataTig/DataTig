@@ -60,3 +60,6 @@ class FieldListStringsValueModel(FieldValueModel):
             return [[str(i)] for i in self._value]
         else:
             return [[self._value]]
+
+    def different_to(self, other_field_value):
+        return self._value != other_field_value._value

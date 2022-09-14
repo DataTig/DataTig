@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
 
 class FieldConfigModel(ABC):
@@ -45,3 +45,7 @@ class FieldValueModel(ABC):
     def get_frictionless_csv_resource_data_values(self, resource_name: str) -> list:
         """Should return a list of items. Each item should be a list of exactly the same number of elements as fields this resource has."""
         return []
+
+    @abstractmethod
+    def different_to(self, other_field_value):
+        pass

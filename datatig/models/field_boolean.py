@@ -61,3 +61,6 @@ class FieldBooleanValueModel(FieldValueModel):
             return ["false"]
         else:
             return [""]
+
+    def different_to(self, other_field_value):
+        return self._value != other_field_value._value

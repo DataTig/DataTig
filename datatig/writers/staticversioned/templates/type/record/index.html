@@ -59,5 +59,51 @@
     <a href="data.json"><button type="button" class="btn btn-primary">Download Raw JSON data</button></a>
 </p>
 
+{% for ref_id, ref_data in refs.items() %}
+    <h3>Ref: {{ ref_id }}</h3>
+
+    {% if not ref_data['config_same'] %}
+
+        <p>The config has changed, so no comparison can be made.</p>
+
+    {% elif not ref_data['exists'] %}
+
+        <p>This record does not exist in this ref.</p>
+
+    {% else %}
+
+        <table class="table">
+            {% for field_id, field_data in ref_data['diff'].items() %}
+                <tr>
+                    <th>
+                        {{ field_id }}
+                    </th>
+                    <td>
+                        {% if field_data['type'] == 'added' %}
+                            <em>Field was added</em>
+                        {% elif field_data['type'] == 'removed' %}
+                            <em>Field was removed</em>
+                        {% elif field_data['type'] == 'different-type' %}
+                            <em>Field has a different type, so no comparison can be made.</em>
+                        {% elif field_data['type'] == 'diff' %}
+                            <em>New Value:</em>
+                            {# TODO: Display a diff properly #}
+                            {{ ref_data['record'].get_field_value(field_id).get_value() }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+
+        </table>
+
+        <p  class="text-right">
+            {% if default_config.get_github_url() %}
+                <a href="https://github.com/{{ default_config.get_github_url() }}/blob/{{ ref_id }}/{{  item.get_git_filename() }}"><button type="button" class="btn btn-primary">View on GitHub</button></a>
+            {% endif %}
+        </p>
+
+    {% endif %}
+
+{% endfor %}
 
 {% endblock %}

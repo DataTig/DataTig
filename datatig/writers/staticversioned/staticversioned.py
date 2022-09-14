@@ -148,15 +148,36 @@ class StaticVersionedWriter:
         record: RecordModel = self._datastore.get_item(
             self._default_ref, type.get_id(), record_id
         )
-        item_template_vars = {
+        item_template_vars: dict = {
             "type": type,
             "item": record,
+            "refs": {},
         }
         item_template_vars["record_data_html"] = pygments.highlight(
             json.dumps(record.get_data(), indent=4),
             pygments.lexers.data.JsonLexer(),
             pygments.formatters.HtmlFormatter(),
         )
+        for git_commit in self._datastore.get_git_refs():
+            if git_commit.get_ref() != self._default_ref:
+                ref_data: dict = {
+                    "exists": False,
+                    "config_same": False,
+                    "record": None,
+                    "diff": None,
+                }
+                if self._datastore.is_config_same_between_refs(
+                    git_commit.get_ref(), self._default_ref
+                ):
+                    ref_data["config_same"] = True
+                    ref_record: Optional[RecordModel] = self._datastore.get_item(
+                        git_commit.get_ref(), type.get_id(), record_id
+                    )
+                    if ref_record:
+                        ref_data["exists"] = True
+                        ref_data["record"] = ref_record  # type: ignore
+                        ref_data["diff"] = ref_record.get_diff(record)  # type: ignore
+                item_template_vars["refs"][git_commit.get_ref()] = ref_data
         # pages
         self._write_template(
             os.path.join("type", type.get_id(), "record", record_id),

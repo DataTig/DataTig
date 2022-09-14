@@ -89,3 +89,30 @@ class RecordModel:
 
     def get_field_value(self, field_id):
         return self._field_values.get(field_id)
+
+    def get_diff(self, record) -> dict:
+        out: dict = {}
+        field_ids = list(
+            set(list(self._field_values.keys()) + list(record._field_values.keys()))
+        )
+        for field_id in field_ids:
+            if (
+                field_id not in self._field_values.keys()
+                and field_id in record._field_values.keys()
+            ):
+                out[field_id] = {"type": "added"}
+            elif (
+                field_id in self._field_values.keys()
+                and field_id not in record._field_values.keys()
+            ):
+                out[field_id] = {"type": "removed"}
+            elif type(self._field_values[field_id]) != type(
+                record._field_values[field_id]
+            ):
+                out[field_id] = {"type": "different-type"}
+            elif self._field_values[field_id].different_to(
+                record._field_values[field_id]
+            ):
+                out[field_id] = {"type": "diff"}
+            # No else clause - if field values are the same, we don't add any data to the output
+        return out
