@@ -34,10 +34,13 @@ def main() -> None:
         "--staticsiteurl", help="URL for Static Site Output"
     )
     versionedbuild_parser.add_argument(
-        "--refs", help="Refs to build, comma sep", default="HEAD"
+        "--refs", help="Refs to build, comma sep", default=""
     )
     versionedbuild_parser.add_argument(
-        "--default-ref", help="The Default ref.", default="HEAD"
+        "--allbranches", help="Build all branches", action="store_true"
+    )
+    versionedbuild_parser.add_argument(
+        "--defaultref", help="The Default ref.", default=""
     )
 
     args = parser.parse_args()
@@ -89,7 +92,8 @@ def main() -> None:
             staticsite_url=args.staticsiteurl,
             sqlite_output=sqlite_output,
             refs_str=args.refs,
-            default_ref=args.default_ref,
+            all_branches=args.allbranches,
+            default_ref=args.defaultref,
         )
 
 

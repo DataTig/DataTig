@@ -120,3 +120,20 @@ class RepositoryAccessLocalGit(RepositoryAccess):
         output = stdout.decode("utf-8").strip()
         refs = [self._ref] if self._ref != output else []
         return GitCommitModel(output, refs)
+
+    def list_branches(self) -> list:
+        out = []
+        process = subprocess.Popen(
+            ["git", "branch"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            cwd=self._source_dir,
+        )
+        stdout, stderr = process.communicate()
+        for line in stdout.decode("utf-8").strip().split("\n"):
+            line = line.strip()
+            if line.startswith("* "):
+                line = line[2:]
+            if line:
+                out.append(line)
+        return out

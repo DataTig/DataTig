@@ -119,16 +119,32 @@ def versioned_build(
     staticsite_output: str = None,
     staticsite_url: str = None,
     sqlite_output: str = None,
-    refs_str: str = "HEAD",
-    default_ref: str = "HEAD",
+    refs_str: str = "",
+    all_branches: bool = False,
+    default_ref: str = "",
 ) -> None:
 
-    refs: list = refs_str.split(",")
+    # Repository Access
+    repository_access = RepositoryAccessLocalGit(source_dir)
+
+    # Work out list of refs
+    refs: list = [i for i in refs_str.split(",") if i]
     # Make list unique.
     # Might use something like "main,$BRANCH" in build servers, and then you might get passed "main,main"
     refs = list(set(refs))
 
+    if all_branches:
+        for ref in repository_access.list_branches():
+            if ref not in refs:
+                refs.append(ref)
+
     # TODO if no refs passed, error
+
+    if default_ref:
+        if default_ref not in refs:
+            refs.append(default_ref)
+    else:
+        default_ref = refs[0]
 
     # SQLite - we always create a SQLite DB. If not requested, we just make it in temp directory and delete after
     temp_dir = None
@@ -136,9 +152,6 @@ def versioned_build(
         temp_dir = tempfile.mkdtemp()
         sqlite_output = os.path.join(temp_dir, "database.sqlite")
     datastore = DataStoreSQLiteVersioned(sqlite_output)
-
-    # Repository Access
-    repository_access = RepositoryAccessLocalGit(source_dir)
 
     # For each ref
     for ref in refs:
