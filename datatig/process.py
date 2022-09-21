@@ -177,7 +177,7 @@ def versioned_build(
                 repository_access,
                 type,
                 lambda record: datastore.store_record(git_commit, record),
-                lambda error: datastore.store_error(error),
+                lambda error: datastore.store_error(git_commit, error),
             )
 
     # If default ref not one of the refs we found ...

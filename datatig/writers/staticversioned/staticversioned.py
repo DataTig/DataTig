@@ -95,6 +95,7 @@ class StaticVersionedWriter:
         git_commit,
         jinja2_env: Environment,
     ):
+        # Index page
         if self._default_ref == git_commit.get_ref():
             self._write_template(
                 os.path.join("ref", git_commit.get_ref()),
@@ -126,6 +127,14 @@ class StaticVersionedWriter:
                 },
                 jinja2_env,
             )
+        # Errors
+        self._write_template(
+            os.path.join("ref", git_commit.get_ref()),
+            "errors.html",
+            "ref/errors.html",
+            {"git_commit": git_commit},
+            jinja2_env,
+        )
 
     def _go_type(self, type: TypeModel, jinja2_env: Environment):
         # pages

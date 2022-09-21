@@ -45,6 +45,14 @@ class DataStoreSQLiteVersioned:
                 )"""
             )
             cur.execute(
+                """CREATE TABLE error (
+                commit_id TEXT,
+                filename TEXT,
+                message TEXT,
+                FOREIGN KEY(commit_id) REFERENCES git_commit(id)
+                )"""
+            )
+            cur.execute(
                 """CREATE TABLE type (
                 config_id INTEGER,
                 id TEXT ,
@@ -177,8 +185,38 @@ class DataStoreSQLiteVersioned:
                 )
             self._connection.commit()
 
-    def store_error(self, error: ErrorModel) -> None:
-        print(error.get_message())
+    def store_error(self, git_commit: GitCommitModel, error: ErrorModel) -> None:
+        with closing(self._connection.cursor()) as cur:
+            insert_data = [
+                git_commit.get_commit_hash(),
+                error.get_filename(),
+                error.get_message(),
+            ]
+            cur.execute(
+                """INSERT INTO error (
+                commit_id, filename, message
+                ) VALUES (?, ?, ?)""",
+                insert_data,
+            )
+            self._connection.commit()
+
+    def get_all_errors_generator(self, git_commit: GitCommitModel):
+        with closing(self._connection.cursor()) as cur:
+            cur.execute(
+                "SELECT * FROM error WHERE commit_id=?", [git_commit.get_commit_hash()]
+            )
+            for data in cur.fetchall():
+                m = ErrorModel()
+                m.load_from_database(data)
+                yield m
+
+    def get_count_site_errors(self, git_commit: GitCommitModel) -> int:
+        with closing(self._connection.cursor()) as cur:
+            cur.execute(
+                "SELECT count(*) AS c FROM error WHERE commit_id=?",
+                [git_commit.get_commit_hash()],
+            )
+            return cur.fetchone()["c"]
 
     def get_file_name(self) -> str:
         return self._out_filename

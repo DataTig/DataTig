@@ -16,6 +16,10 @@
 
 <h2>Ref {{ git_commit.get_refs_str() }}</h2>
 
+<p class="text-right">
+    <a href="{{ url }}/ref/{{ git_commit.get_ref() }}/errors.html"><button type="button" class="btn btn-primary">Errors</button></a>
+</p>
+
 <h3>Comparison to default ref, {{  default_ref_str }}</h3>
 
 <table class="table">
