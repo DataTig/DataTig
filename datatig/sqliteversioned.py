@@ -133,9 +133,7 @@ class DataStoreSQLiteVersioned:
             # Done
             self._connection.commit()
 
-    def store_record(
-        self, config_id: int, git_commit: GitCommitModel, record: RecordModel
-    ):
+    def store_record(self, git_commit: GitCommitModel, record: RecordModel):
         with closing(self._connection.cursor()) as cur:
             data_str = json.dumps(record.get_data(), default=str, sort_keys=True)
             data_hash = hashlib.md5(data_str.encode()).hexdigest()

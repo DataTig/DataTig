@@ -176,7 +176,7 @@ def versioned_build(
                 config,
                 repository_access,
                 type,
-                lambda record: datastore.store_record(config_id, git_commit, record),
+                lambda record: datastore.store_record(git_commit, record),
                 lambda error: datastore.store_error(error),
             )
 
