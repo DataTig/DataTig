@@ -334,6 +334,27 @@ class DataStoreSQLiteVersioned:
         # return
         return out
 
+    def get_errors_added_between_refs(self, ref1: str, ref2: str) -> list:
+        commit1 = self.resolve_ref(ref1)
+        commit2 = self.resolve_ref(ref2)
+        out = []
+        with closing(self._connection.cursor()) as cur:
+            cur.execute(
+                "SELECT e2.* "
+                + "FROM error AS e2 "
+                + "LEFT JOIN error AS e1 ON e1.filename = e2.filename AND e1.message = e2.message AND e1.commit_id=? "
+                + "WHERE e2.commit_id = ? AND e1.filename IS NULL",
+                [commit1, commit2],
+            )
+            for row in cur.fetchall():
+                m = ErrorModel()
+                m.load_from_database(row)
+                out.append(m)
+        return out
+
+    def get_errors_removed_between_refs(self, ref1: str, ref2: str) -> list:
+        return self.get_errors_added_between_refs(ref2, ref1)
+
     def get_config(self, ref_or_commit: str):
         with closing(self._connection.cursor()) as cur:
             cur.execute(

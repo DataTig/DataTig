@@ -22,6 +22,8 @@
 
 <h3>Comparison to default ref, {{  default_ref_str }}</h3>
 
+<h4>Data changes</h4>
+
 <table class="table">
     <tr>
         <th>Type</th>
@@ -44,7 +46,34 @@
                 <a href="{{ url }}/type/{{ data_difference_between_refs['type_id'] }}/record/{{ data_difference_between_refs['record_id'] }}/"><button type="button" class="btn btn-link">View</button></a>
             </td>
         </tr>
+    {% else %}
+        <tr>
+            <td colspan="4">Nothing</td>
+        </tr>
     {% endfor %}
 </table>
+
+
+<h4>General Errors Added</h4>
+
+<table class="table">
+    <tr>
+        <th>Filename</th>
+        <th>Message</th>
+    </tr>
+    {% for error in errors_added_between_refs %}
+        <tr>
+            <td>{{ error.get_filename() }}</td>
+            <td>{{ error.get_message() }}</td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="2">Nothing</td>
+        </tr>
+    {% endfor %}
+</table>
+
+
+
 
 {% endblock %}

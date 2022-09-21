@@ -87,30 +87,29 @@ def test_remove_item():
 
 
 def test_add_item():
+    ref1 = "f613b6ff02508bb24af0bccd03123293c6264878"
+    ref2 = "e5f4317282c84225c0f404822d84e8736264d5b5"
     with tempfile.TemporaryDirectory() as staticsite_dir:
         # Process
         datatig.process.versioned_build(
             SOURCE_DIR,
             sqlite_output=os.path.join(staticsite_dir, "database.sqlite"),
-            refs_str="f613b6ff02508bb24af0bccd03123293c6264878,e5f4317282c84225c0f404822d84e8736264d5b5",
+            refs_str=ref1 + "," + ref2,
         )
         datastore = DataStoreSQLiteVersionedForTesting(
             os.path.join(staticsite_dir, "database.sqlite")
         )
         # Check config same
-        assert datastore.is_config_same_between_refs(
-            "f613b6ff02508bb24af0bccd03123293c6264878",
-            "e5f4317282c84225c0f404822d84e8736264d5b5",
-        )
+        assert datastore.is_config_same_between_refs(ref1, ref2)
         # Check list of data differences
-        diffs = datastore.get_data_differences_between_refs(
-            "f613b6ff02508bb24af0bccd03123293c6264878",
-            "e5f4317282c84225c0f404822d84e8736264d5b5",
-        )
+        diffs = datastore.get_data_differences_between_refs(ref1, ref2)
         assert 1 == len(diffs)
         assert "blogs" == diffs[0]["type_id"]
         assert "lets-all-talk-about-datatig" == diffs[0]["record_id"]
         assert "added" == diffs[0]["action"]
+        # Check general errors
+        new_errors = datastore.get_errors_added_between_refs(ref1, ref2)
+        assert 0 == len(new_errors)
 
 
 def test_no_content_or_config_edited():
@@ -167,3 +166,51 @@ def test_add_new_field_and_content():
         assert {"deleted": {"type": "added"}} == diff1to2
         diff2to1 = record2.get_diff(record1)
         assert {"deleted": {"type": "removed"}} == diff2to1
+
+
+def test_add_item_totally_broken_1():
+    ref1 = "92161819fba1736ee1ab13ad8638ac877405fe56"
+    ref2 = "258778d477f73be8769c57bdd6c6078bd5d6bf1c"
+    with tempfile.TemporaryDirectory() as staticsite_dir:
+        # Process
+        datatig.process.versioned_build(
+            SOURCE_DIR,
+            sqlite_output=os.path.join(staticsite_dir, "database.sqlite"),
+            refs_str=ref1 + "," + ref2,
+        )
+        datastore = DataStoreSQLiteVersionedForTesting(
+            os.path.join(staticsite_dir, "database.sqlite")
+        )
+        # Check config same
+        assert datastore.is_config_same_between_refs(ref1, ref2)
+        # Check list of data differences
+        diffs = datastore.get_data_differences_between_refs(ref1, ref2)
+        assert 0 == len(diffs)
+        # Check general errors
+        new_errors = datastore.get_errors_added_between_refs(ref1, ref2)
+        assert 1 == len(new_errors)
+        assert "blogs/really-stay-away.md" == new_errors[0]._filename
+
+
+def test_add_item_totally_broken_2():
+    ref1 = "eba00f1c45e89d02340428e8abcf62f5fbd1a391"
+    ref2 = "0f7a3cc73a90c9b88b2163d6fd29dd6bd0c17baa"
+    with tempfile.TemporaryDirectory() as staticsite_dir:
+        # Process
+        datatig.process.versioned_build(
+            SOURCE_DIR,
+            sqlite_output=os.path.join(staticsite_dir, "database.sqlite"),
+            refs_str=ref1 + "," + ref2,
+        )
+        datastore = DataStoreSQLiteVersionedForTesting(
+            os.path.join(staticsite_dir, "database.sqlite")
+        )
+        # Check config same
+        assert datastore.is_config_same_between_refs(ref1, ref2)
+        # Check list of data differences
+        diffs = datastore.get_data_differences_between_refs(ref1, ref2)
+        assert 0 == len(diffs)
+        # Check general errors
+        new_errors = datastore.get_errors_added_between_refs(ref1, ref2)
+        assert 1 == len(new_errors)
+        assert "blogs/datatig-the-dark-side.md" == new_errors[0]._filename
