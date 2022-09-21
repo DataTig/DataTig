@@ -122,7 +122,7 @@ class StaticVersionedWriter:
                 {
                     "git_commit": git_commit,
                     "data_differences_between_refs": self._datastore.get_data_differences_between_refs(
-                        git_commit.get_commit_hash(), self._default_ref
+                        self._default_ref, git_commit.get_commit_hash()
                     ),
                 },
                 jinja2_env,
