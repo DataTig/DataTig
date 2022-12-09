@@ -107,7 +107,7 @@ class DataStoreSQLite:
                             + """ TEXT """,
                             [],
                         )
-                    if type_field.get_type() == "boolean":
+                    elif type_field.get_type() in ["boolean", "integer"]:
                         cur.execute(
                             """ALTER TABLE record_"""
                             + type.get_id()
@@ -232,6 +232,15 @@ class DataStoreSQLite:
                         + field.get_id()
                         + """ = ? WHERE id=?""",
                         [1 if value else 0, record.get_id()],
+                    )
+                if field.get_type() == "integer" and isinstance(value, int):
+                    cur.execute(
+                        """UPDATE record_"""
+                        + record.get_type().get_id()
+                        + """ SET field_"""
+                        + field.get_id()
+                        + """ = ? WHERE id=?""",
+                        [value, record.get_id()],
                     )
 
             self._connection.commit()

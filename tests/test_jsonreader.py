@@ -27,6 +27,7 @@ def test_json_site():
                 "title": "One",
                 "birthday": "2022-10-01",
                 "has_cat": True,
+                "age": 45,
             } == one_json
         with open(
             os.path.join(staticsite_dir, "type", "datas", "record", "2", "data.json")
@@ -39,9 +40,18 @@ def test_json_site():
         ) as connection:
             connection.row_factory = sqlite3.Row
             with closing(connection.cursor()) as cur:
+                # Test type
                 cur.execute("SELECT * FROM type")
                 type = cur.fetchone()
                 assert "datas" == type["id"]
+                # Test a data row
+                cur.execute("SELECT * FROM record_datas WHERE id='1'")
+                type = cur.fetchone()
+                assert "1" == type["id"]
+                assert "One" == type["field_title"]
+                assert "2022-10-01" == type["field_birthday"]
+                assert 1 == type["field_has_cat"]
+                assert 45 == type["field_age"]
         # Test API
         with open(os.path.join(staticsite_dir, "api.json")) as fp:
             api = json.load(fp)
@@ -65,6 +75,7 @@ def test_json_site():
                     "tags": {"id": "tags", "type": "list-strings"},
                     "birthday": {"id": "birthday", "type": "date"},
                     "has_cat": {"id": "has_cat", "type": "boolean"},
+                    "age": {"id": "age", "type": "integer"},
                 },
                 "id": "datas",
                 "records_api_url": "/type/datas/records_api.json",

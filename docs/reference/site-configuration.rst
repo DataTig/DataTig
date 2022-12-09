@@ -75,6 +75,7 @@ Allowed types are:
 * `date`
 * `datetime`
 * `boolean`
+* `integer`
 
 A YAML example:
 

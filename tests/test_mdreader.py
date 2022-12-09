@@ -28,6 +28,7 @@ def test_md_site():
                 "markdown_body": "A page about 1.",
                 "birthday": "2019-09-30",
                 "has_cat": True,
+                "age": 42.1,
             } == one_json
         with open(
             os.path.join(staticsite_dir, "type", "datas", "record", "2", "data.json")
@@ -37,6 +38,7 @@ def test_md_site():
                 "title": "Two",
                 "markdown_body": "A page about 2.",
                 "has_cat": "true",
+                "age": "43",
             } == two_json
         with open(
             os.path.join(staticsite_dir, "type", "datas", "record", "3", "data.json")
@@ -49,14 +51,15 @@ def test_md_site():
         ) as connection:
             connection.row_factory = sqlite3.Row
             with closing(connection.cursor()) as cur:
+                # Test errors
                 cur.execute("SELECT COUNT(*) AS c FROM error")
                 error = cur.fetchone()
                 assert 0 == error["c"]
-            with closing(connection.cursor()) as cur:
+                # Test type
                 cur.execute("SELECT * FROM type")
                 type = cur.fetchone()
                 assert "datas" == type["id"]
-            with closing(connection.cursor()) as cur:
+                # Test a data row
                 cur.execute("SELECT * FROM record_datas WHERE id='1'")
                 type = cur.fetchone()
                 assert "1" == type["id"]
@@ -65,3 +68,9 @@ def test_md_site():
                 assert 1 == type["field_has_cat"]
                 assert "datas/1.md" == type["git_filename"]
                 assert "md" == type["format"]
+                assert 42 == type["field_age"]
+                # Test another data row
+                cur.execute("SELECT * FROM record_datas WHERE id='2'")
+                type = cur.fetchone()
+                assert "2" == type["id"]
+                assert 43 == type["field_age"]

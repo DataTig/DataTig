@@ -19,6 +19,10 @@ types:
     key: has_cat
     title: Has Cat
     type: boolean
+  - id: age
+    key: age
+    title: Age
+    type: integer
   list_fields:
   - title
   json_schema: schema.json

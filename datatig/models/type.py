@@ -8,6 +8,7 @@ from .field import FieldConfigModel
 from .field_boolean import FieldBooleanConfigModel
 from .field_date import FieldDateConfigModel
 from .field_datetime import FieldDateTimeConfigModel
+from .field_integer import FieldIntegerConfigModel
 from .field_list_strings import FieldListStringsConfigModel
 from .field_string import FieldStringConfigModel
 from .field_url import FieldURLConfigModel
@@ -36,6 +37,8 @@ class TypeModel:
                 field_config = FieldDateTimeConfigModel()
             elif config.get("type") == "boolean":
                 field_config = FieldBooleanConfigModel()
+            elif config.get("type") == "integer":
+                field_config = FieldIntegerConfigModel()
             field_config.load(config)
             self._fields[field_config.get_id()] = field_config
 
