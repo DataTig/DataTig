@@ -35,7 +35,7 @@ def test_md_site():
         ) as fp:
             two_json = json.load(fp)
             assert {
-                "title": "Two",
+                "title": 2,
                 "markdown_body": "A page about 2.",
                 "has_cat": "true",
                 "age": "43",
@@ -73,4 +73,5 @@ def test_md_site():
                 cur.execute("SELECT * FROM record_datas WHERE id='2'")
                 type = cur.fetchone()
                 assert "2" == type["id"]
+                assert "2" == type["field_title"]
                 assert 43 == type["field_age"]

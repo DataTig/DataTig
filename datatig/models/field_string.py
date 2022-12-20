@@ -33,7 +33,7 @@ class FieldStringConfigModel(FieldConfigModel):
 
 class FieldStringValueModel(FieldValueModel):
     def set_value(self, value):
-        self._value = value
+        self._value = str(value) if value is not None else None
 
     def get_value(self):
         return self._value

@@ -23,6 +23,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   * RepositoryAccess split into multiple classes
   * SiteConfigModel, load_from_file now needs a RepositoryAccess instance passed
 
+### Fixed
+
+* Non string (eg integer, list) values in string fields are now read correctly
+
 ## [0.4.0] - 2022-05-05
 
 ### Changed

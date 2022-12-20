@@ -81,7 +81,10 @@ def test_yaml_site():
                 cur.execute("SELECT * FROM record_datas WHERE id='3'")
                 record = cur.fetchone()
                 assert "3" == record["id"]
-                assert None == record["field_title"]
+                assert (
+                    "['This is meant to be a string', \"But we are instead using a list to make sure the wrong data type doesn't cause a crash!\"]"
+                    == record["field_title"]
+                )
                 assert None == record["field_tags"]
                 assert None == record["field_has_cat"]
                 assert "datas/3.yaml" == record["git_filename"]
