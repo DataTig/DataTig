@@ -34,8 +34,8 @@ def test_event_site():
         ) as fp:
             two_json = json.load(fp)
             assert {
-                "end": "2024-01-01T11:00:00",
-                "start": "2024-01-01T10:00:00",
+                "end": "2024 Jan 1st 11:00:00",
+                "start": "2024 Jan 1st 10:00:00",
                 "title": "Two",
             } == two_json
         # Test database
@@ -116,6 +116,24 @@ def test_event_site():
                 assert "1" == type["id"]
                 assert "One" == type["field_title"]
                 assert "2023-11-01T10:00:00" == type["field_start"]
+                assert 1698832800 == type["field_start___timestamp"]
                 assert "2023-11-01T11:00:00" == type["field_end"]
+                assert 1698836400 == type["field_end___timestamp"]
                 assert "events/1.md" == type["git_filename"]
                 assert "md" == type["format"]
+            with closing(connection.cursor()) as cur:
+                cur.execute("SELECT * FROM record_events WHERE id='2'")
+                type = cur.fetchone()
+                assert "2" == type["id"]
+                assert "2024-01-01T10:00:00" == type["field_start"]
+                assert 1704103200 == type["field_start___timestamp"]
+                assert "2024-01-01T11:00:00" == type["field_end"]
+                assert 1704106800 == type["field_end___timestamp"]
+            with closing(connection.cursor()) as cur:
+                cur.execute("SELECT * FROM record_events WHERE id='3'")
+                type = cur.fetchone()
+                assert "3" == type["id"]
+                assert "2024-07-01T10:00:00" == type["field_start"]
+                assert 1719828000 == type["field_start___timestamp"]
+                assert "2024-07-01T11:00:00" == type["field_end"]
+                assert 1719831600 == type["field_end___timestamp"]

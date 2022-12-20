@@ -97,6 +97,16 @@ class DataStoreSQLite:
                         "string",
                         "list-strings",
                         "date",
+                    ]:
+                        cur.execute(
+                            """ALTER TABLE record_"""
+                            + type.get_id()
+                            + """ ADD field_"""
+                            + type_field_id
+                            + """ TEXT """,
+                            [],
+                        )
+                    elif type_field.get_type() in [
                         "datetime",
                     ]:
                         cur.execute(
@@ -105,6 +115,14 @@ class DataStoreSQLite:
                             + """ ADD field_"""
                             + type_field_id
                             + """ TEXT """,
+                            [],
+                        )
+                        cur.execute(
+                            """ALTER TABLE record_"""
+                            + type.get_id()
+                            + """ ADD field_"""
+                            + type_field_id
+                            + """___timestamp INTEGER """,
                             [],
                         )
                     elif type_field.get_type() in ["boolean", "integer"]:
@@ -172,6 +190,16 @@ class DataStoreSQLite:
                     "url",
                     "string",
                     "date",
+                ] and isinstance(value, str):
+                    cur.execute(
+                        """UPDATE record_"""
+                        + record.get_type().get_id()
+                        + """ SET field_"""
+                        + field.get_id()
+                        + """ = ? WHERE id=?""",
+                        [value, record.get_id()],
+                    )
+                elif field.get_type() in [
                     "datetime",
                 ] and isinstance(value, str):
                     cur.execute(
@@ -181,6 +209,14 @@ class DataStoreSQLite:
                         + field.get_id()
                         + """ = ? WHERE id=?""",
                         [value, record.get_id()],
+                    )
+                    cur.execute(
+                        """UPDATE record_"""
+                        + record.get_type().get_id()
+                        + """ SET field_"""
+                        + field.get_id()
+                        + """___timestamp = ? WHERE id=?""",
+                        [value_object.get_value_timestamp(), record.get_id()],
                     )
                 if field.get_type() == "date" and isinstance(value, datetime.date):
                     cur.execute(

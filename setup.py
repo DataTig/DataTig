@@ -25,6 +25,7 @@ setuptools.setup(
         "jsonschema",
         "Pygments",
         "pyyaml",
+        "dateparser",
     ],
     extras_require={
         "Dev": [
