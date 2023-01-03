@@ -177,6 +177,8 @@ class StaticVersionedWriter:
                     "config_same": False,
                     "record": None,
                     "diff": None,
+                    "record_errors_added": False,
+                    "record_errors_removed": False,
                 }
                 if self._datastore.is_config_same_between_refs(
                     git_commit.get_ref(), self._default_ref
@@ -189,6 +191,22 @@ class StaticVersionedWriter:
                         ref_data["exists"] = True
                         ref_data["record"] = ref_record  # type: ignore
                         ref_data["diff"] = ref_record.get_diff(record)  # type: ignore
+                        ref_data[
+                            "record_errors_added"
+                        ] = self._datastore.get_record_errors_added_between_refs_for_record(
+                            self._default_ref,
+                            git_commit.get_ref(),
+                            type.get_id(),
+                            record_id,
+                        )
+                        ref_data[
+                            "record_errors_removed"
+                        ] = self._datastore.get_record_errors_removed_between_refs_for_record(
+                            self._default_ref,
+                            git_commit.get_ref(),
+                            type.get_id(),
+                            record_id,
+                        )
                 item_template_vars["refs"][git_commit.get_ref()] = ref_data
         # pages
         self._write_template(

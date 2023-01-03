@@ -10,6 +10,7 @@ from datatig.models.siteconfig import SiteConfigModel
 from .models.error import ErrorModel
 from .models.git_commit import GitCommitModel
 from .models.record import RecordModel
+from .models.record_error import RecordErrorModel
 
 # from .models.record_error import RecordErrorModel
 
@@ -80,6 +81,20 @@ class DataStoreSQLiteVersioned:
                 FOREIGN KEY(type_id) REFERENCES type(id),
                 FOREIGN KEY(record_id) REFERENCES record(id)
                 FOREIGN KEY(data_id) REFERENCES data(id)
+                )"""
+            )
+            cur.execute(
+                """CREATE TABLE commit_type_record_error(
+                commit_id TEXT,
+                type_id TEXT,
+                record_id TEXT,
+                message TEXT,
+                data_path TEXT,
+                schema_path TEXT,
+                generator TEXT,
+                FOREIGN KEY(commit_id) REFERENCES git_commit(id),
+                FOREIGN KEY(type_id) REFERENCES type(id),
+                FOREIGN KEY(record_id) REFERENCES record(id)
                 )"""
             )
             self._connection.commit()
@@ -380,18 +395,27 @@ class DataStoreSQLiteVersioned:
             return [i["record_id"] for i in cur.fetchall()]
 
     def get_item(self, ref_or_commit: str, type_id: str, record_id: str):
+        commit_hash = self.resolve_ref(ref_or_commit)
         with closing(self._connection.cursor()) as cur:
             cur.execute(
                 "SELECT * FROM commit_type_record WHERE commit_id=? AND type_id=? AND record_id=?",
-                [self.resolve_ref(ref_or_commit), type_id, record_id],
+                [commit_hash, type_id, record_id],
             )
             commit_type_record_row = cur.fetchone()
             if commit_type_record_row:
+                # Data
                 cur.execute(
                     "SELECT data FROM data  WHERE id=?",
                     [commit_type_record_row["data_id"]],
                 )
                 data_row = cur.fetchone()
+                # Errors
+                cur.execute(
+                    "SELECT * FROM commit_type_record_error  WHERE commit_id=? AND type_id=? AND record_id=?",
+                    [commit_hash, type_id, record_id],
+                )
+                errors_data = cur.fetchall()
+                # Create model and return
                 record = RecordModel(
                     # TODO self.get_config().get_type() is very ineffeicent, would be better if type class instance was passed instead of type_id
                     type=self.get_config(self.resolve_ref(ref_or_commit)).get_type(
@@ -399,5 +423,59 @@ class DataStoreSQLiteVersioned:
                     ),
                     id=record_id,
                 )
-                record.load_from_versioned_database(commit_type_record_row, data_row)
+                record.load_from_versioned_database(
+                    commit_type_record_row, data_row, errors_data=errors_data
+                )
                 return record
+
+    def store_json_schema_validation_errors(
+        self, ref_or_commit: str, type_id: str, item_id: str, errors
+    ) -> None:
+        with closing(self._connection.cursor()) as cur:
+            for error in errors:
+                insert_data = [
+                    ref_or_commit,
+                    type_id,
+                    item_id,
+                    error["message"],
+                    error["path_str"],
+                    error["schema_path_str"],
+                    "jsonschema",
+                ]
+                cur.execute(
+                    """INSERT INTO commit_type_record_error (
+                    commit_id, type_id, record_id, message, data_path, schema_path, generator
+                    ) VALUES (?, ?, ?,  ?, ?, ?, ?)""",
+                    insert_data,
+                )
+            self._connection.commit()
+
+    def get_record_errors_added_between_refs_for_record(
+        self, ref1: str, ref2: str, type_id: str, record_id: str
+    ) -> list:
+        commit1 = self.resolve_ref(ref1)
+        commit2 = self.resolve_ref(ref2)
+        out = []
+        with closing(self._connection.cursor()) as cur:
+            cur.execute(
+                "SELECT e2.* "
+                + "FROM commit_type_record_error AS e2 "
+                + "LEFT JOIN commit_type_record_error AS e1 ON "
+                + "e1.message = e2.message AND e1.data_path = e2.data_path "
+                + "AND e1.schema_path = e2.schema_path AND e1.generator = e2.generator "
+                + "AND e1.commit_id=? AND e1.type_id=? AND e1.record_id=? "
+                + "WHERE e2.commit_id = ? AND e2.type_id=? AND e2.record_id=? AND e1.commit_id IS NULL",
+                [commit1, type_id, record_id, commit2, type_id, record_id],
+            )
+            for row in cur.fetchall():
+                m = RecordErrorModel()
+                m.load_from_database(row)
+                out.append(m)
+        return out
+
+    def get_record_errors_removed_between_refs_for_record(
+        self, ref1: str, ref2: str, type_id: str, record_id: str
+    ) -> list:
+        return self.get_record_errors_added_between_refs_for_record(
+            ref2, ref1, type_id, record_id
+        )

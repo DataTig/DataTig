@@ -56,7 +56,7 @@ class RecordModel:
                 self._errors.append(m)
 
     def load_from_versioned_database(
-        self, commit_type_record_row: dict, data_row: dict
+        self, commit_type_record_row: dict, data_row: dict, errors_data: list = None
     ) -> None:
         self._data = json.loads(data_row["data"])
         for field_id, field_config in self._type.get_fields().items():
@@ -65,6 +65,11 @@ class RecordModel:
             )
         self._git_filename = commit_type_record_row["git_filename"]
         self._format = commit_type_record_row["format"]
+        if errors_data is not None:
+            for error_data in errors_data:
+                m = RecordErrorModel()
+                m.load_from_database(error_data)
+                self._errors.append(m)
 
     def get_format(self) -> str:
         return self._format

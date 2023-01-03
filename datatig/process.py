@@ -9,7 +9,7 @@ from .readers.directory import process_type
 from .repository_access import RepositoryAccessLocalFiles, RepositoryAccessLocalGit
 from .sqlite import DataStoreSQLite
 from .sqliteversioned import DataStoreSQLiteVersioned
-from .validate.jsonschema import JsonSchemaValidator
+from .validate.jsonschema import JsonSchemaValidator, JsonSchemaValidatorVersioned
 from .writers.frictionless.frictionless import FrictionlessWriter
 from .writers.static.static import StaticWriter
 from .writers.staticversioned.staticversioned import StaticVersionedWriter
@@ -179,6 +179,12 @@ def versioned_build(
                 lambda record: datastore.store_record(git_commit, record),
                 lambda error: datastore.store_error(git_commit, error),
             )
+
+        # Validate data
+        validate_json_schema = JsonSchemaValidatorVersioned(
+            config, datastore, git_commit
+        )
+        validate_json_schema.go()
 
     # If default ref not one of the refs we found ...
     if not datastore.is_ref_known(default_ref):

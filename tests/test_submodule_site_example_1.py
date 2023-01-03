@@ -214,3 +214,39 @@ def test_add_item_totally_broken_2():
         new_errors = datastore.get_errors_added_between_refs(ref1, ref2)
         assert 1 == len(new_errors)
         assert "blogs/datatig-the-dark-side.md" == new_errors[0]._filename
+
+
+def test_add_item_field_broken_1():
+    ref1 = "e5f4317282c84225c0f404822d84e8736264d5b5"
+    ref2 = "92161819fba1736ee1ab13ad8638ac877405fe56"
+    with tempfile.TemporaryDirectory() as staticsite_dir:
+        # Process
+        datatig.process.versioned_build(
+            SOURCE_DIR,
+            sqlite_output=os.path.join(staticsite_dir, "database.sqlite"),
+            refs_str=ref1 + "," + ref2,
+        )
+        datastore = DataStoreSQLiteVersionedForTesting(
+            os.path.join(staticsite_dir, "database.sqlite")
+        )
+        # Check config same
+        assert datastore.is_config_same_between_refs(ref1, ref2)
+        # Check list of data differences
+        diffs = datastore.get_data_differences_between_refs(ref1, ref2)
+        assert 1 == len(diffs)
+        # Check general errors
+        new_errors = datastore.get_errors_added_between_refs(ref1, ref2)
+        assert 0 == len(new_errors)
+        # Check record errors - ref2 introduces a new record with errors
+        item = datastore.get_item(ref2, "blogs", "the-downsides-of-datatig")
+        errors = item.get_errors()
+        assert 1 == len(errors)
+        assert "'None' is not of type 'array'" == errors[0].get_message()
+        assert "tags" == errors[0].get_data_path()
+        assert "properties/tags/type" == errors[0].get_schema_path()
+        assert "jsonschema" == errors[0].get_generator()
+        # check between refs
+        errors = datastore.get_record_errors_added_between_refs_for_record(
+            ref1, ref2, "blogs", "the-downsides-of-datatig"
+        )
+        assert 1 == len(errors)
