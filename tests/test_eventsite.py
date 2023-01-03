@@ -28,6 +28,7 @@ def test_event_site():
                 "end": "2023-11-01 11:00:00",
                 "start": "2023-11-01 10:00:00",
                 "title": "One",
+                "submission_deadline": "2023 May 1st",
             } == one_json
         with open(
             os.path.join(staticsite_dir, "type", "events", "record", "2", "data.json")
@@ -37,6 +38,7 @@ def test_event_site():
                 "end": "2024 Jan 1st 11:00:00",
                 "start": "2024 Jan 1st 10:00:00",
                 "title": "Two",
+                "submission_deadline": "2023-07-15",
             } == two_json
         # Test database
         with closing(
@@ -68,6 +70,10 @@ def test_event_site():
                     "title": {"id": "title", "type": "string"},
                     "start": {"id": "start", "type": "datetime"},
                     "end": {"id": "end", "type": "datetime"},
+                    "submission_deadline": {
+                        "id": "submission_deadline",
+                        "type": "date",
+                    },
                 },
                 "id": "events",
                 "records_api_url": "/type/events/records_api.json",
@@ -119,6 +125,8 @@ def test_event_site():
                 assert 1698832800 == type["field_start___timestamp"]
                 assert "2023-11-01T11:00:00" == type["field_end"]
                 assert 1698836400 == type["field_end___timestamp"]
+                assert "2023-05-01" == type["field_submission_deadline"]
+                assert 1682942400 == type["field_submission_deadline___timestamp"]
                 assert "events/1.md" == type["git_filename"]
                 assert "md" == type["format"]
             with closing(connection.cursor()) as cur:
@@ -129,6 +137,8 @@ def test_event_site():
                 assert 1704103200 == type["field_start___timestamp"]
                 assert "2024-01-01T11:00:00" == type["field_end"]
                 assert 1704106800 == type["field_end___timestamp"]
+                assert "2023-07-15" == type["field_submission_deadline"]
+                assert 1689422400 == type["field_submission_deadline___timestamp"]
             with closing(connection.cursor()) as cur:
                 cur.execute("SELECT * FROM record_events WHERE id='3'")
                 type = cur.fetchone()
@@ -137,3 +147,5 @@ def test_event_site():
                 assert 1719828000 == type["field_start___timestamp"]
                 assert "2024-07-01T11:00:00" == type["field_end"]
                 assert 1719831600 == type["field_end___timestamp"]
+                assert "2024-01-05" == type["field_submission_deadline"]
+                assert 1704456000 == type["field_submission_deadline___timestamp"]

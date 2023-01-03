@@ -15,6 +15,10 @@ types:
     key: end
     title: End
     type: datetime
+  - id: submission_deadline
+    key: submission_deadline
+    title: Submission Deadline
+    type: date
   list_fields:
   - title
   - start

@@ -96,7 +96,6 @@ class DataStoreSQLite:
                         "url",
                         "string",
                         "list-strings",
-                        "date",
                     ]:
                         cur.execute(
                             """ALTER TABLE record_"""
@@ -108,6 +107,7 @@ class DataStoreSQLite:
                         )
                     elif type_field.get_type() in [
                         "datetime",
+                        "date",
                     ]:
                         cur.execute(
                             """ALTER TABLE record_"""
@@ -189,7 +189,6 @@ class DataStoreSQLite:
                 if field.get_type() in [
                     "url",
                     "string",
-                    "date",
                 ] and isinstance(value, str):
                     cur.execute(
                         """UPDATE record_"""
@@ -201,6 +200,7 @@ class DataStoreSQLite:
                     )
                 elif field.get_type() in [
                     "datetime",
+                    "date",
                 ] and isinstance(value, str):
                     cur.execute(
                         """UPDATE record_"""

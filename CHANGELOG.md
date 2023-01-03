@@ -14,9 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * SQLite database has foreign keys
 * New CLI command "versionedbuild" - currently used for internal testing
 * New field type, "integer"
-* Datetime type fields:
+* Datetime and date type fields:
   * Can handle more input formats
-  * Provide timestamp info on output
+  * Provide timestamp info on output (For date fields, time is always set to 12:00)
 
 ### Changed
 
