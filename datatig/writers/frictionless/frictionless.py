@@ -100,13 +100,13 @@ class FrictionlessWriter:
             "name": type.get_id()
             + "_field_"
             + field.get_id()
-            + "_"
+            + "___"
             + sub_resource_spec["name"],
             "path": "csv/"
             + type.get_id()
             + "_field_"
             + field.get_id()
-            + "_"
+            + "___"
             + sub_resource_spec["name"]
             + ".csv",
             "format": "csv",
