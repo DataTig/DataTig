@@ -1,4 +1,3 @@
-import datetime
 import json
 import sqlite3
 from contextlib import closing
@@ -217,26 +216,6 @@ class DataStoreSQLite:
                         + field.get_id()
                         + """___timestamp = ? WHERE id=?""",
                         [value_object.get_value_timestamp(), record.get_id()],
-                    )
-                if field.get_type() == "date" and isinstance(value, datetime.date):
-                    cur.execute(
-                        """UPDATE record_"""
-                        + record.get_type().get_id()
-                        + """ SET field_"""
-                        + field.get_id()
-                        + """ = ? WHERE id=?""",
-                        [value.isoformat(), record.get_id()],
-                    )
-                if field.get_type() == "datetime" and isinstance(
-                    value, datetime.datetime
-                ):
-                    cur.execute(
-                        """UPDATE record_"""
-                        + record.get_type().get_id()
-                        + """ SET field_"""
-                        + field.get_id()
-                        + """ = ? WHERE id=?""",
-                        [value.isoformat(), record.get_id()],
                     )
                 if (
                     field.get_type() in ["list-strings"]
