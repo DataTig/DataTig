@@ -41,9 +41,14 @@ def test_yaml_site():
         ) as connection:
             connection.row_factory = sqlite3.Row
             with closing(connection.cursor()) as cur:
-                cur.execute("SELECT COUNT(*) AS c FROM error")
-                error = cur.fetchone()
-                assert 0 == error["c"]
+                cur.execute("SELECT * FROM error")
+                errors = cur.fetchall()
+                assert 1 == len(errors)
+                assert "datas/multiple.yaml" == errors[0]["filename"]
+                assert (
+                    "There was more than one YAML document in this YAML file."
+                    == errors[0]["message"]
+                )
             with closing(connection.cursor()) as cur:
                 cur.execute("SELECT * FROM type")
                 type = cur.fetchone()

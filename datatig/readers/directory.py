@@ -106,12 +106,20 @@ def process_yaml_file(
     id,
     store_record_callback: Callable,
 ) -> None:
-    data = yaml.safe_load(
+
+    # YAML files can have multiple YAMl documents - load with that in mind.
+    data = yaml.safe_load_all(
         repository_access.get_contents_of_file(filename_relative_to_git)
     )
+    first_data: dict = next(data, {})
+    more_data = next(data, None)
+    if more_data:
+        # If more data exists error; currently we only support one YAML document per file.
+        raise Exception("There was more than one YAML document in this YAML file.")
 
+    # We have our one document - make record, and store
     record = RecordModel(type=type, id=id)
-    record.load_from_yaml_file(data, filename_relative_to_git)
+    record.load_from_yaml_file(first_data, filename_relative_to_git)
 
     store_record_callback(record)
 

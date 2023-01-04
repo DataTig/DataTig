@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+* YAML data files
+  * Can read files that are set up to have more than one document, as long as there is only one document in them.
+
 ## [0.5.0] - 2023-01-03
 
 ### Added
