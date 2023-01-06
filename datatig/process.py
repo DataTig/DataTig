@@ -5,7 +5,7 @@ import tempfile
 
 from datatig.models.siteconfig import SiteConfigModel
 
-from .exceptions import SiteConfigurationNotFoundException
+from .exceptions import SiteConfigurationException, SiteConfigurationNotFoundException
 from .readers.directory import process_type
 from .repository_access import RepositoryAccessLocalFiles, RepositoryAccessLocalGit
 from .sqlite import DataStoreSQLite
@@ -120,16 +120,24 @@ def versioned_build(
     staticsite_output: str = None,
     staticsite_url: str = None,
     sqlite_output: str = None,
+    refs: list = [],
     refs_str: str = "",
     all_branches: bool = False,
     default_ref: str = "",
+    verbose: bool = False,
+    check_errors_on_ref: str = "",
+    check_errors_on_ref_mode: str = "new",
+    sys_exit_on_error: bool = False,
 ) -> None:
+
+    errors_count = 0
 
     # Repository Access
     repository_access = RepositoryAccessLocalGit(source_dir)
 
     # Work out list of refs
-    refs: list = [i for i in refs_str.split(",") if i]
+    if not refs and refs_str:
+        refs = [i for i in refs_str.split(",") if i]
     # Make list unique.
     # Might use something like "main,$BRANCH" in build servers, and then you might get passed "main,main"
     refs = list(set(refs))
@@ -187,7 +195,7 @@ def versioned_build(
                 config, datastore, git_commit
             )
             validate_json_schema.go()
-        except SiteConfigurationNotFoundException:
+        except (SiteConfigurationNotFoundException, SiteConfigurationException):
             # TODO ideally would put nice message in any output about this.
             # But at least now this doesn't crash whole build process.
             # https://github.com/DataTig/DataTig/issues/27#issuecomment-2304002368
@@ -196,6 +204,53 @@ def versioned_build(
     # If default ref not one of the refs we found ...
     if not datastore.is_ref_known(default_ref):
         default_ref = refs[0]
+
+    # Check Errors
+    if check_errors_on_ref:
+        if datastore.is_config_same_between_refs(default_ref, check_errors_on_ref):
+            if check_errors_on_ref_mode == "new":
+                for error in datastore.get_record_errors_added_between_refs(
+                    default_ref, check_errors_on_ref
+                ):
+                    if verbose:
+                        print(
+                            "TYPE "
+                            + error.get_type_id()
+                            + " RECORD "
+                            + error.get_record_id()
+                            + " HAS VALIDATION ERROR: "
+                            + error.get_message()
+                            + " IN DATA PATH "
+                            + error.get_data_path()
+                        )
+                    errors_count += 1
+            elif check_errors_on_ref_mode == "all_in_changed_records":
+                for difference_def in datastore.get_data_differences_between_refs(
+                    default_ref, check_errors_on_ref
+                ):
+                    if difference_def["action"] != "removed":
+                        item = datastore.get_item(
+                            check_errors_on_ref,
+                            type_id=difference_def["type_id"],
+                            record_id=difference_def["record_id"],
+                        )
+                        for error in item.get_errors():
+                            if verbose:
+                                print(
+                                    "TYPE "
+                                    + difference_def["type_id"]
+                                    + " RECORD "
+                                    + error.get_record_id()
+                                    + " HAS VALIDATION ERROR: "
+                                    + error.get_message()
+                                    + " IN DATA PATH "
+                                    + error.get_data_path()
+                                )
+                            errors_count += 1
+            else:
+                raise Exception("UNKNOWN MODE!")
+        else:
+            pass  # TODO
 
     # Static Site Output
     if staticsite_output:
@@ -207,3 +262,10 @@ def versioned_build(
     # Delete temp
     if temp_dir:
         shutil.rmtree(temp_dir)
+
+    # Print final message and exit, if requested
+    if errors_count:
+        if verbose:
+            print("{} ERRORS OCCURRED- See Above".format(errors_count))
+        if sys_exit_on_error:
+            sys.exit(-1)

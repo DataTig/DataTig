@@ -450,6 +450,27 @@ class DataStoreSQLiteVersioned:
                 )
             self._connection.commit()
 
+    def get_record_errors_added_between_refs(self, ref1: str, ref2: str) -> list:
+        commit1 = self.resolve_ref(ref1)
+        commit2 = self.resolve_ref(ref2)
+        out = []
+        with closing(self._connection.cursor()) as cur:
+            cur.execute(
+                "SELECT e2.* "
+                + "FROM commit_type_record_error AS e2 "
+                + "LEFT JOIN commit_type_record_error AS e1 ON "
+                + "e1.message = e2.message AND e1.data_path = e2.data_path "
+                + "AND e1.schema_path = e2.schema_path AND e1.generator = e2.generator "
+                + "AND e1.commit_id=? "
+                + "WHERE e2.commit_id = ? AND e1.commit_id IS NULL",
+                [commit1, commit2],
+            )
+            for row in cur.fetchall():
+                m = RecordErrorModel(type_id=row["type_id"])
+                m.load_from_database(row)
+                out.append(m)
+        return out
+
     def get_record_errors_added_between_refs_for_record(
         self, ref1: str, ref2: str, type_id: str, record_id: str
     ) -> list:

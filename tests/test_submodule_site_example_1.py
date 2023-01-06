@@ -246,7 +246,12 @@ def test_add_item_field_broken_1():
         assert "properties/tags/type" == errors[0].get_schema_path()
         assert "jsonschema" == errors[0].get_generator()
         # check between refs
-        errors = datastore.get_record_errors_added_between_refs_for_record(
-            ref1, ref2, "blogs", "the-downsides-of-datatig"
-        )
-        assert 1 == len(errors)
+        for errors in [
+            datastore.get_record_errors_added_between_refs_for_record(
+                ref1, ref2, "blogs", "the-downsides-of-datatig"
+            ),
+            datastore.get_record_errors_added_between_refs(ref1, ref2),
+        ]:
+            assert 1 == len(errors)
+            assert errors[0].get_type_id() == "blogs"
+            assert errors[0].get_record_id() == "the-downsides-of-datatig"

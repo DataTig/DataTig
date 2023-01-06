@@ -43,6 +43,14 @@ def main() -> None:
         "--defaultref", help="The Default ref.", default=""
     )
 
+    versionedcheck_parser = subparsers.add_parser("versionedcheck")
+    versionedcheck_parser.add_argument("source")
+    versionedcheck_parser.add_argument("base_ref")
+    versionedcheck_parser.add_argument("new_ref")
+    versionedcheck_parser.add_argument(
+        "--mode", choices=["new", "all_in_changed_records"], help="", default="new"
+    )
+
     args = parser.parse_args()
 
     if args.subparser_name == "build":
@@ -94,6 +102,18 @@ def main() -> None:
             refs_str=args.refs,
             all_branches=args.allbranches,
             default_ref=args.defaultref,
+        )
+
+    elif args.subparser_name == "versionedcheck":
+
+        datatig.process.versioned_build(
+            args.source,
+            refs=[args.base_ref, args.new_ref],
+            default_ref=args.base_ref,
+            check_errors_on_ref=args.new_ref,
+            check_errors_on_ref_mode=args.mode,
+            verbose=True,
+            sys_exit_on_error=True,
         )
 
 

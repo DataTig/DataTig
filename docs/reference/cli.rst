@@ -53,6 +53,12 @@ Versioned Build sub-command
 This is currently used for internal testing and is not documented
 
 
+Versioned Check sub-command
+---------------------------
+
+This is currently used for internal testing and is not documented
+
+
 Local Server feature
 --------------------
 
