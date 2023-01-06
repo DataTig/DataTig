@@ -122,7 +122,12 @@ def versioned_build(
     refs_str: str = "",
     all_branches: bool = False,
     default_ref: str = "",
+    verbose: bool = False,
+    check_errors_on_ref: str = "",
+    sys_exit: bool = False,
 ) -> None:
+
+    had_errors = False
 
     # Repository Access
     repository_access = RepositoryAccessLocalGit(source_dir)
@@ -190,6 +195,25 @@ def versioned_build(
     if not datastore.is_ref_known(default_ref):
         default_ref = refs[0]
 
+    # Check Errors
+    if check_errors_on_ref:
+        if datastore.is_config_same_between_refs(default_ref, check_errors_on_ref):
+
+            errors_added = datastore.get_errors_added_between_refs(default_ref, check_errors_on_ref)
+            if errors_added:
+                had_errors = True
+                for error in errors_added:
+                    if verbose:
+                        print(
+                            "FILENAME "
+                            + error.get_filename()
+                            + " HAS ERROR: "
+                            + error.get_message()
+                        )
+
+
+        else:
+
     # Static Site Output
     if staticsite_output:
         static_writer = StaticVersionedWriter(
@@ -200,3 +224,13 @@ def versioned_build(
     # Delete temp
     if temp_dir:
         shutil.rmtree(temp_dir)
+
+    # Print final message and exit, if requested
+    if had_errors:
+        if verbose:
+            print("ERRORS OCCURRED- See Above")
+        if sys_exit:
+            sys.exit(-1)
+    else:
+        if sys_exit:
+            sys.exit(0)
