@@ -24,7 +24,7 @@ def go(
     verbose: bool = False,
     check_errors: bool = False,
     check_record_errors: bool = False,
-    sys_exit: bool = False,
+    sys_exit_on_error: bool = False,
 ) -> None:
 
     had_errors = False
@@ -107,11 +107,8 @@ def go(
     if had_errors:
         if verbose:
             print("ERRORS OCCURRED- See Above")
-        if sys_exit:
+        if sys_exit_on_error:
             sys.exit(-1)
-    else:
-        if sys_exit:
-            sys.exit(0)
 
 
 def versioned_build(

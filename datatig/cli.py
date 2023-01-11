@@ -64,7 +64,7 @@ def main() -> None:
             check_errors=True,
             check_record_errors=False,
             verbose=True,
-            sys_exit=True,
+            sys_exit_on_error=True,
         )
 
     elif args.subparser_name == "check":
@@ -74,7 +74,7 @@ def main() -> None:
             check_errors=True,
             check_record_errors=True,
             verbose=True,
-            sys_exit=True,
+            sys_exit_on_error=True,
         )
 
     elif args.subparser_name == "versionedbuild":
