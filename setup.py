@@ -18,7 +18,6 @@ setuptools.setup(
     package_data={
         "": ["*.html", "*.txt", "*.css", "*.js"],
     },
-    classifiers=[],
     install_requires=[
         "Jinja2<3.1",
         "spreadsheetforms",
@@ -37,4 +36,11 @@ setuptools.setup(
         ]
     },
     python_requires=">=3.7",
+    classifiers=[
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+    ],
 )
