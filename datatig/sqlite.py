@@ -11,13 +11,18 @@ from .models.record_error import RecordErrorModel
 
 
 class DataStoreSQLite:
-    def __init__(self, site_config: SiteConfigModel, out_filename: str):
+    def __init__(
+        self,
+        site_config: SiteConfigModel,
+        out_filename: str,
+    ):
         self._site_config: SiteConfigModel = site_config
         self._out_filename: str = out_filename
         self._connection = sqlite3.connect(out_filename)
         self._connection.row_factory = sqlite3.Row
+        self._create()
 
-        # Create table
+    def _create(self):
         with closing(self._connection.cursor()) as cur:
             cur.execute(
                 """CREATE TABLE error (
@@ -43,7 +48,7 @@ class DataStoreSQLite:
                 )"""
             )
 
-            for type in site_config.get_types().values():
+            for type in self._site_config.get_types().values():
                 cur.execute(
                     """INSERT INTO type (
                     id 

@@ -1,0 +1,105 @@
+{% extends "localserver/base.html" %}
+
+{% block title %}{{ type.get_id() }}{% endblock %}
+
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/type/{{ type.get_id() }}">{{ type.get_id() }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ record.get_id() }}</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block body %}
+
+
+<h2>{{ record.get_id() }} - {{ type.get_id() }}</h2>
+
+<table class="table">
+    {% for field_id, field in type.get_fields().items() %}
+        <tr>
+            <th>
+                {{ field.get_title() }}
+            </th>
+            <td>
+                {% if field.get_type() == 'url' %}
+                    <a href="{{ record.get_field_value(field_id).get_value() }}">{{ record.get_field_value(field_id).get_value() }}</a>
+                {% elif field.get_type() == 'list-strings' %}
+                    <ul>
+                        {% for value in record.get_field_value(field_id).get_value() %}
+                            <li>{{ value }}</li>
+                        {% endfor %}
+                    </ul>
+                {% elif field.get_type() == 'boolean' %}
+                    {% if record.get_field_value(field_id).is_value_true() %}
+                        True
+                    {% elif record.get_field_value(field_id).is_value_false() %}
+                        False
+                    {% endif %}
+                {% else %}
+                    {{ record.get_field_value(field_id).get_value() }}
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+
+</table>
+<h3>Errors</h3>
+
+{% if record.get_errors() %}
+    <p><i class="fas fa-times-circle"></i> There were errors:</p>
+    <p class="text-right">
+        <a href="#" onclick="$('#validation_errors').toggle(); return false;"><button type="button" class="btn btn-secondary">Show/Hide</button></a>
+    </p>
+    <table class="table" id="validation_errors">
+        <tr>
+            <th>Message</th>
+            <th>Data Path</th>
+            <th>Schema Path</th>
+        </tr>
+        {% for err in record.get_errors() %}
+            <tr>
+                <td>
+                    {{ err.get_message ()}}
+                </td>
+                <td>
+                    {{ err.get_data_path() }}
+                </td>
+                <td>
+                    {{ err.get_schema_path() }}
+                </td>
+
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p><i class="fas fa-check-circle"></i> No errors</p>
+{% endif %}
+
+
+<h3>Edit</h3>
+<p class="text-right">
+    <a href="/type/{{ type.get_id() }}/record/{{ record.get_id() }}/editweb"><button type="button" class="btn btn-primary">Edit in Browser</button></a>
+    {% if site.get_github_url() %}
+        <a href="https://github.com/{{ site.get_github_url() }}/edit/{{ site.get_githost_primary_branch() }}/{{  record.get_git_filename() }}"><button type="button" class="btn btn-primary">Edit Raw data directly on GitHub</button></a>
+    {% endif %}
+</p>
+
+<h3>Raw Data</h3>
+
+<div>
+    {{ record_data_html|safe }}
+</div>
+
+<p  class="text-right">
+    {% if site.get_github_url() %}
+        <a href="https://github.com/{{ site.get_github_url() }}/blob/{{ site.get_githost_primary_branch() }}/{{  record.get_git_filename() }}"><button type="button" class="btn btn-primary">View on GitHub</button></a>
+    {% endif %}
+</p>
+
+
+{% endblock %}
+

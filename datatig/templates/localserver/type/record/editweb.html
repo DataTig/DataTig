@@ -1,0 +1,43 @@
+{% extends "localserver/base.html" %}
+
+{% block title %}{{ type.get_id() }}{% endblock %}
+
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/type/{{ type.get_id() }}">{{ type.get_id() }}</a></li>
+        <li class="breadcrumb-item"><a href="/type/{{ type.get_id() }}/record/{{ record.get_id() }}/">{{ record.get_id() }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit in Browser</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block body %}
+
+<h2>Edit {{ record.get_id() }} - {{ type.get_id() }}</h2>
+
+<div id="editor_holder">
+</div>
+
+<form method="post">
+    <input type="hidden" name="data" id="raw_data_out">
+    <input type="submit" value="Save"  class="btn btn-warning">
+</form>
+
+
+{% endblock %}
+
+
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@2.5.3/dist/jsoneditor.min.js"></script>
+<script>
+    var data = JSON.parse("{{ record.get_data_as_json_string() | escapejs }}");
+    var schema = JSON.parse("{{ type.get_json_schema_as_string() | escapejs }}");
+    var pretty_json_indent = {{ type.get_pretty_json_indent() }};
+    var data_format = "{{ record.get_format() }}";
+    var markdown_body_is_field = "{{ type.get_markdown_body_is_field()| escapejs }}";
+</script>
+<script src="/js/web-edit-or-new.js"></script>
+{% endblock %}

@@ -33,7 +33,8 @@ setuptools.setup(
             "isort==5.10.1",
             "flake8==4.0.1",
             "mypy==0.971",
-        ]
+        ],
+        "localserver": ["flask"],
     },
     python_requires=">=3.7",
     classifiers=[
