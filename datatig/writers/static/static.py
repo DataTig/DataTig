@@ -76,12 +76,19 @@ class StaticWriter:
             "title": self._config.get_title(),
             "description": self._config.get_description(),
             "types": {},
+            "calendars": {},
         }
         for type, type_config in self._config.get_types().items():
             api["types"][type] = {
                 "id": type,
                 "human_url": self._url + "/type/" + type + "/",
                 "api_url": self._url + "/type/" + type + "/api.json",
+            }
+        for calendar_id, calendar_config in self._config.get_calendars().items():
+            api["calendars"][calendar_id] = {
+                "id": calendar_id,
+                "human_url": self._url + "/calendar/" + calendar_id + "/",
+                "api_url": self._url + "/calendar/" + calendar_id + "/api.json",
             }
         with open(os.path.join(self._out_dir, "api.json"), "w") as fp:
             json.dump(api, fp, indent=2)
@@ -107,6 +114,10 @@ class StaticWriter:
         # Each Type!
         for type in self._config.get_types().values():
             self._go_type(type, jinja2_env)
+
+        # Calendars
+        for calendar_id, calendar_config in self._config.get_calendars().items():
+            self._go_calendar(calendar_id, calendar_config, jinja2_env)
 
         # All Data
         shutil.copy(
@@ -251,6 +262,25 @@ class StaticWriter:
                 self._out_dir, "type", type.get_id(), "record", record_id, "api.json"
             ),
             "w",
+        ) as fp:
+            json.dump(api, fp, indent=2)
+
+    def _go_calendar(self, calendar_id: str, calendar_config, jinja2_env: Environment):
+        # Index page
+        self._write_template(
+            os.path.join("calendar", calendar_id),
+            "index.html",
+            "calendar/index.html",
+            {"calendar": calendar_config},
+            jinja2_env,
+        )
+
+        # API
+        api: dict = {
+            "id": calendar_id,
+        }
+        with open(
+            os.path.join(self._out_dir, "calendar", calendar_id, "api.json"), "w"
         ) as fp:
             json.dump(api, fp, indent=2)
 

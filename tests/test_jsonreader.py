@@ -65,6 +65,7 @@ def test_json_site():
                         "id": "datas",
                     }
                 },
+                "calendars": {},
             } == api
         with open(os.path.join(staticsite_dir, "type", "datas", "api.json")) as fp:
             type_api = json.load(fp)

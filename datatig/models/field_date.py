@@ -1,4 +1,5 @@
 import datetime
+from typing import Optional
 
 import dateparser
 
@@ -53,13 +54,29 @@ class FieldDateValueModel(FieldValueModel):
         elif isinstance(value, datetime.datetime):
             self._value = value.date()
 
+    def get_value_datetime_object(self) -> Optional[datetime.datetime]:
+        if self._value:
+            dt = datetime.datetime(
+                self._value.year,
+                self._value.month,
+                self._value.day,
+                12,
+                0,
+                0,
+                0,
+                datetime.timezone.utc,
+            )
+            return dt
+        else:
+            return None
+
     def get_value(self):
         if self._value:
             return self._value.isoformat()
         else:
             return None
 
-    def get_value_timestamp(self):
+    def get_value_timestamp(self) -> Optional[float]:
         if self._value:
             dt = datetime.datetime(
                 self._value.year,

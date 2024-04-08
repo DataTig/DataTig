@@ -62,6 +62,18 @@ def test_event_site():
                         "id": "events",
                     }
                 },
+                "calendars": {
+                    "deadlines": {
+                        "api_url": "/calendar/deadlines/api.json",
+                        "human_url": "/calendar/deadlines/",
+                        "id": "deadlines",
+                    },
+                    "main": {
+                        "api_url": "/calendar/main/api.json",
+                        "human_url": "/calendar/main/",
+                        "id": "main",
+                    },
+                },
             } == api
         with open(os.path.join(staticsite_dir, "type", "events", "api.json")) as fp:
             type_api = json.load(fp)
@@ -149,3 +161,27 @@ def test_event_site():
                 assert 1719831600 == type["field_end___timestamp"]
                 assert "2024-01-05" == type["field_submission_deadline"]
                 assert 1704456000 == type["field_submission_deadline___timestamp"]
+            with closing(connection.cursor()) as cur:
+                cur.execute("SELECT * FROM calendar ORDER BY id ASC")
+                calendar1 = cur.fetchone()
+                assert "deadlines" == calendar1["id"]
+                calendar2 = cur.fetchone()
+                assert "main" == calendar2["id"]
+            with closing(connection.cursor()) as cur:
+                cur.execute(
+                    "SELECT * FROM calendar_event WHERE id='deadline_1@example.com'"
+                )
+                deadline1 = cur.fetchone()
+                assert "2023-05-01T12:00:00+00:00" == deadline1["start_iso"]
+                assert 1682942400 == deadline1["start_timestamp"]
+                assert "2023-05-01T12:00:00+00:00" == deadline1["end_iso"]
+                assert 1682942400 == deadline1["end_timestamp"]
+            with closing(connection.cursor()) as cur:
+                cur.execute(
+                    "SELECT * FROM calendar_event WHERE id='events_1@example.com'"
+                )
+                event1 = cur.fetchone()
+                assert "2023-11-01T10:00:00" == event1["start_iso"]
+                assert 1698832800 == event1["start_timestamp"]
+                assert "2023-11-01T11:00:00" == event1["end_iso"]
+                assert 1698836400 == event1["end_timestamp"]

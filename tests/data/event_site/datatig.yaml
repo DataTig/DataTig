@@ -24,3 +24,15 @@ types:
   - start
   - end
   pretty_json_indent: 2
+calendars:
+  main:
+    datas:
+      type: events
+      summary: title
+  deadlines:
+    datas:
+      - type: events
+        summary: title
+        start: submission_deadline
+        end: submission_deadline
+        id: "deadline_ID@example.com"

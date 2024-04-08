@@ -17,6 +17,7 @@
 
 <p>{{ site.get_description() }}</p>
 
+<h2>Data</h2>
 
 <table class="table">
     <tr>
@@ -31,6 +32,24 @@
     {% endfor %}
 </table>
 
+{% if site.get_calendars() %}
+    <h2>Calendars</h2>
+
+    <table class="table">
+        <tr>
+            <th>id</th>
+            <th>&nbsp;</th>
+        </tr>
+        {% for calendar_id, calendar in site.get_calendars().items() %}
+            <tr>
+                <td>{{ calendar_id }}</td>
+                <td><a href="{{ url }}/calendar/{{ calendar_id }}/"><button type="button" class="btn btn-link">View Calendar</button></a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endif %}
+
 <p class="text-right">
     <a href="{{ url }}/errors.html"><button type="button" class="btn btn-primary">Errors ({{ datastore.get_count_site_errors() + datastore.get_count_record_errors() }})</button></a>
     <a href="{{ url }}/database.sqlite"><button type="button" class="btn btn-primary">Download SQLite Database ({{ datastore_file_size_bytes }} bytes)</button></a>
@@ -40,6 +59,7 @@
 <p class="text-right">
     <a href="{{ url }}/api.json"><button type="button" class="btn btn-secondary">API</button></a>
 </p>
+
 
 {% endblock %}
 

@@ -119,3 +119,61 @@ A YAML example:
     githost:
         url: org-id/register
         primary_branch: main
+
+.. _reference_site_configuration_calendars:
+
+Calendars
+---------
+
+More about :ref:`explanation_calendars`.
+
+You can define multiple calendars. Each calendar should have an id.
+Each calendar can have multiple sources of data, and each source of data should define which type to look in and which fields in the data to map to fields in the calendar.
+
+In a `calendars` object, specify the `id` of the calendar then an object to configure it. Each object should have:
+
+* a `datas` key which is a list.
+
+Each item in the  `datas` list can have the following keys.
+
+* `type` (required) - The id of the type to get data from.
+* `start` (optional, defaults to `start`) - the field name to use to look up the start date of the event.
+* `end` (optional, defaults to `end`) - the field name to use to look up the end date of the event.
+* `summary` (optional, defaults to `summary`) - the field name to use to look up the summary title of the event.
+* `id` (optional, defaults to `TYPE_ID@example.com`) - the template to use to create an id for each event.
+
+`ids` of each event should be defined to be unique in each calendar, and the following place holders can be used:
+
+* `ID` - the id of the record
+* `TYPE` - the id of the type
+
+A YAML example:
+
+.. code-block:: yaml
+
+    calendars:
+      main:
+        datas:
+          - type: events
+            summary: title
+      deadlines:
+        datas:
+          - type: events
+            summary: title
+            start: submission_deadline
+            end: submission_deadline
+            id: "deadline_ID@example.com"
+
+This defines 2 calendars, one with the id `main` and one with the id `deadlines`.
+
+Given an data item like:
+
+.. code-block:: yaml
+
+    title: Python Conference
+    start: 2024-07-01T10:00:00
+    end: 2024-07-01T11:00:00
+    submission_deadline: 2024-01-05
+
+You can see that the same data item creates an event on the `main` calendar with the start and end dates,
+but also creates a different event on the  `deadlines` calendar at the date of the deadline for the conference.

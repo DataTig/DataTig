@@ -5,3 +5,4 @@ Explanation
    :maxdepth: 2
 
    site-type-record.rst
+   calendars.rst

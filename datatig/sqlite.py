@@ -5,6 +5,7 @@ from contextlib import closing
 from datatig.models.siteconfig import SiteConfigModel
 
 from .exceptions import DuplicateRecordIdException
+from .models.calendar_event import CalendarEvent
 from .models.error import ErrorModel
 from .models.record import RecordModel
 from .models.record_error import RecordErrorModel
@@ -150,6 +151,25 @@ class DataStoreSQLite:
                             ),
                             [],
                         )
+
+            if self._site_config.get_calendars():
+                cur.execute(
+                    """CREATE TABLE calendar (
+                    id TEXT
+                    )"""
+                )
+                cur.execute(
+                    """CREATE TABLE calendar_event (
+                    calendar_id TEXT,
+                    id TEXT,
+                    summary TEXT,
+                    start_iso TEXT,
+                    start_timestamp INTEGER,
+                    end_iso TEXT,
+                    end_timestamp INTEGER,
+                    FOREIGN KEY(calendar_id) REFERENCES calendar(id)
+                    )"""
+                )
 
             self._connection.commit()
 
@@ -372,3 +392,30 @@ class DataStoreSQLite:
 
     def get_file_name(self) -> str:
         return self._out_filename
+
+    def process_calendars(self) -> None:
+        for calendar_id, calendar_config in self._site_config.get_calendars().items():
+            with closing(self._connection.cursor()) as cur:
+                cur.execute("INSERT INTO calendar (id) VALUES (?)", [calendar_id])
+                for data_config in calendar_config.get_datas():
+                    for item_id in self.get_ids_in_type(data_config.get_type_id()):
+                        item = self.get_item(data_config.get_type_id(), item_id)
+                        calendar_event = CalendarEvent()
+                        calendar_event.load_from_calendar_data_and_item(
+                            data_config, item
+                        )
+                        cur.execute(
+                            "INSERT INTO calendar_event (calendar_id, id, summary, start_iso, start_timestamp, end_iso, end_timestamp ) "
+                            + "VALUES (?,?,?,?,?,?,?)",
+                            [
+                                calendar_id,
+                                calendar_event.get_id(),
+                                calendar_event.get_summary(),
+                                calendar_event.get_start_iso(),
+                                calendar_event.get_start_timestamp(),
+                                calendar_event.get_end_iso(),
+                                calendar_event.get_end_timestamp(),
+                            ],
+                        )
+
+                self._connection.commit()

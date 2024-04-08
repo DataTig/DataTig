@@ -57,6 +57,9 @@ def go(
     validate_json_schema = JsonSchemaValidator(config, datastore)
     validate_json_schema.go()
 
+    # Calendars
+    datastore.process_calendars()
+
     # Look for errors
     if check_errors:
         for error in datastore.get_all_errors_generator():

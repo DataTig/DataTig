@@ -3,6 +3,7 @@ import json
 
 import yaml
 
+from datatig.models.calendar import Calendar
 from datatig.models.type import TypeModel
 from datatig.repository_access import RepositoryAccess
 
@@ -12,6 +13,7 @@ class SiteConfigModel:
         self._config: dict = {}
         self._types: dict = {}
         self._source_dir: str = source_dir
+        self._calendars: dict = {}
 
     def load_from_file(self, repository_access: RepositoryAccess) -> None:
         if repository_access.has_file("datatig.json"):
@@ -35,6 +37,10 @@ class SiteConfigModel:
             type_config_model = TypeModel(self)
             type_config_model.load_from_config(type_config)
             self._types[type_config_model.get_id()] = type_config_model
+        for calendar_id, calendar_config in self._config.get("calendars", {}).items():
+            calendar_config_model = Calendar()
+            calendar_config_model.load_from_config(calendar_id, calendar_config)
+            self._calendars[calendar_id] = calendar_config_model
 
     def get_github_url(self) -> str:
         return self._config.get("githost", {}).get("url")
@@ -47,6 +53,12 @@ class SiteConfigModel:
 
     def get_type(self, type_id: str):
         return self._types.get(type_id)
+
+    def get_calendars(self) -> dict:
+        return self._calendars
+
+    def get_calendar(self, calendar_id: str):
+        return self._calendars.get(calendar_id)
 
     def get_source_dir(self) -> str:
         return self._source_dir
