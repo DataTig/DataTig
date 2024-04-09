@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * process.go function, sys_exit -> sys_exit_on_error. Allows other Python code to use this as a library and continue
   if fine but stop and return an error code if not. 
 
+### Removed
+
+* Dropped support for Python 3.7 as that isn't supported any more.
+
 ## [0.5.0] - 2023-01-03
 
 ### Added
