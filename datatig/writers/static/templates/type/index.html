@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ type.id }}{% endblock %}
+{% block title %}{{ type.get_id() }}{% endblock %}
 
 {% block breadcrumbs %}
     <nav aria-label="breadcrumb">

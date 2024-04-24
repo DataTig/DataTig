@@ -21,6 +21,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * Dropped support for Python 3.7 as that isn't supported any more.
 
+### Fixed
+
+* HTML Page titles in static site https://github.com/DataTig/DataTig/issues/18
+
 ## [0.5.0] - 2023-01-03
 
 ### Added
