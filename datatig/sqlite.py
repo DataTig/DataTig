@@ -152,7 +152,10 @@ class DataStoreSQLite:
                             [],
                         )
 
-            if self._site_config.get_calendars():
+            if (
+                self._site_config.get_calendars()
+                and self._site_config.get_types().values()
+            ):
                 cur.execute(
                     """CREATE TABLE calendar (
                     id TEXT
@@ -166,8 +169,26 @@ class DataStoreSQLite:
                     start_iso TEXT,
                     start_timestamp INTEGER,
                     end_iso TEXT,
-                    end_timestamp INTEGER,
-                    FOREIGN KEY(calendar_id) REFERENCES calendar(id)
+                    end_timestamp INTEGER, """
+                    + ", ".join(
+                        [
+                            "record_" + type.get_id() + "___id TEXT "
+                            for type in self._site_config.get_types().values()
+                        ]
+                    )
+                    + """, """
+                    + ", ".join(
+                        [
+                            "FOREIGN KEY (record_"
+                            + type.get_id()
+                            + """___id) REFERENCES record_"""
+                            + type.get_id()
+                            + "(id)"
+                            for type in self._site_config.get_types().values()
+                        ]
+                    )
+                    + """
+                    , FOREIGN KEY(calendar_id) REFERENCES calendar(id)
                     )"""
                 )
 
@@ -405,8 +426,10 @@ class DataStoreSQLite:
                             data_config, item
                         )
                         cur.execute(
-                            "INSERT INTO calendar_event (calendar_id, id, summary, start_iso, start_timestamp, end_iso, end_timestamp ) "
-                            + "VALUES (?,?,?,?,?,?,?)",
+                            "INSERT INTO calendar_event (calendar_id, id, summary, start_iso, start_timestamp, end_iso, end_timestamp, record_"
+                            + data_config.get_type_id()
+                            + "___id ) "
+                            + "VALUES (?,?,?,?,?,?,?,?)",
                             [
                                 calendar_id,
                                 calendar_event.get_id(),
@@ -415,6 +438,7 @@ class DataStoreSQLite:
                                 calendar_event.get_start_timestamp(),
                                 calendar_event.get_end_iso(),
                                 calendar_event.get_end_timestamp(),
+                                item.get_id(),
                             ],
                         )
 
