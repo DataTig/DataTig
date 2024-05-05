@@ -44,6 +44,7 @@ class DataStoreSQLite:
                 key TEXT,
                 type TEXT,
                 title TEXT,
+                sort INTEGER NOT NULL,
                 PRIMARY KEY(type_id, id),
                 FOREIGN KEY(type_id) REFERENCES type(id)
                 )"""
@@ -83,19 +84,22 @@ class DataStoreSQLite:
                     [],
                 )
 
+                type_field_sort: int = 1
                 for type_field_id, type_field in type.get_fields().items():
                     cur.execute(
                         """INSERT INTO type_field (
-                        type_id , id, key, type, title
-                        ) VALUES (?, ?, ?, ?, ?)""",
+                        type_id , id, key, type, title, sort
+                        ) VALUES (?, ?, ?, ?, ?, ?)""",
                         [
                             type.get_id(),
                             type_field_id,
                             type_field.get_key(),
                             type_field.get_type(),
                             type_field.get_title(),
+                            type_field_sort,
                         ],
                     )
+                    type_field_sort += 1
 
                     if type_field.get_type() in [
                         "url",

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   * Can read files that are set up to have more than one document, as long as there is only one document in them.
 * New local server feature - currently used for internal testing
 * Calendars
+* `sort` field to `type_field` table in SQLite database
 
 ### Changed
 

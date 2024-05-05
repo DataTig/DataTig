@@ -129,6 +129,14 @@ def test_event_site():
                 error = cur.fetchone()
                 assert 0 == error["c"]
             with closing(connection.cursor()) as cur:
+                cur.execute("SELECT * FROM type_field ORDER BY sort ASC")
+                field1 = cur.fetchone()
+                assert field1["id"] == "title"
+                assert field1["sort"] == 1
+                field2 = cur.fetchone()
+                assert field2["id"] == "start"
+                assert field2["sort"] == 2
+            with closing(connection.cursor()) as cur:
                 cur.execute("SELECT * FROM record_events WHERE id='1'")
                 type = cur.fetchone()
                 assert "1" == type["id"]
