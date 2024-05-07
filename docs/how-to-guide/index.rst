@@ -5,3 +5,5 @@ How To Guide
    :maxdepth: 2
 
    use-github-actions-to-check-your-data.rst
+   use-github-actions-to-build-and-host-your-site.rst
+   use-netlify-to-build-and-host-your-site.rst
