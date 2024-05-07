@@ -156,15 +156,19 @@ class DataStoreSQLite:
                             [],
                         )
 
+            # Calendars!
+            # Always create basic table, so consuming apps can easily SELECT and see if there are any calendars or not.
+            cur.execute(
+                """CREATE TABLE calendar (
+                id TEXT
+                )"""
+            )
+            # Only create more tables if there is actually data,
+            # to avoid filling DB's with unused confusing tables for simple sites that don't use extra features.
             if (
                 self._site_config.get_calendars()
                 and self._site_config.get_types().values()
             ):
-                cur.execute(
-                    """CREATE TABLE calendar (
-                    id TEXT
-                    )"""
-                )
                 cur.execute(
                     """CREATE TABLE calendar_event (
                     calendar_id TEXT,
