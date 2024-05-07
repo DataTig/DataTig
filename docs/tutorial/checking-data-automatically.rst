@@ -44,7 +44,7 @@ Create a directory called "`.github`". Inside that, create a directory called "`
         - name: Setup python
           uses: actions/setup-python@v2
           with:
-            python-version: 3.9
+            python-version: 3.12
             architecture: x64
 
         - run: pip install datatig
