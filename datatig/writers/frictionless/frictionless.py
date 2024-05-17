@@ -44,7 +44,7 @@ class FrictionlessWriter:
         type = self._config.get_type(type_id)
         resource: dict = {
             "name": type_id,
-            "path": "csv/" + type_id + ".csv",
+            "path": "csv/record_" + type_id + ".csv",
             "format": "csv",
             "mediatype": "text/csv",
             "encoding": "utf-8",
@@ -102,7 +102,7 @@ class FrictionlessWriter:
             + field.get_id()
             + "___"
             + sub_resource_spec["name"],
-            "path": "csv/"
+            "path": "csv/record_"
             + type.get_id()
             + "_field_"
             + field.get_id()

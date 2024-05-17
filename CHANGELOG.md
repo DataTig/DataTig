@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * process.go function, sys_exit -> sys_exit_on_error. Allows other Python code to use this as a library and continue
   if fine but stop and return an error code if not. 
+* frictionless data package - all files now start `record_`. This matches the SQLite database and allows us
+  to put other files in without possible name collisions.
 
 ### Removed
 
