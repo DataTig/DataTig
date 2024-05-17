@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 * HTML Page titles in static site https://github.com/DataTig/DataTig/issues/18
+* With a string list field type, the frictionless data package would have the same specification twice for the extra file.
 
 ## [0.5.0] - 2023-01-03
 

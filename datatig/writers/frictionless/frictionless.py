@@ -116,7 +116,6 @@ class FrictionlessWriter:
             "fields": [{"name": "id", "title": "Record Id", "type": "string"}],
         }
         sub_resource["fields"].extend(sub_resource_spec["fields"])
-        self._datapackage_json["resources"].append(sub_resource)
         csv_header_row: list = ["id"]
         csv_header_row.extend([i["name"] for i in sub_resource_spec["fields"]])
 
