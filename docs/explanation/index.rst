@@ -6,3 +6,5 @@ Explanation
 
    site-type-record.rst
    calendars.rst
+   local-server.rst
+

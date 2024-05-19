@@ -52,9 +52,18 @@ Versioned Build sub-command
 
 This is currently used for internal testing and is not documented
 
+.. _reference_cli_local_servers:
 
 Local Server feature
 --------------------
 
-This is currently used for internal testing and is not documented
+Call with the directory of the data.
+
+.. code-block:: bash
+
+    python -m datatig.localserver.run .
+
+Part of the output will be a URL address - open this in your webbrowser.
+
+(Note: :doc:`For an explanation of this feature, see here. <../explanation/local-server>` )
 
