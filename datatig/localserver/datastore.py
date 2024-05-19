@@ -5,7 +5,6 @@ import tempfile
 import yaml
 
 import datatig.localserver.settings
-from datatig.localserver.sqlite import DataStoreSQLiteForLocalServer
 from datatig.models.record import RecordModel
 from datatig.models.siteconfig import SiteConfigModel
 from datatig.readers.directory import process_type
@@ -36,6 +35,7 @@ class DataStore:
         datastore = DataStoreSQLite(
             datatig.localserver.settings.SITE_CONFIG,
             datatig.localserver.settings.SQLITE_FILE_NAME,
+            error_if_existing_database=True,
         )
 
         # Load data
@@ -59,7 +59,7 @@ class DataStore:
 
     def database_class(self):
         if not self._database_class:
-            self._database_class = DataStoreSQLiteForLocalServer(
+            self._database_class = DataStoreSQLite(
                 site_config=datatig.localserver.settings.SITE_CONFIG,
                 out_filename=datatig.localserver.settings.SQLITE_FILE_NAME,
             )

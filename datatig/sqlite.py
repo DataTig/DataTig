@@ -16,12 +16,26 @@ class DataStoreSQLite:
         self,
         site_config: SiteConfigModel,
         out_filename: str,
+        error_if_existing_database: bool = False,
     ):
         self._site_config: SiteConfigModel = site_config
         self._out_filename: str = out_filename
         self._connection = sqlite3.connect(out_filename)
         self._connection.row_factory = sqlite3.Row
-        self._create()
+        self._was_existing_database: bool = self._is_existing_database()
+        if self._was_existing_database and error_if_existing_database:
+            raise Exception("The SQLITE database file already exists.")
+        if not self._was_existing_database:
+            self._create()
+
+    def _is_existing_database(self) -> bool:
+        with closing(self._connection.cursor()) as cur:
+            # Check
+            cur.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name='type'",
+                [],
+            )
+            return bool(cur.fetchone())
 
     def _create(self):
         with closing(self._connection.cursor()) as cur:
@@ -204,6 +218,24 @@ class DataStoreSQLite:
 
     def store(self, record: RecordModel) -> None:
         with closing(self._connection.cursor()) as cur:
+            # Delete old data first?
+            if self._was_existing_database:
+                cur.execute(
+                    "DELETE FROM record_" + record.get_type().get_id() + "  WHERE id=?",
+                    [record.get_id()],
+                )
+
+                for field in record.get_type().get_fields().values():
+                    if field.get_type() in ["list-strings"]:
+                        cur.execute(
+                            """DELETE FROM record_"""
+                            + record.get_type().get_id()
+                            + """_field_"""
+                            + field.get_id()
+                            + """ WHERE record_id=? """,
+                            [record.get_id()],
+                        )
+
             # Check
             cur.execute(
                 "SELECT * FROM record_" + record.get_type().get_id() + "  WHERE id=?",

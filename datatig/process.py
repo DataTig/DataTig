@@ -41,7 +41,7 @@ def go(
     if sqlite_output is None:
         temp_dir = tempfile.mkdtemp()
         sqlite_output = os.path.join(temp_dir, "database.sqlite")
-    datastore = DataStoreSQLite(config, sqlite_output)
+    datastore = DataStoreSQLite(config, sqlite_output, error_if_existing_database=True)
 
     # Load data
     for type in config.get_types().values():
