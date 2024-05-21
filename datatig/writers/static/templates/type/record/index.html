@@ -78,6 +78,19 @@
     <p><i class="fas fa-check-circle"></i> No errors</p>
 {% endif %}
 
+{% if calendar_ids %}
+<h3>Calendars</h3>
+
+<p>This appears on the following calendars:</p>
+
+<ul>
+    {% for calendar_id in calendar_ids %}
+        <li><a href="{{ url }}/calendar/{{ calendar_id }}">{{ calendar_id }}</a></li>
+    {% endfor %}
+</ul>
+
+{% endif %}
+
 <h3>Edit</h3>
 <p class="text-right">
     <a href="editweb/"><button type="button" class="btn btn-primary">Edit in Browser</button></a>

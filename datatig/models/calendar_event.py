@@ -8,6 +8,7 @@ from .record import RecordModel
 
 class CalendarEvent:
     def __init__(self):
+        self._calendar_id: str = ""
         self._id: str = ""
         self._summary: str = ""
         self._start: Optional[datetime.datetime] = None
@@ -40,6 +41,7 @@ class CalendarEvent:
         ) or self._start
 
     def load_from_database(self, data: dict) -> None:
+        self._calendar_id = data["calendar_id"]
         self._id = data["id"]
         self._summary = data["summary"]
         self._start = datetime.datetime.fromtimestamp(data["start_timestamp"])
@@ -48,6 +50,9 @@ class CalendarEvent:
             if k.startswith("record_") and data[k]:
                 self._type_id = k[7:-5]
                 self._record_id = data[k]
+
+    def get_calendar_id(self) -> str:
+        return self._calendar_id
 
     def get_id(self) -> str:
         return self._id

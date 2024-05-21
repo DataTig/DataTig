@@ -190,7 +190,11 @@ class StaticWriter:
         item_template_vars = {
             "type": type,
             "item": record,
+            "calendar_events": self._datastore.get_calendar_events_in_record(record),
         }
+        item_template_vars["calendar_ids"] = list(
+            set([i.get_calendar_id() for i in item_template_vars["calendar_events"]])  # type: ignore
+        )
         item_template_vars["record_data_html"] = pygments.highlight(
             json.dumps(record.get_data(), indent=4),
             pygments.lexers.data.JsonLexer(),
