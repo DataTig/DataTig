@@ -35,4 +35,4 @@ calendars:
         summary: title
         start: submission_deadline
         end: submission_deadline
-        id: "deadline_ID@example.com"
+        id: "deadline_{{record_id}}@example.com"

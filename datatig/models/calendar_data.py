@@ -4,7 +4,7 @@ class CalendarData:
         self._start_field: str = "start"
         self._end_field: str = "end"
         self._summary_field: str = "Summary"
-        self._id_template: str = "TYPE_ID@example.com"
+        self._id_template: str = "{{type_id}}_{{record_id}}@example.com"
 
     def load_from_config(self, config) -> None:
         self._type = config.get("type")

@@ -22,8 +22,8 @@ class CalendarEvent:
         # id
         self._id = (
             calendar_data.get_id_template()
-            .replace("ID", record.get_id())
-            .replace("TYPE", record.get_type().get_id())
+            .replace("{{record_id}}", record.get_id())
+            .replace("{{type_id}}", record.get_type().get_id())
         )
         # summary
         self._summary = record.get_field_value(
@@ -81,4 +81,6 @@ class CalendarEvent:
         )
 
     def get_url(self, url: str) -> str:
-        return url.replace("TYPE", self._type_id).replace("ID", self._record_id)
+        return url.replace("{{type_id}}", self._type_id).replace(
+            "{{record_id}}", self._record_id
+        )

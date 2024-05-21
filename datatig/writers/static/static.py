@@ -288,7 +288,8 @@ class StaticWriter:
                     "title": cal_event.get_summary(),
                     "start": cal_event.get_start_iso(),
                     "end": cal_event.get_end_iso(),
-                    "url": self._url + cal_event.get_url("/type/TYPE/record/ID"),
+                    "url": self._url
+                    + cal_event.get_url("/type/{{type_id}}/record/{{record_id}}"),
                 }
             )
         with open(

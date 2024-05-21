@@ -140,12 +140,12 @@ Each item in the  `datas` list can have the following keys.
 * `start` (optional, defaults to `start`) - the field name to use to look up the start date of the event.
 * `end` (optional, defaults to `end`) - the field name to use to look up the end date of the event.
 * `summary` (optional, defaults to `summary`) - the field name to use to look up the summary title of the event.
-* `id` (optional, defaults to `TYPE_ID@example.com`) - the template to use to create an id for each event.
+* `id` (optional, defaults to `{{type_id}}_{{record_id}}@example.com`) - the template to use to create an id for each event.
 
 `ids` of each event should be defined to be unique in each calendar, and the following place holders can be used:
 
-* `ID` - the id of the record
-* `TYPE` - the id of the type
+* `{{record_id}}` - the id of the record
+* `{{type_id}}` - the id of the type
 
 A YAML example:
 
