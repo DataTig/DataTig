@@ -483,3 +483,18 @@ class DataStoreSQLite:
                         )
 
                 self._connection.commit()
+
+    def get_calendar_events_in_calendar(self, calendar_id: str) -> list:
+        if not self._site_config.get_calendars():
+            return []
+        with closing(self._connection.cursor()) as cur:
+            out = []
+            cur.execute(
+                "SELECT * FROM calendar_event WHERE calendar_id=? ORDER BY start_timestamp ASC",
+                [calendar_id],
+            )
+            for data in cur.fetchall():
+                ce = CalendarEvent()
+                ce.load_from_database(data)
+                out.append(ce)
+            return out

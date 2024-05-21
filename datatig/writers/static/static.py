@@ -275,6 +275,24 @@ class StaticWriter:
             jinja2_env,
         )
 
+        # Fullcalendar.io data
+        fullcalendar: list = []
+        for cal_event in self._datastore.get_calendar_events_in_calendar(calendar_id):
+            fullcalendar.append(
+                {
+                    "id": cal_event.get_id(),
+                    "title": cal_event.get_summary(),
+                    "start": cal_event.get_start_iso(),
+                    "end": cal_event.get_end_iso(),
+                    "url": self._url + cal_event.get_url("/type/TYPE/record/ID"),
+                }
+            )
+        with open(
+            os.path.join(self._out_dir, "calendar", calendar_id, "fullcalendar.json"),
+            "w",
+        ) as fp:
+            json.dump(fullcalendar, fp, indent=2)
+
         # API
         api: dict = {
             "id": calendar_id,

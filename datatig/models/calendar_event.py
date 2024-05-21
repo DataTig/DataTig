@@ -12,6 +12,8 @@ class CalendarEvent:
         self._summary: str = ""
         self._start: Optional[datetime.datetime] = None
         self._end: Optional[datetime.datetime] = None
+        self._type_id: str = ""
+        self._record_id: str = ""
 
     def load_from_calendar_data_and_item(
         self, calendar_data: CalendarData, record: RecordModel
@@ -36,6 +38,16 @@ class CalendarEvent:
         self._end = (
             end_field_value.get_value_datetime_object() if end_field_value else None
         ) or self._start
+
+    def load_from_database(self, data: dict) -> None:
+        self._id = data["id"]
+        self._summary = data["summary"]
+        self._start = datetime.datetime.fromtimestamp(data["start_timestamp"])
+        self._end = datetime.datetime.fromtimestamp(data["end_timestamp"])
+        for k in data.keys():
+            if k.startswith("record_") and data[k]:
+                self._type_id = k[7:-5]
+                self._record_id = data[k]
 
     def get_id(self) -> str:
         return self._id
@@ -62,3 +74,6 @@ class CalendarEvent:
             if self._end
             else -1
         )
+
+    def get_url(self, url: str) -> str:
+        return url.replace("TYPE", self._type_id).replace("ID", self._record_id)

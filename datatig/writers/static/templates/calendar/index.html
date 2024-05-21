@@ -13,6 +13,25 @@
 
 {% block body %}
 
-<h2>{{ calendar.id }}</h2>
+<h2>{{ calendar.get_id() }}</h2>
 
+<div id='calendar_element'></div>
+
+{% endblock %}
+
+{% block javascript %}
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar_element');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+              eventSources: [
+                {
+                  url: 'fullcalendar.json',
+                }
+              ]
+            });
+            calendar.render();
+        });
+    </script>
 {% endblock %}
