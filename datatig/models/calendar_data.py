@@ -1,4 +1,4 @@
-class CalendarData:
+class CalendarDataModel:
     def __init__(self):
         self._type = None
         self._start_field: str = "start"

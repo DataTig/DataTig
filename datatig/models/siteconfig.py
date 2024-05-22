@@ -3,7 +3,7 @@ import json
 
 import yaml
 
-from datatig.models.calendar import Calendar
+from datatig.models.calendar import CalendarModel
 from datatig.models.type import TypeModel
 from datatig.repository_access import RepositoryAccess
 
@@ -38,7 +38,7 @@ class SiteConfigModel:
             type_config_model.load_from_config(type_config)
             self._types[type_config_model.get_id()] = type_config_model
         for calendar_id, calendar_config in self._config.get("calendars", {}).items():
-            calendar_config_model = Calendar()
+            calendar_config_model = CalendarModel()
             calendar_config_model.load_from_config(calendar_id, calendar_config)
             self._calendars[calendar_id] = calendar_config_model
 

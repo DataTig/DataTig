@@ -1,7 +1,7 @@
-from datatig.models.calendar_data import CalendarData
+from datatig.models.calendar_data import CalendarDataModel
 
 
-class Calendar:
+class CalendarModel:
     def __init__(self):
         self._id = None
         self._datas = []
@@ -12,7 +12,7 @@ class Calendar:
         if isinstance(datas, dict):
             datas = [datas]
         for config in datas:
-            calendar_data = CalendarData()
+            calendar_data = CalendarDataModel()
             calendar_data.load_from_config(config)
             self._datas.append(calendar_data)
 

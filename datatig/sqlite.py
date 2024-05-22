@@ -5,7 +5,7 @@ from contextlib import closing
 from datatig.models.siteconfig import SiteConfigModel
 
 from .exceptions import DuplicateRecordIdException
-from .models.calendar_event import CalendarEvent
+from .models.calendar_event import CalendarEventModel
 from .models.error import ErrorModel
 from .models.record import RecordModel
 from .models.record_error import RecordErrorModel
@@ -461,7 +461,7 @@ class DataStoreSQLite:
                 for data_config in calendar_config.get_datas():
                     for item_id in self.get_ids_in_type(data_config.get_type_id()):
                         item = self.get_item(data_config.get_type_id(), item_id)
-                        calendar_event = CalendarEvent()
+                        calendar_event = CalendarEventModel()
                         calendar_event.load_from_calendar_data_and_item(
                             data_config, item
                         )
@@ -494,7 +494,7 @@ class DataStoreSQLite:
                 [calendar_id],
             )
             for data in cur.fetchall():
-                ce = CalendarEvent()
+                ce = CalendarEventModel()
                 ce.load_from_database(data)
                 out.append(ce)
             return out
@@ -511,7 +511,7 @@ class DataStoreSQLite:
                 [record.get_id()],
             )
             for data in cur.fetchall():
-                ce = CalendarEvent()
+                ce = CalendarEventModel()
                 ce.load_from_database(data)
                 out.append(ce)
             return out

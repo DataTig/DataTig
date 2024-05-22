@@ -1,12 +1,12 @@
 import datetime
 from typing import Optional
 
-from datatig.models.calendar_data import CalendarData
+from datatig.models.calendar_data import CalendarDataModel
 
 from .record import RecordModel
 
 
-class CalendarEvent:
+class CalendarEventModel:
     def __init__(self):
         self._calendar_id: str = ""
         self._id: str = ""
@@ -17,7 +17,7 @@ class CalendarEvent:
         self._record_id: str = ""
 
     def load_from_calendar_data_and_item(
-        self, calendar_data: CalendarData, record: RecordModel
+        self, calendar_data: CalendarDataModel, record: RecordModel
     ) -> None:
         # id
         self._id = (
