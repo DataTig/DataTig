@@ -98,6 +98,10 @@ A YAML example:
         key: description/en
         title: Description (EN)
 
+The types `date` and `datetime` have the following extra options:
+
+* `timezone`: Defaults to `UTC`. Set to a location string like `Europe/Berlin`
+
 
 Git Host
 --------

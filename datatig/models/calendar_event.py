@@ -64,21 +64,13 @@ class CalendarEventModel:
         return self._start.isoformat() if self._start else ""
 
     def get_start_timestamp(self) -> Optional[float]:
-        return (
-            self._start.replace(tzinfo=datetime.timezone.utc).timestamp()
-            if self._start
-            else -1
-        )
+        return self._start.timestamp() if self._start else -1
 
     def get_end_iso(self) -> str:
         return self._end.isoformat() if self._end else ""
 
     def get_end_timestamp(self) -> Optional[float]:
-        return (
-            self._end.replace(tzinfo=datetime.timezone.utc).timestamp()
-            if self._end
-            else -1
-        )
+        return self._end.timestamp() if self._end else -1
 
     def get_url(self, url: str) -> str:
         return url.replace("{{type_id}}", self._type_id).replace(

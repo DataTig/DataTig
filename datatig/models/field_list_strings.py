@@ -13,7 +13,7 @@ class FieldListStringsConfigModel(FieldConfigModel):
         return []
 
     def get_value_object_from_record(self, record):
-        v = FieldListStringsValueModel(record=record, field_id=self._id)
+        v = FieldListStringsValueModel(field=self, record=record)
         obj = JSONDeepReaderWriter(record.get_data())
         v.set_value(obj.read(self._key))
         return v

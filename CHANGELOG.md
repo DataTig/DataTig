@@ -12,7 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   * Can read files that are set up to have more than one document, as long as there is only one document in them.
 * New local server feature
 * Calendars
-* `sort` field to `type_field` table in SQLite database
+* Added `timezone` option to `date` and `datetime` fields
+* Added extra fields to SQLite database to store more of the configuration used when building the site
+  * `sort` and `extra_config` fields to `type_field` table
 
 ### Changed
 
@@ -20,6 +22,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   if fine but stop and return an error code if not. 
 * frictionless data package - all files now start `record_`. This matches the SQLite database and allows us
   to put other files in without possible name collisions.
+* Refactored internal Python API
+  * Constructor to FieldValueModel has changed
 
 ### Removed
 

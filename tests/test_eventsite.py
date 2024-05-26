@@ -141,34 +141,34 @@ def test_event_site():
                 type = cur.fetchone()
                 assert "1" == type["id"]
                 assert "One" == type["field_title"]
-                assert "2023-11-01T10:00:00" == type["field_start"]
-                assert 1698832800 == type["field_start___timestamp"]
-                assert "2023-11-01T11:00:00" == type["field_end"]
-                assert 1698836400 == type["field_end___timestamp"]
+                assert "2023-11-01T10:00:00+01:00" == type["field_start"]
+                assert 1698829200 == type["field_start___timestamp"]
+                assert "2023-11-01T11:00:00+01:00" == type["field_end"]
+                assert 1698832800 == type["field_end___timestamp"]
                 assert "2023-05-01" == type["field_submission_deadline"]
-                assert 1682942400 == type["field_submission_deadline___timestamp"]
+                assert 1682935200 == type["field_submission_deadline___timestamp"]
                 assert "events/1.md" == type["git_filename"]
                 assert "md" == type["format"]
             with closing(connection.cursor()) as cur:
                 cur.execute("SELECT * FROM record_events WHERE id='2'")
                 type = cur.fetchone()
                 assert "2" == type["id"]
-                assert "2024-01-01T10:00:00" == type["field_start"]
-                assert 1704103200 == type["field_start___timestamp"]
-                assert "2024-01-01T11:00:00" == type["field_end"]
-                assert 1704106800 == type["field_end___timestamp"]
+                assert "2024-01-01T10:00:00+01:00" == type["field_start"]
+                assert 1704099600 == type["field_start___timestamp"]
+                assert "2024-01-01T11:00:00+01:00" == type["field_end"]
+                assert 1704103200 == type["field_end___timestamp"]
                 assert "2023-07-15" == type["field_submission_deadline"]
-                assert 1689422400 == type["field_submission_deadline___timestamp"]
+                assert 1689415200 == type["field_submission_deadline___timestamp"]
             with closing(connection.cursor()) as cur:
                 cur.execute("SELECT * FROM record_events WHERE id='3'")
                 type = cur.fetchone()
                 assert "3" == type["id"]
-                assert "2024-07-01T10:00:00" == type["field_start"]
-                assert 1719828000 == type["field_start___timestamp"]
-                assert "2024-07-01T11:00:00" == type["field_end"]
-                assert 1719831600 == type["field_end___timestamp"]
+                assert "2024-07-01T10:00:00+02:00" == type["field_start"]
+                assert 1719820800 == type["field_start___timestamp"]
+                assert "2024-07-01T11:00:00+02:00" == type["field_end"]
+                assert 1719824400 == type["field_end___timestamp"]
                 assert "2024-01-05" == type["field_submission_deadline"]
-                assert 1704456000 == type["field_submission_deadline___timestamp"]
+                assert 1704452400 == type["field_submission_deadline___timestamp"]
             with closing(connection.cursor()) as cur:
                 cur.execute("SELECT * FROM calendar ORDER BY id ASC")
                 calendar1 = cur.fetchone()
@@ -180,18 +180,18 @@ def test_event_site():
                     "SELECT * FROM calendar_event WHERE id='deadline_1@example.com'"
                 )
                 deadline1 = cur.fetchone()
-                assert "2023-05-01T12:00:00+00:00" == deadline1["start_iso"]
-                assert 1682942400 == deadline1["start_timestamp"]
-                assert "2023-05-01T12:00:00+00:00" == deadline1["end_iso"]
-                assert 1682942400 == deadline1["end_timestamp"]
+                assert "2023-05-01T12:00:00+02:00" == deadline1["start_iso"]
+                assert 1682935200 == deadline1["start_timestamp"]
+                assert "2023-05-01T12:00:00+02:00" == deadline1["end_iso"]
+                assert 1682935200 == deadline1["end_timestamp"]
                 assert "1" == deadline1["record_events___id"]
             with closing(connection.cursor()) as cur:
                 cur.execute(
                     "SELECT * FROM calendar_event WHERE id='events_1@example.com'"
                 )
                 event1 = cur.fetchone()
-                assert "2023-11-01T10:00:00" == event1["start_iso"]
-                assert 1698832800 == event1["start_timestamp"]
-                assert "2023-11-01T11:00:00" == event1["end_iso"]
-                assert 1698836400 == event1["end_timestamp"]
+                assert "2023-11-01T10:00:00+01:00" == event1["start_iso"]
+                assert 1698829200 == event1["start_timestamp"]
+                assert "2023-11-01T11:00:00+01:00" == event1["end_iso"]
+                assert 1698832800 == event1["end_timestamp"]
                 assert "1" == deadline1["record_events___id"]

@@ -11,14 +11,17 @@ types:
     key: start
     title: Start
     type: datetime
+    timezone: Europe/Berlin
   - id: end
     key: end
     title: End
     type: datetime
+    timezone: Europe/Berlin
   - id: submission_deadline
     key: submission_deadline
     title: Submission Deadline
     type: date
+    timezone: Europe/Berlin
   list_fields:
   - title
   - start

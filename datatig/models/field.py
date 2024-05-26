@@ -6,11 +6,16 @@ class FieldConfigModel(ABC):
         self._id = None
         self._key = None
         self._title = None
+        self._extra_config = {}
 
-    def load(self, config) -> None:
+    def load(self, config: dict) -> None:
         self._id = config.get("id")
         self._title = config.get("title", self._id)
         self._key = config.get("key")
+        self._load_extra_config(config)
+
+    def _load_extra_config(self, config: dict) -> None:
+        pass
 
     def load_from_database(self, data) -> None:
         self._id = data["id"]
@@ -26,6 +31,9 @@ class FieldConfigModel(ABC):
     def get_title(self) -> str:
         return self._title
 
+    def get_extra_config(self) -> dict:
+        return self._extra_config
+
     def get_frictionless_csv_field_specifications(self) -> list:
         return []
 
@@ -34,9 +42,13 @@ class FieldConfigModel(ABC):
 
 
 class FieldValueModel(ABC):
-    def __init__(self, record=None, field_id=None):
+    def __init__(
+        self,
+        field: FieldConfigModel,
+        record=None,
+    ):
         self._record = record
-        self._field_id = field_id
+        self._field = field
 
     def get_frictionless_csv_data_values(self) -> list:
         """Should return a list of exactly the same number of elements as get_frictionless_csv_field_specifications() returns."""

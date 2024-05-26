@@ -2,6 +2,7 @@ import datetime
 from typing import Optional
 
 import dateparser
+import pytz
 
 from datatig.jsondeepreaderwriter import JSONDeepReaderWriter
 from datatig.models.field import FieldConfigModel, FieldValueModel
@@ -10,6 +11,15 @@ from datatig.models.field import FieldConfigModel, FieldValueModel
 class FieldDateTimeConfigModel(FieldConfigModel):
     def get_type(self) -> str:
         return "datetime"
+
+    def _load_extra_config(self, config: dict) -> None:
+        self._extra_config["timezone"] = config.get("timezone", "UTC")
+        if self._extra_config["timezone"] != "UTC":
+            try:
+                pytz.timezone(self._extra_config["timezone"])
+            except pytz.exceptions.UnknownTimeZoneError:
+                # TODO: Log somewhere that we have done this
+                self._extra_config["timezone"] = "UTC"
 
     def get_json_schema(self) -> dict:
         return {
@@ -22,7 +32,7 @@ class FieldDateTimeConfigModel(FieldConfigModel):
         return None
 
     def get_value_object_from_record(self, record):
-        v = FieldDateTimeValueModel(record=record, field_id=self._id)
+        v = FieldDateTimeValueModel(field=self, record=record)
         obj = JSONDeepReaderWriter(record.get_data())
         v.set_value(obj.read(self._key))
         return v
@@ -41,14 +51,24 @@ class FieldDateTimeConfigModel(FieldConfigModel):
             },
         ]
 
+    def get_timezone(self) -> str:
+        return self.get_extra_config().get("timezone", "UTC")
+
 
 class FieldDateTimeValueModel(FieldValueModel):
     def set_value(self, value):
         self._value = None
         if isinstance(value, str):
-            self._value = dateparser.parse(value, settings={"TIMEZONE": "UTC"})
+            self._value = dateparser.parse(
+                value,
+                settings={
+                    "TIMEZONE": self._field.get_timezone(),
+                    "RETURN_AS_TIMEZONE_AWARE": True,
+                },
+            )
         elif isinstance(value, datetime.datetime):
-            self._value = value
+            timezone = pytz.timezone(self._field.get_timezone())
+            self._value = timezone.localize(value)
 
     def get_value_datetime_object(self) -> Optional[datetime.datetime]:
         return self._value
@@ -61,7 +81,7 @@ class FieldDateTimeValueModel(FieldValueModel):
 
     def get_value_timestamp(self) -> Optional[float]:
         if self._value:
-            return self._value.replace(tzinfo=datetime.timezone.utc).timestamp()
+            return self._value.timestamp()
         else:
             return None
 

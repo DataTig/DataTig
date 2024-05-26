@@ -25,6 +25,7 @@ setuptools.setup(
         "Pygments",
         "pyyaml",
         "dateparser",
+        "pytz",
     ],
     extras_require={
         "Dev": [
