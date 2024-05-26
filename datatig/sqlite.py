@@ -176,7 +176,8 @@ class DataStoreSQLite:
             # Always create basic table, so consuming apps can easily SELECT and see if there are any calendars or not.
             cur.execute(
                 """CREATE TABLE calendar (
-                id TEXT
+                id TEXT,
+                timezone TEXT
                 )"""
             )
             # Only create more tables if there is actually data,
@@ -459,7 +460,10 @@ class DataStoreSQLite:
     def process_calendars(self) -> None:
         for calendar_id, calendar_config in self._site_config.get_calendars().items():
             with closing(self._connection.cursor()) as cur:
-                cur.execute("INSERT INTO calendar (id) VALUES (?)", [calendar_id])
+                cur.execute(
+                    "INSERT INTO calendar (id, timezone) VALUES (?, ?)",
+                    [calendar_id, calendar_config.get_timezone()],
+                )
                 for data_config in calendar_config.get_datas():
                     for item_id in self.get_ids_in_type(data_config.get_type_id()):
                         item = self.get_item(data_config.get_type_id(), item_id)

@@ -136,7 +136,8 @@ Each calendar can have multiple sources of data, and each source of data should 
 
 In a `calendars` object, specify the `id` of the calendar then an object to configure it. Each object should have:
 
-* a `datas` key which is a list.
+* `datas`: a list of data sounces; see below.
+* `timezone`: Defaults to `UTC`. Set to a location string like `Europe/Berlin`. Ideally also set the same timezone on the start and end fields you will be using.
 
 Each item in the  `datas` list can have the following keys.
 
@@ -157,10 +158,12 @@ A YAML example:
 
     calendars:
       main:
+        timezone: Europe/Berlin
         datas:
           - type: events
             summary: title
       deadlines:
+        timezone: Europe/Berlin
         datas:
           - type: events
             summary: title

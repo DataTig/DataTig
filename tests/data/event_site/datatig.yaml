@@ -29,10 +29,12 @@ types:
   pretty_json_indent: 2
 calendars:
   main:
+    timezone: Europe/Berlin
     datas:
       type: events
       summary: title
   deadlines:
+    timezone: Europe/Berlin
     datas:
       - type: events
         summary: title

@@ -48,8 +48,8 @@ class CalendarEventModel:
         self._calendar_id = data["calendar_id"]
         self._id = data["id"]
         self._summary = data["summary"]
-        self._start = datetime.datetime.fromtimestamp(data["start_timestamp"])
-        self._end = datetime.datetime.fromtimestamp(data["end_timestamp"])
+        self._start = datetime.datetime.fromisoformat(data["start_iso"])
+        self._end = datetime.datetime.fromisoformat(data["end_iso"])
         for k in data.keys():
             if k.startswith("record_") and data[k]:
                 self._type_id = k[7:-5]

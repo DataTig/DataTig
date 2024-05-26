@@ -15,16 +15,22 @@
 
 <h2>{{ calendar.get_id() }}</h2>
 
+<p>Timezone: {{ calendar.get_timezone() }}</p>
+
 <div id='calendar_element'></div>
 
 {% endblock %}
 
 {% block javascript %}
+    <script src='https://cdn.jsdelivr.net/npm/moment@2.29.4/min/moment.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/moment-timezone@0.5.40/builds/moment-timezone-with-data.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/moment-timezone@6.1.13/index.global.min.js'></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar_element');
             var calendar = new FullCalendar.Calendar(calendarEl, {
+              timeZone: '{{ calendar.get_timezone() }}',
               eventSources: [
                 {
                   url: 'fullcalendar.json',
