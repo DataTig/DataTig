@@ -37,7 +37,11 @@ class CalendarEventModel:
         # end
         end_field_value = record.get_field_value(calendar_data.get_end_field())
         self._end = (
-            end_field_value.get_value_datetime_object() if end_field_value else None
+            end_field_value.get_value_datetime_object(
+                fallback_hour=23, fallback_min=59, fallback_sec=59
+            )
+            if end_field_value
+            else None
         ) or self._start
 
     def load_from_database(self, data: dict) -> None:

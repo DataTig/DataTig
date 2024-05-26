@@ -73,16 +73,21 @@ class FieldDateValueModel(FieldValueModel):
         elif isinstance(value, datetime.datetime):
             self._value = value.date()
 
-    def get_value_datetime_object(self) -> Optional[datetime.datetime]:
+    def get_value_datetime_object(
+        self,
+        fallback_hour=0,
+        fallback_min=0,
+        fallback_sec=0,
+    ) -> Optional[datetime.datetime]:
         if self._value:
             timezone = self._field.get_timezone()  # type: ignore
             dt = datetime.datetime(
                 self._value.year,
                 self._value.month,
                 self._value.day,
-                12,
-                0,
-                0,
+                fallback_hour,
+                fallback_min,
+                fallback_sec,
                 0,
             )
             return pytz.timezone(timezone).localize(dt)

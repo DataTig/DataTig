@@ -70,7 +70,15 @@ class FieldDateTimeValueModel(FieldValueModel):
             timezone = pytz.timezone(self._field.get_timezone())
             self._value = timezone.localize(value)
 
-    def get_value_datetime_object(self) -> Optional[datetime.datetime]:
+    def get_value_datetime_object(
+        self,
+        fallback_hour=0,
+        fallback_min=0,
+        fallback_sec=0,
+    ) -> Optional[datetime.datetime]:
+        # fallback options not used here as datetime already comes with them, but they are used in FieldDateValueModel
+        # and we want the method signature to be the same
+        # so that FieldDateValueModel and FieldDateTimeValueModel can be treated the same.
         return self._value
 
     def get_value(self):

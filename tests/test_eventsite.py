@@ -180,10 +180,10 @@ def test_event_site():
                     "SELECT * FROM calendar_event WHERE id='deadline_1@example.com'"
                 )
                 deadline1 = cur.fetchone()
-                assert "2023-05-01T12:00:00+02:00" == deadline1["start_iso"]
-                assert 1682935200 == deadline1["start_timestamp"]
-                assert "2023-05-01T12:00:00+02:00" == deadline1["end_iso"]
-                assert 1682935200 == deadline1["end_timestamp"]
+                assert "2023-05-01T00:00:00+02:00" == deadline1["start_iso"]
+                assert 1682892000 == deadline1["start_timestamp"]
+                assert "2023-05-01T23:59:59+02:00" == deadline1["end_iso"]
+                assert 1682978399 == deadline1["end_timestamp"]
                 assert "1" == deadline1["record_events___id"]
             with closing(connection.cursor()) as cur:
                 cur.execute(
