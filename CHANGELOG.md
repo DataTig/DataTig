@@ -24,6 +24,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   to put other files in without possible name collisions.
 * Refactored internal Python API
   * Constructor to FieldValueModel has changed
+* When turning date fields to timestamps, previously 12:00:00 was assumed to try to avoid timezone issues. 
+  Now we have proper timezones, assume 00:00:00
 
 ### Removed
 

@@ -102,7 +102,7 @@ class FieldDateValueModel(FieldValueModel):
                 self._value.year,
                 self._value.month,
                 self._value.day,
-                12,
+                0,
                 0,
                 0,
                 0,
