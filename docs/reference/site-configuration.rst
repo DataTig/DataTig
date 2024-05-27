@@ -72,6 +72,7 @@ Allowed types are:
 * `string`
 * `url`
 * `list-strings`
+* 'list-dictionaries' (`list-dicts` can be used for short)
 * `date`
 * `datetime`
 * `boolean`
@@ -102,6 +103,9 @@ The types `date` and `datetime` have the following extra options:
 
 * `timezone`: Defaults to `UTC`. Set to a location string like `Europe/Berlin`
 
+The type `list-dictionaries` has the following extra options:
+
+* 'fields': A list of fields to be found in the dictionary items. Definition is the same as above, but list types are not allowed. (So you can't have a list in a list.)
 
 Git Host
 --------
@@ -146,6 +150,8 @@ Each item in the  `datas` list can have the following keys.
 * `end` (optional, defaults to `end`) - the field name to use to look up the end date of the event.
 * `summary` (optional, defaults to `summary`) - the field name to use to look up the summary title of the event.
 * `id` (optional, defaults to `{{type_id}}_{{record_id}}@example.com`) - the template to use to create an id for each event.
+
+Field names given should not be of one of the list types.
 
 `ids` of each event should be defined to be unique in each calendar, and the following place holders can be used:
 

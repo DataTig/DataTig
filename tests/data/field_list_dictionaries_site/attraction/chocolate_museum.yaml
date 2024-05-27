@@ -1,0 +1,15 @@
+title: Chocolate Museum
+tickets:
+  - title: Kids
+    who: 18 years of age or younger
+    price: 9
+    url: https://example.com/choolate/kids
+  - title: Senior citizens
+    who: 65 years of age or older
+    price: 14
+    url: https://example.com/choolate/biggest_kids
+  - title: Adults
+    who: 65 years of age or older
+    price: 16
+    url: https://example.com/choolate/big_kids
+

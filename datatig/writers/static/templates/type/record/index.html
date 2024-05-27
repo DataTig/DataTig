@@ -18,33 +18,72 @@
 
 <table class="table">
     {% for field_id, field in type.get_fields().items() %}
-        <tr>
-            <th>
-                {{ field.get_title() }}
-            </th>
-            <td>
-                {% if field.get_type() == 'url' %}
-                    <a href="{{ item.get_field_value(field_id).get_value() }}">{{ item.get_field_value(field_id).get_value() }}</a>
-                {% elif field.get_type() == 'list-strings' %}
-                    <ul>
-                        {% for value in item.get_field_value(field_id).get_value() %}
-                            <li>{{ value }}</li>
-                        {% endfor %}
-                    </ul>
-                {% elif field.get_type() == 'boolean' %}
-                    {% if item.get_field_value(field_id).is_value_true() %}
-                        True
-                    {% elif item.get_field_value(field_id).is_value_false() %}
-                        False
+        {% if field.get_type() != "list-dictionaries" %}
+            <tr>
+                <th>
+                    {{ field.get_title() }}
+                </th>
+                <td>
+                    {% if field.get_type() == 'url' %}
+                        <a href="{{ item.get_field_value(field_id).get_value() }}">{{ item.get_field_value(field_id).get_value() }}</a>
+                    {% elif field.get_type() == 'list-strings' %}
+                        <ul>
+                            {% for value in item.get_field_value(field_id).get_value() %}
+                                <li>{{ value }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% elif field.get_type() == 'boolean' %}
+                        {% if item.get_field_value(field_id).is_value_true() %}
+                            True
+                        {% elif item.get_field_value(field_id).is_value_false() %}
+                            False
+                        {% endif %}
+                    {% else %}
+                        {{ item.get_field_value(field_id).get_value() }}
                     {% endif %}
-                {% else %}
-                    {{ item.get_field_value(field_id).get_value() }}
-                {% endif %}
-            </td>
-        </tr>
+                </td>
+            </tr>
+        {% endif %}
     {% endfor %}
 
 </table>
+
+{% for field_id, field in type.get_fields().items() %}
+    {% if field.get_type() == "list-dictionaries" %}
+        <h4>Field {{ field.get_title() }}</h4>
+        {% if item.get_field_value(field_id).get_sub_records() %}
+            <table class="table">
+                <tr>
+                    {% for sub_field_id, sub_field in field.get_fields().items() %}
+                        <th>{{ sub_field.get_title() }}</th>
+                    {% endfor %}
+                </tr>
+                {% for sub_record in item.get_field_value(field_id).get_sub_records() %}
+                    <tr>
+                        {% for sub_field_id, sub_field in field.get_fields().items() %}
+                            <td>
+                                {% if sub_field.get_type() == 'url' %}
+                                    <a href="{{ item.get_field_value(field_id).get_value() }}">{{ sub_record.get_value(sub_field_id).get_value() }}</a>
+                                {% elif sub_field.get_type() == 'boolean' %}
+                                    {% if sub_record.get_value(sub_field_id).is_value_true() %}
+                                        True
+                                    {% elif sub_record.get_value(sub_field_id).is_value_false() %}
+                                        False
+                                    {% endif %}
+                                {% else %}
+                                    {{ sub_record.get_value(sub_field_id).get_value() }}
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No data.</p>
+        {% endif %}
+    {% endif %}
+{% endfor %}
+
 
 <h3>Errors</h3>
 

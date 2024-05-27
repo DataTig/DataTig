@@ -66,128 +66,158 @@ class DataStoreSQLite:
             )
 
             for type in self._site_config.get_types().values():
-                cur.execute(
-                    """INSERT INTO type (
-                    id 
-                    ) VALUES (?)""",
-                    [type.get_id()],
-                )
+                self._create_type(cur, type)
 
-                cur.execute(
-                    """CREATE TABLE record_{type} (
-                                  id TEXT PRIMARY KEY,
-                                  data TEXT,
-                                  git_filename TEXT,
-                                  format TEXT
-                              )""".format(
-                        type=type.get_id()
-                    ),
-                    [],
-                )
+            self._create_calendars(cur)
 
-                cur.execute(
-                    """CREATE TABLE record_error_{type} (
-                                  record_id TEXT,
-                                  message TEXT,
-                                  data_path TEXT,
-                                  schema_path TEXT,
-                                  generator TEXT,
-                                  FOREIGN KEY(record_id) REFERENCES record_{type}(id)
-                              )""".format(
-                        type=type.get_id()
-                    ),
-                    [],
-                )
+    def _create_type(self, cur, type):
 
-                type_field_sort: int = 1
-                for type_field_id, type_field in type.get_fields().items():
-                    cur.execute(
-                        """INSERT INTO type_field (
-                        type_id , id, key, type, title, sort, extra_config
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?)""",
-                        [
-                            type.get_id(),
-                            type_field_id,
-                            type_field.get_key(),
-                            type_field.get_type(),
-                            type_field.get_title(),
-                            type_field_sort,
-                            json.dumps(type_field.get_extra_config()),
-                        ],
-                    )
-                    type_field_sort += 1
+        cur.execute(
+            """INSERT INTO type (
+            id 
+            ) VALUES (?)""",
+            [type.get_id()],
+        )
 
-                    if type_field.get_type() in [
-                        "url",
-                        "string",
-                        "list-strings",
-                    ]:
-                        cur.execute(
-                            """ALTER TABLE record_"""
-                            + type.get_id()
-                            + """ ADD field_"""
-                            + type_field_id
-                            + """ TEXT """,
-                            [],
-                        )
-                    elif type_field.get_type() in [
-                        "datetime",
-                        "date",
-                    ]:
-                        cur.execute(
-                            """ALTER TABLE record_"""
-                            + type.get_id()
-                            + """ ADD field_"""
-                            + type_field_id
-                            + """ TEXT """,
-                            [],
-                        )
-                        cur.execute(
-                            """ALTER TABLE record_"""
-                            + type.get_id()
-                            + """ ADD field_"""
-                            + type_field_id
-                            + """___timestamp INTEGER """,
-                            [],
-                        )
-                    elif type_field.get_type() in ["boolean", "integer"]:
-                        cur.execute(
-                            """ALTER TABLE record_"""
-                            + type.get_id()
-                            + """ ADD field_"""
-                            + type_field_id
-                            + """ INTEGER """,
-                            [],
-                        )
-                    if type_field.get_type() in ["list-strings"]:
-                        cur.execute(
-                            """CREATE TABLE record_{type}_field_{field} (
-                                record_id TEXT, 
-                                value TEXT,
-                                FOREIGN KEY(record_id) REFERENCES record_{type}(id)
-                                ) 
-                                """.format(
-                                type=type.get_id(), field=type_field_id
-                            ),
-                            [],
-                        )
+        cur.execute(
+            """CREATE TABLE record_{type} (
+                          id TEXT PRIMARY KEY,
+                          data TEXT,
+                          git_filename TEXT,
+                          format TEXT
+                      )""".format(
+                type=type.get_id()
+            ),
+            [],
+        )
 
-            # Calendars!
-            # Always create basic table, so consuming apps can easily SELECT and see if there are any calendars or not.
+        cur.execute(
+            """CREATE TABLE record_error_{type} (
+                          record_id TEXT,
+                          message TEXT,
+                          data_path TEXT,
+                          schema_path TEXT,
+                          generator TEXT,
+                          FOREIGN KEY(record_id) REFERENCES record_{type}(id)
+                      )""".format(
+                type=type.get_id()
+            ),
+            [],
+        )
+
+        self._type_field_sort: int = 1
+        for type_field_id, type_field in type.get_fields().items():
+            self._create_type_add_field(cur, type, type_field)
+
+    def _create_type_add_field(self, cur, type, type_field, parent_keys=[]):
+        cur.execute(
+            """INSERT INTO type_field (
+            type_id , id, key, type, title, sort, extra_config
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)""",
+            [
+                type.get_id(),
+                "/".join(parent_keys + [type_field.get_id()]),
+                type_field.get_key(),
+                type_field.get_type(),
+                type_field.get_title(),
+                self._type_field_sort,
+                json.dumps(type_field.get_extra_config()),
+            ],
+        )
+        self._type_field_sort += 1
+
+        table_name = "record_" + type.get_id()
+        for parent_key in parent_keys:
+            table_name += "___field_" + parent_key
+
+        if type_field.get_type() in [
+            "url",
+            "string",
+            "list-strings",
+        ]:
             cur.execute(
-                """CREATE TABLE calendar (
+                """ALTER TABLE """
+                + table_name
+                + """ ADD field_"""
+                + type_field.get_id()
+                + """ TEXT """,
+                [],
+            )
+        elif type_field.get_type() in [
+            "datetime",
+            "date",
+        ]:
+            cur.execute(
+                """ALTER TABLE """
+                + table_name
+                + """ ADD field_"""
+                + type_field.get_id()
+                + """ TEXT """,
+                [],
+            )
+            cur.execute(
+                """ALTER TABLE """
+                + table_name
+                + """ ADD field_"""
+                + type_field.get_id()
+                + """___timestamp INTEGER """,
+                [],
+            )
+        elif type_field.get_type() in ["boolean", "integer"]:
+            cur.execute(
+                """ALTER TABLE """
+                + table_name
+                + """ ADD field_"""
+                + type_field.get_id()
+                + """ INTEGER """,
+                [],
+            )
+        if type_field.get_type() in ["list-strings"]:
+            cur.execute(
+                """CREATE TABLE {table}_field_{field} (
+                    record_id TEXT, 
+                    value TEXT,
+                    FOREIGN KEY(record_id) REFERENCES record_{type}(id)
+                    ) 
+                    """.format(
+                    table=table_name, type=type.get_id(), field=type_field.get_id()
+                ),
+                [],
+            )
+        elif type_field.get_type() in ["list-dictionaries"]:
+            cur.execute(
+                """CREATE TABLE {table}___field_{field} (
+                    record_id TEXT NOT NULL, 
+                    sort INTEGER NOT NULL,
+                    FOREIGN KEY(record_id) REFERENCES record_{type}(id)
+                    ) 
+                    """.format(
+                    table=table_name, type=type.get_id(), field=type_field.get_id()
+                ),
+                [],
+            )
+            for sub_type_field in type_field.get_fields().values():
+                self._create_type_add_field(
+                    cur,
+                    type,
+                    sub_type_field,
+                    parent_keys=parent_keys + [type_field.get_id()],
+                )
+
+    def _create_calendars(self, cur):
+        # Calendars!
+        # Always create basic table, so consuming apps can easily SELECT and see if there are any calendars or not.
+        cur.execute(
+            """CREATE TABLE calendar (
                 id TEXT,
                 timezone TEXT
                 )"""
-            )
-            # Only create more tables if there is actually data,
-            # to avoid filling DB's with unused confusing tables for simple sites that don't use extra features.
-            if (
-                self._site_config.get_calendars()
-                and self._site_config.get_types().values()
-            ):
-                cur.execute(
-                    """CREATE TABLE calendar_event (
+        )
+        # Only create more tables if there is actually data,
+        # to avoid filling DB's with unused confusing tables for simple sites that don't use extra features.
+        if self._site_config.get_calendars() and self._site_config.get_types().values():
+            cur.execute(
+                """CREATE TABLE calendar_event (
                     calendar_id TEXT,
                     id TEXT,
                     summary TEXT,
@@ -195,29 +225,29 @@ class DataStoreSQLite:
                     start_timestamp INTEGER,
                     end_iso TEXT,
                     end_timestamp INTEGER, """
-                    + ", ".join(
-                        [
-                            "record_" + type.get_id() + "___id TEXT "
-                            for type in self._site_config.get_types().values()
-                        ]
-                    )
-                    + """, """
-                    + ", ".join(
-                        [
-                            "FOREIGN KEY (record_"
-                            + type.get_id()
-                            + """___id) REFERENCES record_"""
-                            + type.get_id()
-                            + "(id)"
-                            for type in self._site_config.get_types().values()
-                        ]
-                    )
-                    + """
+                + ", ".join(
+                    [
+                        "record_" + type.get_id() + "___id TEXT "
+                        for type in self._site_config.get_types().values()
+                    ]
+                )
+                + """, """
+                + ", ".join(
+                    [
+                        "FOREIGN KEY (record_"
+                        + type.get_id()
+                        + """___id) REFERENCES record_"""
+                        + type.get_id()
+                        + "(id)"
+                        for type in self._site_config.get_types().values()
+                    ]
+                )
+                + """
                     , FOREIGN KEY(calendar_id) REFERENCES calendar(id)
                     )"""
-                )
+            )
 
-            self._connection.commit()
+        self._connection.commit()
 
     def store(self, record: RecordModel) -> None:
         with closing(self._connection.cursor()) as cur:
@@ -256,7 +286,12 @@ class DataStoreSQLite:
                 )
 
             # Store
-            insert_data = [
+            insert_fields, insert_data = self._store_get_fields_and_values(
+                record.get_type().get_fields().values(),
+                lambda field_id: record.get_field_value(field_id),
+            )
+            insert_fields += ["id", "data", "git_filename", "format"]
+            insert_data += [
                 record.get_id(),
                 json.dumps(record.get_data(), default=str),
                 record.get_git_filename(),
@@ -266,59 +301,23 @@ class DataStoreSQLite:
                 """INSERT INTO record_"""
                 + record.get_type().get_id()
                 + """ (
-                id, data, git_filename, format
-                ) VALUES (?, ?, ?,  ?)""",
+                """
+                + ", ".join(insert_fields)
+                + """
+                ) VALUES ("""
+                + ", ".join(["?" for i in insert_fields])
+                + """)""",
                 insert_data,
             )
 
             for field in record.get_type().get_fields().values():
                 value_object = record.get_field_value(field.get_id())
                 value = value_object.get_value()
-                if field.get_type() in [
-                    "url",
-                    "string",
-                ] and isinstance(value, str):
-                    cur.execute(
-                        """UPDATE record_"""
-                        + record.get_type().get_id()
-                        + """ SET field_"""
-                        + field.get_id()
-                        + """ = ? WHERE id=?""",
-                        [value, record.get_id()],
-                    )
-                elif field.get_type() in [
-                    "datetime",
-                    "date",
-                ] and isinstance(value, str):
-                    cur.execute(
-                        """UPDATE record_"""
-                        + record.get_type().get_id()
-                        + """ SET field_"""
-                        + field.get_id()
-                        + """ = ? WHERE id=?""",
-                        [value, record.get_id()],
-                    )
-                    cur.execute(
-                        """UPDATE record_"""
-                        + record.get_type().get_id()
-                        + """ SET field_"""
-                        + field.get_id()
-                        + """___timestamp = ? WHERE id=?""",
-                        [value_object.get_value_timestamp(), record.get_id()],
-                    )
                 if (
                     field.get_type() in ["list-strings"]
                     and isinstance(value, list)
                     and len(value) > 0
                 ):
-                    cur.execute(
-                        """UPDATE record_"""
-                        + record.get_type().get_id()
-                        + """ SET field_"""
-                        + field.get_id()
-                        + """ = ? WHERE id=?""",
-                        [", ".join([str(v) for v in value]), record.get_id()],
-                    )
                     for v in value:
                         cur.execute(
                             """INSERT INTO  record_"""
@@ -328,26 +327,74 @@ class DataStoreSQLite:
                             + """ (record_id, value) VALUES (?, ?) """,
                             [record.get_id(), str(v)],
                         )
-                if field.get_type() == "boolean" and isinstance(value, bool):
-                    cur.execute(
-                        """UPDATE record_"""
-                        + record.get_type().get_id()
-                        + """ SET field_"""
-                        + field.get_id()
-                        + """ = ? WHERE id=?""",
-                        [1 if value else 0, record.get_id()],
-                    )
-                if field.get_type() == "integer" and isinstance(value, int):
-                    cur.execute(
-                        """UPDATE record_"""
-                        + record.get_type().get_id()
-                        + """ SET field_"""
-                        + field.get_id()
-                        + """ = ? WHERE id=?""",
-                        [value, record.get_id()],
-                    )
+                elif field.get_type() in ["list-dictionaries"]:
+                    sort = 1
+                    for sub_record in value_object.get_sub_records():
+                        insert_fields, insert_data = self._store_get_fields_and_values(
+                            field.get_fields().values(),
+                            lambda field_id: sub_record.get_value(field_id),
+                        )
+                        insert_fields += ["record_id", "sort"]
+                        insert_data += [
+                            record.get_id(),
+                            sort,
+                        ]
+                        sort += 1
+                        cur.execute(
+                            """INSERT INTO record_"""
+                            + record.get_type().get_id()
+                            + """___field_"""
+                            + field.get_id()
+                            + """ (
+                                       """
+                            + ", ".join(insert_fields)
+                            + """
+                                       ) VALUES ("""
+                            + ", ".join(["?" for i in insert_fields])
+                            + """)""",
+                            insert_data,
+                        )
 
             self._connection.commit()
+
+    def _store_get_fields_and_values(self, fields, value_object_getter_function):
+        out_fields = []
+        out_values = []
+        for field in fields:
+            value_object = value_object_getter_function(field.get_id())
+            value = value_object.get_value()
+            if field.get_type() in [
+                "url",
+                "string",
+            ] and isinstance(value, str):
+                out_fields.append("field_" + field.get_id())
+                out_values.append(value)
+            elif field.get_type() in [
+                "datetime",
+                "date",
+            ] and isinstance(value, str):
+
+                out_fields.append("field_" + field.get_id())
+                out_values.append(value)
+                out_fields.append("field_" + field.get_id() + "___timestamp")
+                out_values.append(value_object.get_value_timestamp())
+            elif (
+                field.get_type() in ["list-strings"]
+                and isinstance(value, list)
+                and len(value) > 0
+            ):
+
+                out_fields.append("field_" + field.get_id())
+                out_values.append(", ".join([str(v) for v in value]))
+            elif field.get_type() == "boolean" and isinstance(value, bool):
+
+                out_fields.append("field_" + field.get_id())
+                out_values.append(1 if value else 0)
+            elif field.get_type() == "integer" and isinstance(value, int):
+                out_fields.append("field_" + field.get_id())
+                out_values.append(value)
+
+        return out_fields, out_values
 
     def store_json_schema_validation_errors(self, type_id, item_id, errors) -> None:
         with closing(self._connection.cursor()) as cur:

@@ -10,12 +10,13 @@ class BuildJSONSchemaResults:
     # and this object will also hold error information.
 
 
-def build_json_schema(fields: list) -> BuildJSONSchemaResults:
+def build_json_schema(fields: list, child_schema=False) -> BuildJSONSchemaResults:
     json_schema: dict = {
         "type": "object",
         "properties": {},
-        "$schema": "http://json-schema.org/draft-07/schema",
     }
+    if not child_schema:
+        json_schema["$schema"] = "http://json-schema.org/draft-07/schema"
 
     for field in fields:
         key_bits = field.get_key().split("/")

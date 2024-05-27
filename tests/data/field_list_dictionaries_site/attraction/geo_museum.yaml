@@ -1,0 +1,7 @@
+title: Geo Museum
+tickets:
+  - title: Free
+    who: Everyone
+    price: 0
+    url: https://example.com/geo
+

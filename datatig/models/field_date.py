@@ -31,9 +31,9 @@ class FieldDateConfigModel(FieldConfigModel):
     def get_new_item_json(self):
         return None
 
-    def get_value_object_from_record(self, record):
+    def get_value_object(self, record, data):
         v = FieldDateValueModel(field=self, record=record)
-        obj = JSONDeepReaderWriter(record.get_data())
+        obj = JSONDeepReaderWriter(data)
         v.set_value(obj.read(self._key))
         return v
 

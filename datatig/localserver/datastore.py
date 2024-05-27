@@ -101,8 +101,8 @@ class DataStore:
         # Update in memory
         record._data = data
         for field_id, field_config in record.get_type().get_fields().items():
-            record._field_values[field_id] = field_config.get_value_object_from_record(
-                record=record
+            record._field_values[field_id] = field_config.get_value_object(
+                record=record, data=data
             )
 
         # Save to database

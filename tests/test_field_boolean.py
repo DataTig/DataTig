@@ -34,5 +34,5 @@ def test_set_value(data, expected_value):
     config._key = "has_cat"
     record = RecordModel()
     record._data = data
-    value = config.get_value_object_from_record(record)
+    value = config.get_value_object(record, data)
     assert expected_value == value.get_value()

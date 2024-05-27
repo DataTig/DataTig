@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Added `timezone` option to `date` and `datetime` fields
 * Added extra fields to SQLite database to store more of the configuration used when building the site
   * `sort` and `extra_config` fields to `type_field` table
+* New field type `list-dictionaries`, which lets you also define the fields in the dictionaries.
 
 ### Changed
 
@@ -24,6 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   to put other files in without possible name collisions.
 * Refactored internal Python API
   * Constructor to FieldValueModel has changed
+  * `FieldConfigModel.get_value_object_from_record` replaced with `get_value_object` with different parameters, to support `list-dictionaries`
 * When turning date fields to timestamps, previously 12:00:00 was assumed to try to avoid timezone issues. 
   Now we have proper timezones, assume 00:00:00
 

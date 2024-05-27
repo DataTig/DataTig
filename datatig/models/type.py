@@ -9,6 +9,7 @@ from .field_boolean import FieldBooleanConfigModel
 from .field_date import FieldDateConfigModel
 from .field_datetime import FieldDateTimeConfigModel
 from .field_integer import FieldIntegerConfigModel
+from .field_list_dictionaries import FieldListDictionariesConfigModel
 from .field_list_strings import FieldListStringsConfigModel
 from .field_string import FieldStringConfigModel
 from .field_url import FieldURLConfigModel
@@ -31,6 +32,11 @@ class TypeModel:
                 field_config = FieldURLConfigModel()
             elif config.get("type") == "list-strings":
                 field_config = FieldListStringsConfigModel()
+            elif (
+                config.get("type") == "list-dictionaries"
+                or config.get("type") == "list-dicts"
+            ):
+                field_config = FieldListDictionariesConfigModel()
             elif config.get("type") == "date":
                 field_config = FieldDateConfigModel()
             elif config.get("type") == "datetime":

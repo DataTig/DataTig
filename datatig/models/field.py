@@ -34,6 +34,9 @@ class FieldConfigModel(ABC):
     def get_extra_config(self) -> dict:
         return self._extra_config
 
+    def get_value_object(self, record, data):
+        pass
+
     def get_frictionless_csv_field_specifications(self) -> list:
         return []
 

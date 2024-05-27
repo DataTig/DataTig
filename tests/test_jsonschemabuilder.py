@@ -1,4 +1,5 @@
 from datatig.jsonschemabuilder import build_json_schema
+from datatig.models.field_list_dictionaries import FieldListDictionariesConfigModel
 from datatig.models.field_list_strings import FieldListStringsConfigModel
 from datatig.models.field_string import FieldStringConfigModel
 from datatig.models.field_url import FieldURLConfigModel
@@ -128,6 +129,56 @@ def test_root_and_many_layers_deep_at_once():
                 "type": "object",
             },
             "title": {"title": "Title", "type": "string"},
+        },
+        "type": "object",
+    } == result.get_json_schema()
+
+
+def test_list_dictionaries():
+    field1 = FieldListDictionariesConfigModel()
+    field1.id = "musicians"
+    field1._key = "musicians"
+    field1._title = "Musicians"
+    field2 = FieldURLConfigModel()
+    field2.id = "url"
+    field2._key = "information/url"
+    field2._title = "URL"
+    field1._fields["url"] = field2
+    field3 = FieldStringConfigModel()
+    field3.id = "formal_name"
+    field3._key = "names/formal"
+    field3._title = "Formal Name"
+    field1._fields["formal_name"] = field3
+    fields = [field1]
+    result = build_json_schema(fields)
+    assert {
+        "$schema": "http://json-schema.org/draft-07/schema",
+        "properties": {
+            "musicians": {
+                "items": {
+                    "properties": {
+                        "information": {
+                            "properties": {
+                                "url": {
+                                    "format": "uri",
+                                    "title": "URL",
+                                    "type": "string",
+                                }
+                            },
+                            "type": "object",
+                        },
+                        "names": {
+                            "properties": {
+                                "formal": {"title": "Formal " "Name", "type": "string"}
+                            },
+                            "type": "object",
+                        },
+                    },
+                    "type": "object",
+                },
+                "title": "Musicians",
+                "type": "array",
+            }
         },
         "type": "object",
     } == result.get_json_schema()

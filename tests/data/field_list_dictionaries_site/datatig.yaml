@@ -1,0 +1,30 @@
+title: Attractions
+description: Listing the best visitor attractions
+types:
+- id: attraction
+  directory: attraction
+  fields:
+  - id: title
+    key: title
+    title: Title of Attraction
+  - id: tickets
+    key: tickets
+    title: Tickets Available
+    type: list-dicts
+    fields:
+      - id: title
+        title: Ticket Available
+        key: title
+      - id: who
+        title: Who's it for
+        key: who
+      - id: price
+        title: Price of ticket
+        key: price
+        type: integer
+      - id: url
+        title: URL for more info
+        key: url
+        type: url
+  list_fields:
+  - title

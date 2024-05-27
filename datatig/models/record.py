@@ -17,8 +17,8 @@ class RecordModel:
     def load_from_json_file(self, data: dict, git_filename: str) -> None:
         self._data = data
         for field_id, field_config in self._type.get_fields().items():
-            self._field_values[field_id] = field_config.get_value_object_from_record(
-                record=self
+            self._field_values[field_id] = field_config.get_value_object(
+                record=self, data=data
             )
         self._git_filename = git_filename
         self._format = "json"
@@ -26,8 +26,8 @@ class RecordModel:
     def load_from_yaml_file(self, data: dict, git_filename: str) -> None:
         self._data = data
         for field_id, field_config in self._type.get_fields().items():
-            self._field_values[field_id] = field_config.get_value_object_from_record(
-                record=self
+            self._field_values[field_id] = field_config.get_value_object(
+                record=self, data=data
             )
         self._git_filename = git_filename
         self._format = "yaml"
@@ -35,8 +35,8 @@ class RecordModel:
     def load_from_md_file(self, data: dict, git_filename: str) -> None:
         self._data = data
         for field_id, field_config in self._type.get_fields().items():
-            self._field_values[field_id] = field_config.get_value_object_from_record(
-                record=self
+            self._field_values[field_id] = field_config.get_value_object(
+                record=self, data=data
             )
         self._git_filename = git_filename
         self._format = "md"
@@ -44,8 +44,8 @@ class RecordModel:
     def load_from_database(self, data: dict, errors_data: list = None) -> None:
         self._data = json.loads(data["data"])
         for field_id, field_config in self._type.get_fields().items():
-            self._field_values[field_id] = field_config.get_value_object_from_record(
-                record=self
+            self._field_values[field_id] = field_config.get_value_object(
+                record=self, data=self._data
             )
         self._git_filename = data["git_filename"]
         self._format = data["format"]
@@ -60,8 +60,8 @@ class RecordModel:
     ) -> None:
         self._data = json.loads(data_row["data"])
         for field_id, field_config in self._type.get_fields().items():
-            self._field_values[field_id] = field_config.get_value_object_from_record(
-                record=self
+            self._field_values[field_id] = field_config.get_value_object(
+                record=self, data=self._data
             )
         self._git_filename = commit_type_record_row["git_filename"]
         self._format = commit_type_record_row["format"]
