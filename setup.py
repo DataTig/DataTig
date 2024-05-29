@@ -20,7 +20,6 @@ setuptools.setup(
     },
     install_requires=[
         "Jinja2<3.1",
-        "spreadsheetforms",
         "jsonschema",
         "Pygments",
         "pyyaml",

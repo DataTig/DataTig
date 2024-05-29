@@ -7,7 +7,6 @@ import pygments  # type: ignore
 import pygments.formatters  # type: ignore
 import pygments.lexers.data  # type: ignore
 from jinja2 import Environment, FileSystemLoader, select_autoescape  # type: ignore
-from spreadsheetforms.api import put_data_in_form  # type: ignore
 
 from datatig.models.record import RecordModel
 from datatig.models.siteconfig import SiteConfigModel
@@ -215,16 +214,6 @@ class StaticWriter:
             item_template_vars,
             jinja2_env,
         )
-        if type.get_guide_form_xlsx():
-            self._write_template(
-                os.path.join(
-                    "type", type.get_id(), "record", record_id, "editspreadsheet"
-                ),
-                "index.html",
-                "type/record/editspreadsheet.html",
-                item_template_vars,
-                jinja2_env,
-            )
         # data files
         with open(
             os.path.join(
@@ -238,20 +227,6 @@ class StaticWriter:
             "w",
         ) as fp:
             json.dump(record.get_data(), fp, indent=2)
-        if type.get_guide_form_xlsx():
-            out_form_xlsx = os.path.join(
-                self._out_dir,
-                "type",
-                type.get_id(),
-                "record",
-                record_id,
-                "data-form.xlsx",
-            )
-            put_data_in_form(
-                os.path.join(self._config.get_source_dir(), type.get_guide_form_xlsx()),
-                record.get_data(),
-                out_form_xlsx,
-            )
         # API
         api: dict = {
             "data_api_url": self._url

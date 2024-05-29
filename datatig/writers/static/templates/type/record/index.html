@@ -133,9 +133,6 @@
 <h3>Edit</h3>
 <p class="text-right">
     <a href="editweb/"><button type="button" class="btn btn-primary">Edit in Browser</button></a>
-    {% if type.get_guide_form_xlsx() %}
-        <a href="editspreadsheet/"><button type="button" class="btn btn-primary">Edit in a spreadsheet</button></a>
-    {% endif %}
     {% if site.get_github_url() %}
         <a href="https://github.com/{{ site.get_github_url() }}/edit/{{ site.get_githost_primary_branch() }}/{{  item.get_git_filename() }}"><button type="button" class="btn btn-primary">Edit Raw data directly on GitHub</button></a>
     {% endif %}

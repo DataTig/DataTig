@@ -54,9 +54,6 @@ class TypeModel:
     def get_directory_in_git_repository(self) -> str:
         return self._config.get("directory")
 
-    def get_guide_form_xlsx(self) -> str:
-        return self._config.get("guide_form_xlsx")
-
     def get_list_fields(self) -> list:
         return self._config.get("list_fields", [])  # TODO add some sensible defaults
 

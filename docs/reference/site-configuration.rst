@@ -35,7 +35,6 @@ Every type has the following options available:
 * `id` - every type needs a unique ID.
 * `directory` - the directory to look in for data files for this type. Relative to the root of the git repository.
 * `fields` - a list of field information. See section below for more.
-* `guide_form_xlsx` - A XLSX file to use for generating and importing spreadsheets of a record. See `SpreadSheet forms <https://spreadsheet-forms.readthedocs.io/en/latest/index.html>_`.
 * `list_fields` - a list of field id's to show in the static site web interface.
 * `json_schema` - a path to a JSON Schema file for this type. Relative to the root of the git repository.
 * `pretty_json_indent` - When writing back JSON files, how many spaces to ident by. Defaults to 4.

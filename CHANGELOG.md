@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Removed
 
 * Dropped support for Python 3.7 as that isn't supported any more.
+* Incomplete Guide Form feature.
 
 ### Fixed
 

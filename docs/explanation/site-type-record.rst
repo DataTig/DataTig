@@ -28,7 +28,6 @@ Each type has a:
 * a directory set - this is where in the git repository it's data is stored
 * a JSON Schema - if this is included, any data will be validated against it and a web editor will be available
 * a default format that should be used when creating new records (eg YAML or JSON)
-* a guide spreadsheet - TODO
 * a list of field definitions, and which fields to show when listing the data
 
 You can think of types like a table in a database system.
