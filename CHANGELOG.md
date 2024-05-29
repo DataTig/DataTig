@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Added extra fields to SQLite database to store more of the configuration used when building the site
   * `sort` and `extra_config` fields to `type_field` table
 * New field type `list-dictionaries`, which lets you also define the fields in the dictionaries.
+* Exception `SiteConfigurationException` used when something is broken in the site configuration
 
 ### Changed
 

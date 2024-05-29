@@ -3,6 +3,7 @@ import json
 
 import yaml
 
+from datatig.exceptions import SiteConfigurationException
 from datatig.models.calendar import CalendarModel
 from datatig.models.type import TypeModel
 from datatig.repository_access import RepositoryAccess
@@ -36,6 +37,12 @@ class SiteConfigModel:
         for type_config in self._config.get("types", []):
             type_config_model = TypeModel(self)
             type_config_model.load_from_config(type_config)
+            if type_config_model.get_id() in self._types:
+                raise SiteConfigurationException(
+                    "More than one type with the same id {}".format(
+                        type_config_model.get_id()
+                    )
+                )
             self._types[type_config_model.get_id()] = type_config_model
         for calendar_id, calendar_config in self._config.get("calendars", {}).items():
             calendar_config_model = CalendarModel()
