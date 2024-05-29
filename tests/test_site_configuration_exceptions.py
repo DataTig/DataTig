@@ -8,6 +8,7 @@ from datatig.exceptions import SiteConfigurationException
 
 test_site_configuration_exception_data = [
     ("duplicate_type_id", "More than one type with the same id datas"),
+    ("duplicate_field_id", "More than one field with the same id title in type datas"),
 ]
 
 

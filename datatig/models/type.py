@@ -1,6 +1,7 @@
 import json
 import os.path
 
+from datatig.exceptions import SiteConfigurationException
 from datatig.jsondeepreaderwriter import JSONDeepReaderWriter
 from datatig.jsonschemabuilder import build_json_schema
 
@@ -46,6 +47,12 @@ class TypeModel:
             elif config.get("type") == "integer":
                 field_config = FieldIntegerConfigModel()
             field_config.load(config)
+            if field_config.get_id() in self._fields:
+                raise SiteConfigurationException(
+                    "More than one field with the same id {} in type {}".format(
+                        field_config.get_id(), self._id
+                    )
+                )
             self._fields[field_config.get_id()] = field_config
 
     def get_directory(self) -> str:

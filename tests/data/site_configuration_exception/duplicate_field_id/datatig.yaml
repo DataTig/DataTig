@@ -1,0 +1,10 @@
+types:
+- id: datas
+  directory: datas
+  fields:
+  - id: title
+    key: title
+    title: Title
+  - id: title
+    key: h1
+    title: what we call it
