@@ -46,6 +46,12 @@ class TypeModel:
                 field_config = FieldBooleanConfigModel()
             elif config.get("type") == "integer":
                 field_config = FieldIntegerConfigModel()
+            elif config.get("type") and config.get("type") != "string":
+                raise SiteConfigurationException(
+                    "Unknown field type {} in field {} in type {}".format(
+                        config.get("type"), field_config.get_id(), self._id
+                    )
+                )
             field_config.load(config)
             if field_config.get_id() in self._fields:
                 raise SiteConfigurationException(
