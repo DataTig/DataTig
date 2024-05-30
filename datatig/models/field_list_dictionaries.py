@@ -126,5 +126,10 @@ class FieldListDictionariesValueModel(FieldValueModel):
     def different_to(self, other_field_value):
         if len(self._sub_records) != len(other_field_value._sub_records):
             return True
-        # TODO check items in _sub_records arrays
+        for idx, x in enumerate(self._sub_records):
+            for field in self._field.get_fields().values():
+                v1 = self._sub_records[idx].get_value(field.get_id())
+                v2 = other_field_value._sub_records[idx].get_value(field.get_id())
+                if v1.different_to(v2):
+                    return True
         return False
