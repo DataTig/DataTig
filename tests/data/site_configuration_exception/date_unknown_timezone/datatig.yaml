@@ -1,0 +1,9 @@
+types:
+- id: events
+  directory: events
+  fields:
+  - id: start
+    key: start
+    title: Start
+    type: date
+    timezone: eueoaueoaueou/udiheeidideidiedu

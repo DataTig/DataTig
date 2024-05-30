@@ -1,0 +1,14 @@
+types:
+- id: events
+  directory: events
+  fields:
+  - id: start
+    key: start
+    title: Start
+    type: date
+calendars:
+  main:
+    timezone: eueoaueoaueou/udiheeidideidiedu
+    datas:
+      type: events
+      summary: title

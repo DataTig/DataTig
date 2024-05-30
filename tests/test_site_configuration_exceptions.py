@@ -10,6 +10,18 @@ test_site_configuration_exception_data = [
     ("duplicate_type_id", "More than one type with the same id datas"),
     ("duplicate_field_id", "More than one field with the same id title in type datas"),
     ("unknown_field_type", "Unknown field type h1 in field None in type datas"),
+    (
+        "date_unknown_timezone",
+        "Date field start has unknown timezone eueoaueoaueou/udiheeidideidiedu",
+    ),
+    (
+        "datetime_unknown_timezone",
+        "DateTime field start has unknown timezone eueoaueoaueou/udiheeidideidiedu",
+    ),
+    (
+        "calendar_unknown_timezone",
+        "Calendar main has unknown timezone eueoaueoaueou/udiheeidideidiedu",
+    ),
 ]
 
 
