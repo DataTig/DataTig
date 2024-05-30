@@ -22,6 +22,19 @@ test_site_configuration_exception_data = [
         "calendar_unknown_timezone",
         "Calendar main has unknown timezone eueoaueoaueou/udiheeidideidiedu",
     ),
+    ("calendar_unknown_type", "Calendar uses an unknown type event"),
+    (
+        "calendar_unknown_summary",
+        "Calendar uses an unknown summary field summary in type events",
+    ),
+    (
+        "calendar_unknown_start",
+        "Calendar uses an unknown start field start_at in type events",
+    ),
+    (
+        "calendar_unknown_end",
+        "Calendar uses an unknown end field end_at in type events",
+    ),
 ]
 
 

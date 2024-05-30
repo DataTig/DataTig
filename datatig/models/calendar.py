@@ -5,10 +5,11 @@ from datatig.models.calendar_data import CalendarDataModel
 
 
 class CalendarModel:
-    def __init__(self):
+    def __init__(self, siteconfig):
         self._id = None
         self._datas = []
         self._timezone = "UTC"
+        self._siteconfig = siteconfig
 
     def load_from_config(self, id: str, config: dict) -> None:
         self._id = id
@@ -16,7 +17,7 @@ class CalendarModel:
         if isinstance(datas, dict):
             datas = [datas]
         for data_config in datas:
-            calendar_data = CalendarDataModel()
+            calendar_data = CalendarDataModel(self._siteconfig)
             calendar_data.load_from_config(data_config)
             self._datas.append(calendar_data)
         self._timezone = config.get("timezone", "UTC")

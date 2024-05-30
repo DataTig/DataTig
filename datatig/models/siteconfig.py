@@ -45,7 +45,7 @@ class SiteConfigModel:
                 )
             self._types[type_config_model.get_id()] = type_config_model
         for calendar_id, calendar_config in self._config.get("calendars", {}).items():
-            calendar_config_model = CalendarModel()
+            calendar_config_model = CalendarModel(self)
             calendar_config_model.load_from_config(calendar_id, calendar_config)
             self._calendars[calendar_id] = calendar_config_model
 

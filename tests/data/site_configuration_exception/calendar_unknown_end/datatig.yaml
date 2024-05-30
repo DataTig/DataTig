@@ -8,7 +8,8 @@ types:
   - id: start
     key: start
     title: Start
-    type: date
+    type: datetime
+    timezone: Europe/Berlin
   - id: end
     key: end
     title: End
@@ -16,9 +17,9 @@ types:
     timezone: Europe/Berlin
 calendars:
   main:
-    timezone: eueoaueoaueou/udiheeidideidiedu
+    timezone: Europe/Berlin
     datas:
-      type: events
-      summary: title
-      start: start
-      end: end
+      - type: events
+        summary: title
+        start: start
+        end: end_at
