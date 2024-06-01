@@ -22,6 +22,7 @@ class TypeModel:
         self._config = None
         self._fields = {}
         self._siteconfig = siteconfig
+        self._cached_json_schema = None
 
     def load_from_config(self, config) -> None:
         self._id = config.get("id")
@@ -71,16 +72,19 @@ class TypeModel:
         return self._config.get("list_fields", [])  # TODO add some sensible defaults
 
     def get_json_schema_as_dict(self) -> dict:
-        if self._config.get("json_schema"):
-            with open(
-                os.path.join(
-                    self._siteconfig.get_source_dir(), self._config.get("json_schema")
-                )
-            ) as fp:
-                return json.load(fp)
-        else:
-            results = build_json_schema(self._fields.values())
-            return results.get_json_schema()
+        if not self._cached_json_schema:
+            if self._config.get("json_schema"):
+                with open(
+                    os.path.join(
+                        self._siteconfig.get_source_dir(),
+                        self._config.get("json_schema"),
+                    )
+                ) as fp:
+                    self._cached_json_schema = json.load(fp)
+            else:
+                results = build_json_schema(self._fields.values())
+                self._cached_json_schema = results.get_json_schema()
+        return self._cached_json_schema
 
     def get_json_schema_as_string(self) -> str:
         return json.dumps(self.get_json_schema_as_dict())
