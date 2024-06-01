@@ -49,6 +49,12 @@ def test_event_site():
                 cur.execute("SELECT * FROM type")
                 type = cur.fetchone()
                 assert "events" == type["id"]
+                assert "events" == type["directory"]
+                assert "http://json-schema.org/draft-07/schema" in type["json_schema"]
+                assert '["title", "start", "end"]' == type["list_fields"]
+                assert 2 == type["pretty_json_indent"]
+                assert "yaml" == type["default_format"]
+                assert "body" == type["markdown_body_is_field"]
         # Test API
         with open(os.path.join(staticsite_dir, "api.json")) as fp:
             api = json.load(fp)

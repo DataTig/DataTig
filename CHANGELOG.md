@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Added `timezone` option to `date` and `datetime` fields
 * Added extra fields to SQLite database to store more of the configuration used when building the site
   * `sort` and `extra_config` fields to `type_field` table
+  * Many fields to `type` table
 * New field type `list-dictionaries`, which lets you also define the fields in the dictionaries.
 * Exception `SiteConfigurationException` used when something is broken in the site configuration
 
@@ -34,6 +35,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * Dropped support for Python 3.7 as that isn't supported any more.
 * Incomplete Guide Form feature.
+* Sqlite database drops field `fields` from `type` - it never had any data put in it and thus wasn't used.
 
 ### Fixed
 

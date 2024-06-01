@@ -9,6 +9,7 @@ from .models.calendar_event import CalendarEventModel
 from .models.error import ErrorModel
 from .models.record import RecordModel
 from .models.record_error import RecordErrorModel
+from .models.type import TypeModel
 
 
 class DataStoreSQLite:
@@ -48,7 +49,12 @@ class DataStoreSQLite:
             cur.execute(
                 """CREATE TABLE type (
                 id TEXT PRIMARY KEY,
-                fields TEXT
+                directory TEXT,
+                json_schema TEXT,
+                list_fields TEXT,
+                pretty_json_indent INTEGER,
+                default_format TEXT,
+                markdown_body_is_field TEXT
                 )"""
             )
             cur.execute(
@@ -70,13 +76,21 @@ class DataStoreSQLite:
 
             self._create_calendars(cur)
 
-    def _create_type(self, cur, type):
+    def _create_type(self, cur, type: TypeModel):
 
         cur.execute(
             """INSERT INTO type (
-            id 
-            ) VALUES (?)""",
-            [type.get_id()],
+            id, directory, json_schema, list_fields, pretty_json_indent, default_format, markdown_body_is_field
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)""",
+            [
+                type.get_id(),
+                type.get_directory(),
+                json.dumps(type.get_json_schema_as_dict()),
+                json.dumps(type.get_list_fields()),
+                type.get_pretty_json_indent(),
+                type.get_default_format(),
+                type.get_markdown_body_is_field(),
+            ],
         )
 
         cur.execute(
