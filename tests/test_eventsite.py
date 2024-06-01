@@ -46,6 +46,12 @@ def test_event_site():
         ) as connection:
             connection.row_factory = sqlite3.Row
             with closing(connection.cursor()) as cur:
+                cur.execute("SELECT * FROM site_config ORDER BY key ASC")
+                assert "The data for a test" == cur.fetchone()["value"]
+                assert "gh_pages" == cur.fetchone()["value"]
+                assert "datatig/test" == cur.fetchone()["value"]
+                assert "Events Site" == cur.fetchone()["value"]
+            with closing(connection.cursor()) as cur:
                 cur.execute("SELECT * FROM type")
                 type = cur.fetchone()
                 assert "events" == type["id"]

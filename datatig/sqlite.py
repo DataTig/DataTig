@@ -41,6 +41,12 @@ class DataStoreSQLite:
     def _create(self):
         with closing(self._connection.cursor()) as cur:
             cur.execute(
+                """CREATE TABLE site_config (
+                key TEXT,
+                value TEXT
+                )"""
+            )
+            cur.execute(
                 """CREATE TABLE error (
                 filename TEXT,
                 message TEXT
@@ -71,10 +77,24 @@ class DataStoreSQLite:
                 )"""
             )
 
+            self._create_site_config(cur)
+
             for type in self._site_config.get_types().values():
                 self._create_type(cur, type)
 
             self._create_calendars(cur)
+
+    def _create_site_config(self, cur):
+        for k, v in {
+            "title": self._site_config.get_title(),
+            "description": self._site_config.get_description(),
+            "githost/url": self._site_config.get_github_url(),
+            "githost/primary_branch": self._site_config.get_githost_primary_branch(),
+        }.items():
+            cur.execute(
+                """INSERT INTO site_config (key, value) VALUES (?, ?)""",
+                [k, v],
+            )
 
     def _create_type(self, cur, type: TypeModel):
 

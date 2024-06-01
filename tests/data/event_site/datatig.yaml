@@ -41,3 +41,6 @@ calendars:
         start: submission_deadline
         end: submission_deadline
         id: "deadline_{{record_id}}@example.com"
+githost:
+  url: datatig/test
+  primary_branch: gh_pages
