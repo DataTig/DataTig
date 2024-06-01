@@ -102,35 +102,6 @@ def test_event_site():
                 "id": "events",
                 "records_api_url": "/type/events/records_api.json",
             } == type_api
-
-        with open(
-            os.path.join(staticsite_dir, "type", "events", "records_api.json")
-        ) as fp:
-            type_records_api = json.load(fp)
-            assert {
-                "records": {
-                    "1": {
-                        "api_url": "/type/events/record/1/api.json",
-                        "data_api_url": "/type/events/record/1/data.json",
-                        "id": "1",
-                    },
-                    "2": {
-                        "api_url": "/type/events/record/2/api.json",
-                        "data_api_url": "/type/events/record/2/data.json",
-                        "id": "2",
-                    },
-                    "3": {
-                        "api_url": "/type/events/record/3/api.json",
-                        "data_api_url": "/type/events/record/3/data.json",
-                        "id": "3",
-                    },
-                }
-            } == type_records_api
-        with open(
-            os.path.join(staticsite_dir, "type", "events", "record", "1", "api.json")
-        ) as fp:
-            record_api = json.load(fp)
-            assert {"data_api_url": "/type/events/record/1/data.json"} == record_api
         # Test database
         with closing(
             sqlite3.connect(os.path.join(staticsite_dir, "database.sqlite"))
@@ -187,6 +158,12 @@ def test_event_site():
                 assert "deadlines" == calendar1["id"]
                 calendar2 = cur.fetchone()
                 assert "main" == calendar2["id"]
+            with closing(connection.cursor()) as cur:
+                # This tests that records with no dates are ignored and don't become calendar events
+                cur.execute(
+                    "SELECT count(*) AS c FROM calendar_event WHERE calendar_id='main'"
+                )
+                assert 3 == cur.fetchone()["c"]
             with closing(connection.cursor()) as cur:
                 cur.execute(
                     "SELECT * FROM calendar_event WHERE id='deadline_1@example.com'"

@@ -549,25 +549,25 @@ class DataStoreSQLite:
                     for item_id in self.get_ids_in_type(data_config.get_type_id()):
                         item = self.get_item(data_config.get_type_id(), item_id)
                         calendar_event = CalendarEventModel()
-                        calendar_event.load_from_calendar_data_and_item(
+                        if calendar_event.load_from_calendar_data_and_item(
                             data_config, item
-                        )
-                        cur.execute(
-                            "INSERT INTO calendar_event (calendar_id, id, summary, start_iso, start_timestamp, end_iso, end_timestamp, record_"
-                            + data_config.get_type_id()
-                            + "___id ) "
-                            + "VALUES (?,?,?,?,?,?,?,?)",
-                            [
-                                calendar_id,
-                                calendar_event.get_id(),
-                                calendar_event.get_summary(),
-                                calendar_event.get_start_iso(),
-                                calendar_event.get_start_timestamp(),
-                                calendar_event.get_end_iso(),
-                                calendar_event.get_end_timestamp(),
-                                item.get_id(),
-                            ],
-                        )
+                        ):
+                            cur.execute(
+                                "INSERT INTO calendar_event (calendar_id, id, summary, start_iso, start_timestamp, end_iso, end_timestamp, record_"
+                                + data_config.get_type_id()
+                                + "___id ) "
+                                + "VALUES (?,?,?,?,?,?,?,?)",
+                                [
+                                    calendar_id,
+                                    calendar_event.get_id(),
+                                    calendar_event.get_summary(),
+                                    calendar_event.get_start_iso(),
+                                    calendar_event.get_start_timestamp(),
+                                    calendar_event.get_end_iso(),
+                                    calendar_event.get_end_timestamp(),
+                                    item.get_id(),
+                                ],
+                            )
 
                 self._connection.commit()
 
