@@ -95,7 +95,7 @@ Replace the "Build DataTig site" step of the above file with (edit as directed b
           run: "docker run --rm --volume=\"${{ github.workspace }}:/srv/jekyll:Z\" jekyll/builder:4 /bin/bash -c 'chmod 777 /srv/jekyll && jekyll build _site'"
 
 
-
+(:doc:`For more on using DataTig and Jekyll together, see here <use-with-jekyll-collections>`)
 
 In Tutorial
 ~~~~~~~~~~~
