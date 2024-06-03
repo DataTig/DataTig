@@ -7,3 +7,5 @@ How To Guide
    use-github-actions-to-check-your-data.rst
    use-github-actions-to-build-and-host-your-site.rst
    use-netlify-to-build-and-host-your-site.rst
+   use-with-jekyll-collections.rst
+

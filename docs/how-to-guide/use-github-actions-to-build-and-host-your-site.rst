@@ -9,6 +9,8 @@ You currently have a DataTig site in a GitHub repository.
 
 You want to build and host the static site online on GitHub Pages.
 
+(In the advanced section, you can learn how to do this at the same time as using another site builder like Jekyll)
+
 Steps
 -----
 
@@ -69,6 +71,30 @@ The contents should be (edit as directed by the comments):
 Commit this and merge it into your default branch (`main`, or whatever you use).
 
 That's it!
+
+Advanced - using DataTig at the same time as another site builder such as Jekyll
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To do this, you change the GitHub setting and add a workflow file as before.
+
+However, the workflow file should now build the site twice with 2 different tools.
+
+Here's an example of how to do this, so a Jekyll site is available at the main URL and the DataTig site is available underneath /datatig.
+
+Replace the "Build DataTig site" step of the above file with (edit as directed by the comments):
+
+
+.. code-block:: yaml
+
+        - name: Make output directory
+          run: "mkdir -p _site/datatig"
+        - name: Build DataTig site
+          # TODO: Replace the URL with the URL of your final site, but leave /datatig at the end
+          run: "python -m datatig.cli build . --staticsiteoutput _site/datatig --staticsiteurl https://xxxx.github.io/xxxxxxx/datatig"
+        - name: Build Jekyll site
+          run: "docker run --rm --volume=\"${{ github.workspace }}:/srv/jekyll:Z\" jekyll/builder:4 /bin/bash -c 'chmod 777 /srv/jekyll && jekyll build _site'"
+
+
 
 
 In Tutorial
