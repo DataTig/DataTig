@@ -50,6 +50,7 @@ def test_json_site():
                 assert "1" == type["id"]
                 assert "One" == type["field_title"]
                 assert "2022-10-01" == type["field_birthday"]
+                assert 1664582400 == type["field_birthday___timestamp"]
                 assert 1 == type["field_has_cat"]
                 assert 45 == type["field_age"]
         # Test API

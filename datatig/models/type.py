@@ -30,27 +30,25 @@ class TypeModel:
         self._fields = {}
         for config in self._config.get("fields", []):
             field_config: FieldConfigModel = FieldStringConfigModel()
-            if config.get("type") == "url":
+            field_type: str = str(config.get("type", "string")).lower().strip()
+            if field_type == "url":
                 field_config = FieldURLConfigModel()
-            elif config.get("type") == "list-strings":
+            elif field_type == "list-strings":
                 field_config = FieldListStringsConfigModel()
-            elif (
-                config.get("type") == "list-dictionaries"
-                or config.get("type") == "list-dicts"
-            ):
+            elif field_type == "list-dictionaries" or field_type == "list-dicts":
                 field_config = FieldListDictionariesConfigModel()
-            elif config.get("type") == "date":
+            elif field_type == "date":
                 field_config = FieldDateConfigModel()
-            elif config.get("type") == "datetime":
+            elif field_type == "datetime":
                 field_config = FieldDateTimeConfigModel()
-            elif config.get("type") == "boolean":
+            elif field_type == "boolean":
                 field_config = FieldBooleanConfigModel()
-            elif config.get("type") == "integer":
+            elif field_type == "integer":
                 field_config = FieldIntegerConfigModel()
-            elif config.get("type") and config.get("type") != "string":
+            elif field_type and field_type != "string":
                 raise SiteConfigurationException(
                     "Unknown field type {} in field {} in type {}".format(
-                        config.get("type"), field_config.get_id(), self._id
+                        field_type, field_config.get_id(), self._id
                     )
                 )
             field_config.load(config)

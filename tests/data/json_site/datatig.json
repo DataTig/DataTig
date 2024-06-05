@@ -25,7 +25,7 @@
         "id": "birthday",
         "key": "birthday",
         "title": "Birthday",
-        "type": "date"
+        "type": "DATE "
       },
       {
         "id": "has_cat",
