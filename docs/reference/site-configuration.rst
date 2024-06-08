@@ -71,7 +71,7 @@ Allowed types are:
 * `string`
 * `url`
 * `list-strings`
-* 'list-dictionaries' (`list-dicts` can be used for short)
+* `list-dictionaries` (`list-dicts` can be used for short)
 * `date`
 * `datetime`
 * `boolean`
