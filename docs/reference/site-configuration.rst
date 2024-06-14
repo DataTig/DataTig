@@ -98,6 +98,7 @@ A YAML example:
       - id: description_en
         key: description/en
         title: Description (EN)
+        multiline: True
 
 The types `date` and `datetime` have the following extra options:
 
@@ -106,6 +107,11 @@ The types `date` and `datetime` have the following extra options:
 The type `list-dictionaries` has the following extra options:
 
 * 'fields': A list of fields to be found in the dictionary items. Definition is the same as above, but list types are not allowed. (So you can't have a list in a list.)
+
+The type `string` has the following extra options:
+
+* `multiline`: Defaults to false. Whether new lines are allowed in values
+
 
 Git Host
 --------

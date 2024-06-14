@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * New local server feature
 * Calendars
 * Added `timezone` option to `date` and `datetime` fields
+* Added `multiline` option to `string` field
 * Added `description` option to all fields
 * Added extra fields to SQLite database to store more of the configuration used when building the site
   * `description`, `sort` and `extra_config` fields to `type_field` table

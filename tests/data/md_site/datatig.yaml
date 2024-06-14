@@ -19,8 +19,11 @@ types:
     key: age
     title: Age
     type: integer
+  - id: markdown_body
+    key: markdown_body
+    title: Body
+    multiline: True
   list_fields:
   - title
-  json_schema: schema.json
   markdown_body_is_field: markdown_body
   pretty_json_indent: 2

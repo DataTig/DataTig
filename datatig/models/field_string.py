@@ -6,12 +6,18 @@ class FieldStringConfigModel(FieldConfigModel):
     def get_type(self) -> str:
         return "string"
 
+    def _load_extra_config(self, config: dict) -> None:
+        self._extra_config["multiline"] = bool(config.get("multiline", False))
+
     def get_json_schema(self) -> dict:
-        return {
+        out = {
             "type": "string",
             "title": self._title,
             "description": self._description,
         }
+        if self._extra_config.get("multiline"):
+            out["format"] = "textarea"
+        return out
 
     def get_new_item_json(self):
         return None
