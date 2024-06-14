@@ -6,11 +6,13 @@ class FieldConfigModel(ABC):
         self._id = None
         self._key = None
         self._title = None
+        self._description: str = ""
         self._extra_config = {}
 
     def load(self, config: dict) -> None:
         self._id = config.get("id")
         self._title = config.get("title", self._id)
+        self._description = config.get("description", "")
         self._key = config.get("key")
         self._load_extra_config(config)
 
@@ -20,6 +22,7 @@ class FieldConfigModel(ABC):
     def load_from_database(self, data) -> None:
         self._id = data["id"]
         self._title = data["title"]
+        self._description = data["description"]
         self._key = data["key"]
 
     def get_id(self) -> str:
@@ -30,6 +33,9 @@ class FieldConfigModel(ABC):
 
     def get_title(self) -> str:
         return self._title
+
+    def get_description(self) -> str:
+        return self._description
 
     def get_extra_config(self) -> dict:
         return self._extra_config

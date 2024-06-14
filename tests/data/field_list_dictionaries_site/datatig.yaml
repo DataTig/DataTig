@@ -17,6 +17,7 @@ types:
         key: title
       - id: who
         title: Who's it for
+        description: Any eligibility criteria for this ticket?
         key: who
       - id: price
         title: Price of ticket

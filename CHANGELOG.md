@@ -13,8 +13,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * New local server feature
 * Calendars
 * Added `timezone` option to `date` and `datetime` fields
+* Added `description` option to all fields
 * Added extra fields to SQLite database to store more of the configuration used when building the site
-  * `sort` and `extra_config` fields to `type_field` table
+  * `description`, `sort` and `extra_config` fields to `type_field` table
   * Many fields to `type` table
   * New table `site_config`
 * New field type `list-dictionaries`, which lets you also define the fields in the dictionaries.

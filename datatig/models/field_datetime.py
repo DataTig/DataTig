@@ -30,6 +30,7 @@ class FieldDateTimeConfigModel(FieldConfigModel):
             "type": "string",
             "format": "date-time",
             "title": self._title,
+            "description": self._description,
         }
 
     def get_new_item_json(self):

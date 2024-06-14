@@ -10,6 +10,7 @@ class FieldIntegerConfigModel(FieldConfigModel):
         return {
             "type": "integer",
             "title": self._title,
+            "description": self._description,
         }
 
     def get_new_item_json(self):

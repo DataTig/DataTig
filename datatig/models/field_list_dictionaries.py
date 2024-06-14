@@ -24,6 +24,7 @@ class FieldListDictionariesConfigModel(FieldConfigModel):
         build_results = build_json_schema(self._fields.values(), child_schema=True)
         return {
             "title": self._title,
+            "description": self._description,
             "type": "array",
             "items": build_results.get_json_schema(),
         }

@@ -115,6 +115,7 @@ def test_event_site():
                 cur.execute("SELECT * FROM type_field ORDER BY sort ASC")
                 field1 = cur.fetchone()
                 assert field1["id"] == "title"
+                assert field1["description"] == "The title of this event"
                 assert field1["sort"] == 1
                 field2 = cur.fetchone()
                 assert field2["id"] == "start"

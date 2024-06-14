@@ -22,6 +22,9 @@
             <tr>
                 <th>
                     {{ field.get_title() }}
+                    {% if field.get_description() %}
+                        <p class="font-weight-normal" style="font-size: 80%;">{{ field.get_description() }}</p>
+                    {% endif %}
                 </th>
                 <td>
                     {% if field.get_type() == 'url' %}
@@ -55,7 +58,12 @@
             <table class="table">
                 <tr>
                     {% for sub_field_id, sub_field in field.get_fields().items() %}
-                        <th>{{ sub_field.get_title() }}</th>
+                        <th>
+                            {{ sub_field.get_title() }}
+                            {% if sub_field.get_description() %}
+                                <p class="font-weight-normal" style="font-size: 80%;">{{ sub_field.get_description() }}</p>
+                            {% endif %}
+                        </th>
                     {% endfor %}
                 </tr>
                 {% for sub_record in item.get_field_value(field_id).get_sub_records() %}

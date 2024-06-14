@@ -63,6 +63,7 @@ Every field needs to be defined.
 * `id` - every field needs a unique ID within that type.
 * `key` - the path in the data to find this value. Note paths are allowed, not just keys.
 * `title` - a title for this field.
+* `description` - a description for this field.
 * `type` - a type for this field. Defaults to `string`.
 
 

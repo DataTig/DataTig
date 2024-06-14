@@ -14,7 +14,9 @@ def test_string():
     result = build_json_schema(fields)
     assert {
         "$schema": "http://json-schema.org/draft-07/schema",
-        "properties": {"title": {"title": "Title", "type": "string"}},
+        "properties": {
+            "title": {"title": "Title", "description": "", "type": "string"}
+        },
         "type": "object",
     } == result.get_json_schema()
 
@@ -28,7 +30,14 @@ def test_url():
     result = build_json_schema(fields)
     assert {
         "$schema": "http://json-schema.org/draft-07/schema",
-        "properties": {"url": {"format": "uri", "title": "URL", "type": "string"}},
+        "properties": {
+            "url": {
+                "format": "uri",
+                "title": "URL",
+                "description": "",
+                "type": "string",
+            }
+        },
         "type": "object",
     } == result.get_json_schema()
 
@@ -43,7 +52,12 @@ def test_list_strings():
     assert {
         "$schema": "http://json-schema.org/draft-07/schema",
         "properties": {
-            "tags": {"items": {"type": "string"}, "title": "Tags", "type": "array"}
+            "tags": {
+                "items": {"type": "string"},
+                "title": "Tags",
+                "description": "",
+                "type": "array",
+            }
         },
         "type": "object",
     } == result.get_json_schema()
@@ -67,9 +81,19 @@ def test_all_types_at_once():
     assert {
         "$schema": "http://json-schema.org/draft-07/schema",
         "properties": {
-            "tags": {"items": {"type": "string"}, "title": "Tags", "type": "array"},
-            "title": {"title": "Title", "type": "string"},
-            "url": {"format": "uri", "title": "URL", "type": "string"},
+            "tags": {
+                "items": {"type": "string"},
+                "title": "Tags",
+                "description": "",
+                "type": "array",
+            },
+            "title": {"title": "Title", "description": "", "type": "string"},
+            "url": {
+                "format": "uri",
+                "title": "URL",
+                "description": "",
+                "type": "string",
+            },
         },
         "type": "object",
     } == result.get_json_schema()
@@ -86,7 +110,9 @@ def test_1_layer_deep():
         "$schema": "http://json-schema.org/draft-07/schema",
         "properties": {
             "title": {
-                "properties": {"en": {"title": "Title (En)", "type": "string"}},
+                "properties": {
+                    "en": {"title": "Title (En)", "description": "", "type": "string"}
+                },
                 "type": "object",
             }
         },
@@ -119,16 +145,22 @@ def test_root_and_many_layers_deep_at_once():
                             "tags": {
                                 "items": {"type": "string"},
                                 "title": "Tags",
+                                "description": "",
                                 "type": "array",
                             }
                         },
                         "type": "object",
                     },
-                    "url": {"format": "uri", "title": "URL", "type": "string"},
+                    "url": {
+                        "format": "uri",
+                        "title": "URL",
+                        "description": "",
+                        "type": "string",
+                    },
                 },
                 "type": "object",
             },
-            "title": {"title": "Title", "type": "string"},
+            "title": {"title": "Title", "description": "", "type": "string"},
         },
         "type": "object",
     } == result.get_json_schema()
@@ -162,6 +194,7 @@ def test_list_dictionaries():
                                 "url": {
                                     "format": "uri",
                                     "title": "URL",
+                                    "description": "",
                                     "type": "string",
                                 }
                             },
@@ -169,7 +202,11 @@ def test_list_dictionaries():
                         },
                         "names": {
                             "properties": {
-                                "formal": {"title": "Formal " "Name", "type": "string"}
+                                "formal": {
+                                    "title": "Formal Name",
+                                    "description": "",
+                                    "type": "string",
+                                }
                             },
                             "type": "object",
                         },
@@ -177,6 +214,7 @@ def test_list_dictionaries():
                     "type": "object",
                 },
                 "title": "Musicians",
+                "description": "",
                 "type": "array",
             }
         },

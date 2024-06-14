@@ -70,6 +70,7 @@ class DataStoreSQLite:
                 key TEXT,
                 type TEXT,
                 title TEXT,
+                description TEXT,
                 sort INTEGER NOT NULL,
                 extra_config TEXT,
                 PRIMARY KEY(type_id, id),
@@ -146,14 +147,15 @@ class DataStoreSQLite:
     def _create_type_add_field(self, cur, type, type_field, parent_keys=[]):
         cur.execute(
             """INSERT INTO type_field (
-            type_id , id, key, type, title, sort, extra_config
-            ) VALUES (?, ?, ?, ?, ?, ?, ?)""",
+            type_id , id, key, type, title, description, sort, extra_config
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
             [
                 type.get_id(),
                 "/".join(parent_keys + [type_field.get_id()]),
                 type_field.get_key(),
                 type_field.get_type(),
                 type_field.get_title(),
+                type_field.get_description(),
                 self._type_field_sort,
                 json.dumps(type_field.get_extra_config()),
             ],

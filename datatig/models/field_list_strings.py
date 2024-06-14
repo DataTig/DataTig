@@ -7,7 +7,12 @@ class FieldListStringsConfigModel(FieldConfigModel):
         return "list-strings"
 
     def get_json_schema(self) -> dict:
-        return {"title": self._title, "type": "array", "items": {"type": "string"}}
+        return {
+            "title": self._title,
+            "description": self._description,
+            "type": "array",
+            "items": {"type": "string"},
+        }
 
     def get_new_item_json(self):
         return []
