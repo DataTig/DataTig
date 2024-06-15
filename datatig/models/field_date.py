@@ -11,6 +11,11 @@ from datatig.models.field import FieldConfigModel, FieldValueModel
 
 
 class FieldDateConfigModel(FieldConfigModel):
+
+    def __init__(self):
+        super().__init__()
+        self._dateparser_worker = None
+
     def get_type(self) -> str:
         return "date"
 
@@ -60,6 +65,16 @@ class FieldDateConfigModel(FieldConfigModel):
     def get_timezone(self) -> str:
         return self.get_extra_config().get("timezone", "UTC")
 
+    def get_dateparser_worker(self):
+        if not self._dateparser_worker:
+            self._dateparser_worker = dateparser.DateDataParser(settings={
+                        "TIMEZONE": self.get_timezone(),
+                        "RETURN_AS_TIMEZONE_AWARE": True,
+                    }
+            )
+        return self._dateparser_worker
+
+ddp = dateparser.DateDataParser()
 
 class FieldDateValueModel(FieldValueModel):
     def set_value(self, value):
@@ -76,13 +91,8 @@ class FieldDateValueModel(FieldValueModel):
                     self._value = None
             # Fall back to dateparser
             if not self._value:
-                self._value = dateparser.parse(
-                    value,
-                    settings={
-                        "TIMEZONE": self._field.get_timezone(),
-                        "RETURN_AS_TIMEZONE_AWARE": True,
-                    },
-                )
+                d = self._field.get_dateparser_worker().get_date_data(value)
+                self._value = d.date_obj
                 if self._value:
                     self._value = self._value.date()
         elif isinstance(value, datetime.date):
