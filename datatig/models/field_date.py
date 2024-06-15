@@ -1,4 +1,5 @@
 import datetime
+import re
 from typing import Optional
 
 import dateparser
@@ -64,15 +65,26 @@ class FieldDateValueModel(FieldValueModel):
     def set_value(self, value):
         self._value = None
         if isinstance(value, str):
-            self._value = dateparser.parse(
-                value,
-                settings={
-                    "TIMEZONE": self._field.get_timezone(),
-                    "RETURN_AS_TIMEZONE_AWARE": True,
-                },
-            )
-            if self._value:
-                self._value = self._value.date()
+            # dateparser can be very slow, so if it's a simple format we'll do it by regex
+            m = re.search("([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])", value)
+            if m:
+                try:
+                    self._value = datetime.date(
+                        int(m.group(1)), int(m.group(2)), int(m.group(3))
+                    )
+                except ValueError:
+                    self._value = None
+            # Fall back to dateparser
+            if not self._value:
+                self._value = dateparser.parse(
+                    value,
+                    settings={
+                        "TIMEZONE": self._field.get_timezone(),
+                        "RETURN_AS_TIMEZONE_AWARE": True,
+                    },
+                )
+                if self._value:
+                    self._value = self._value.date()
         elif isinstance(value, datetime.date):
             self._value = value
         elif isinstance(value, datetime.datetime):
