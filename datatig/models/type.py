@@ -27,6 +27,10 @@ class TypeModel:
     def load_from_config(self, config) -> None:
         self._id = config.get("id")
         self._config = config
+        if self.get_record_id_mode() not in ["directory_and_filename", "filename_only"]:
+            raise SiteConfigurationException(
+                "Unknown Record ID mode in type {}".format(self._id)
+            )
         self._fields = {}
         for config in self._config.get("fields", []):
             field_config: FieldConfigModel = FieldStringConfigModel()
@@ -95,6 +99,9 @@ class TypeModel:
 
     def get_markdown_body_is_field(self) -> str:
         return self._config.get("markdown_body_is_field", "body")
+
+    def get_record_id_mode(self) -> str:
+        return str(self._config.get("record_id_mode", "filename_only")).lower().strip()
 
     def get_new_item_json(self) -> dict:
         out: JSONDeepReaderWriter = JSONDeepReaderWriter({})

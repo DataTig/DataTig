@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Added `timezone` option to `date` and `datetime` fields
 * Added `multiline` option to `string` field
 * Added `description` option to all fields
+* Added `record_id_mode` option to type https://github.com/DataTig/DataTig/issues/13
 * Added extra fields to SQLite database to store more of the configuration used when building the site
   * `description`, `sort` and `extra_config` fields to `type_field` table
   * Many fields to `type` table

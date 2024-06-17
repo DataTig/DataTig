@@ -27,3 +27,4 @@ types:
   - title
   markdown_body_is_field: markdown_body
   pretty_json_indent: 2
+  record_id_mode: "directory_AND_filename "

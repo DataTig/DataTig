@@ -23,6 +23,10 @@ def process_type(
 
     for file_details in repository_access.list_files_in_directory(type.get_directory()):
         try:
+            if type.get_record_id_mode() == "directory_and_filename":
+                id_material = file_details["path_relative_to_dir"].replace("/", "_")
+            else:
+                id_material = file_details["name"]
             if file_details["name"].endswith(".json"):
                 process_json_file(
                     config,
@@ -31,7 +35,7 @@ def process_type(
                     os.path.join(
                         type.get_directory(), file_details["path_relative_to_dir"]
                     ),
-                    file_details["name"][:-5],
+                    id_material[:-5],
                     store_record_callback,
                 )
             elif file_details["name"].endswith(".yaml"):
@@ -42,7 +46,7 @@ def process_type(
                     os.path.join(
                         type.get_directory(), file_details["path_relative_to_dir"]
                     ),
-                    file_details["name"][:-5],
+                    id_material[:-5],
                     store_record_callback,
                 )
             elif file_details["name"].endswith(".yml"):
@@ -53,7 +57,7 @@ def process_type(
                     os.path.join(
                         type.get_directory(), file_details["path_relative_to_dir"]
                     ),
-                    file_details["name"][:-4],
+                    id_material[:-4],
                     store_record_callback,
                 )
             elif file_details["name"].endswith(".md"):
@@ -64,7 +68,7 @@ def process_type(
                     os.path.join(
                         type.get_directory(), file_details["path_relative_to_dir"]
                     ),
-                    file_details["name"][:-3],
+                    id_material[:-3],
                     store_record_callback,
                 )
         except Exception as exception:

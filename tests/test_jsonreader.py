@@ -127,5 +127,8 @@ def test_json_site():
                 assert "One" == type["field_title"]
                 assert "2022-10-01" == type["field_birthday"]
                 assert 1 == type["field_has_cat"]
-                assert "datas/1.json" == type["git_filename"]
+                assert (
+                    "datas/this_directory_name_should_be_ignored_due_to_record_id_mode/1.json"
+                    == type["git_filename"]
+                )
                 assert "json" == type["format"]

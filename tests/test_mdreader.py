@@ -41,7 +41,7 @@ def test_md_site():
                 "age": "43",
             } == two_json
         with open(
-            os.path.join(staticsite_dir, "type", "datas", "record", "3", "data.json")
+            os.path.join(staticsite_dir, "type", "datas", "record", "3_a", "data.json")
         ) as fp:
             three_json = json.load(fp)
             assert {"markdown_body": "A page about 3."} == three_json

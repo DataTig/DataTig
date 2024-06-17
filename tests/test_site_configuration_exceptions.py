@@ -35,6 +35,7 @@ test_site_configuration_exception_data = [
         "calendar_unknown_end",
         "Calendar uses an unknown end field end_at in type events",
     ),
+    ("unknown_record_id_mode", "Unknown Record ID mode in type datas"),
 ]
 
 

@@ -1,0 +1,9 @@
+types:
+- id: datas
+  directory: datas
+  fields:
+  - id: title
+    key: title
+    title: Title
+  record_id_mode: Pick an ID at random please
+
