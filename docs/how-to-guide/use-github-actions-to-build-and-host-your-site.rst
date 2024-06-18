@@ -94,6 +94,12 @@ Replace the "Build DataTig site" step of the above file with (edit as directed b
         - name: Build Jekyll site
           run: "docker run --rm --volume=\"${{ github.workspace }}:/srv/jekyll:Z\" jekyll/builder:4 /bin/bash -c 'chmod 777 /srv/jekyll && jekyll build _site'"
 
+If you are using Jekyll, the build stage will clear out the DataTig site from the output directory. To stop it doing this, add to your Jekyll `_config.yml`:
+
+.. code-block:: yaml
+
+        keep_files:
+         - datatig
 
 (:doc:`For more on using DataTig and Jekyll together, see here <use-with-jekyll-collections>`)
 
