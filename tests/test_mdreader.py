@@ -25,7 +25,7 @@ def test_md_site():
             one_json = json.load(fp)
             assert {
                 "title": "One",
-                "markdown_body": "A page about 1.",
+                "markdown_body": "A page about 1.\n\nWe can have --- in the middle of lines and it still works fine!",
                 "birthday": "2019-09-30",
                 "has_cat": True,
                 "age": 42.1,

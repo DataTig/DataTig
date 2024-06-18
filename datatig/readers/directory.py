@@ -140,7 +140,7 @@ def process_md_file(
 
     markdown_body_is_field: str = type.get_markdown_body_is_field()
     if raw_data.startswith("---"):
-        bits = raw_data.split("---")
+        bits = raw_data.split("---", 2)
         data = yaml.safe_load(bits[1])
         if markdown_body_is_field:
             data[markdown_body_is_field] = bits[2].strip()
