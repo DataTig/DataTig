@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Datatig config file is now more forgiving - `type` field on a field on a record accepts any case or extra white space
 * A type has a string field automatically added for `markdown_body_is_field` if it is set and the field doesn't already exist. 
   This makes it easier to configure by providing sensible defaults. 
+* Edit/New forms now have Markdown editor for markdown body
 
 ### Changed
 
@@ -53,6 +54,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * With a string list field type, the frictionless data package would have the same specification twice for the extra file.
 * Improved performance when parsing date values
 * Bug where anything after a "---" in a markdown file body was ignored
+* Edit/New forms 
+  * Now only prompt you not to leave if you have actually made changes
+  * Bug where sometimes markdown content went missing
 
 ## [0.5.0] - 2023-01-03
 

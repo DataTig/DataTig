@@ -2,6 +2,12 @@
 
 {% block title %}New {{ type.get_id() }}{% endblock %}
 
+{% block head %}
+    {% if type.get_default_format() == 'md' and type.get_markdown_body_is_field() %}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.css">
+    {% endif %}
+{% endblock %}
+
 {% block breadcrumbs %}
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
@@ -18,6 +24,15 @@
 
 <div id="editor_holder">
 </div>
+
+{% if type.get_default_format() == 'md' and type.get_markdown_body_is_field() %}
+    <div>
+        <label style="width: 100%">
+            <div id="editor_body_label">Markdown Body:</div>
+            <textarea id="editor_body_textarea" style="width: 100%"></textarea>
+        </label>
+    </div>
+{% endif %}
 
 <h3>How To Submit</h3>
 
@@ -46,7 +61,10 @@
 {% if type.get_default_format() == 'yaml' or type.get_default_format() == 'md' %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.0.0/js-yaml.min.js" integrity="sha512-dYHhQSvQ3Lepc2xDidh80aADfrIAaVTs52W5JSFlE47SJgcwD+YY+iY0XmXD9UX3k0YOPvoyugS/ieGjpu5M/Q==" crossorigin="anonymous"></script>
 {% endif %}
-<script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@2.2.1/dist/jsoneditor.min.js"></script>
+{% if type.get_default_format() == 'md' and type.get_markdown_body_is_field() %}
+<script src="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.js"></script>
+{% endif %}
+<script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@2.15.1/dist/jsoneditor.min.js"></script>
 <script>
     var data = JSON.parse("{{ type.get_new_item_json_as_string() | escapejs }}");
     var schema = JSON.parse("{{ type.get_json_schema_as_string() | escapejs }}");
@@ -54,5 +72,5 @@
     var data_format = "{{ type.get_default_format() }}";
     var markdown_body_is_field = "{% if type.get_markdown_body_is_field() %}{{ type.get_markdown_body_is_field()| escapejs }}{% endif %}";
 </script>
-<script src="{{ url }}/web-edit-or-new.js"></script>
+<script src="{{ url }}/web-edit-or-new.js" defer></script>
 {% endblock %}
