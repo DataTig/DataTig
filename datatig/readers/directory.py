@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Callable
+from typing import Callable, Optional
 
 import yaml
 
@@ -138,7 +138,7 @@ def process_md_file(
 ) -> None:
     raw_data = repository_access.get_contents_of_file(filename_relative_to_git)
 
-    markdown_body_is_field: str = type.get_markdown_body_is_field()
+    markdown_body_is_field: Optional[str] = type.get_markdown_body_is_field()
     if raw_data.startswith("---"):
         bits = raw_data.split("---", 2)
         data = yaml.safe_load(bits[1])

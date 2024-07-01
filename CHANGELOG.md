@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * New field type `list-dictionaries`, which lets you also define the fields in the dictionaries.
 * Exception `SiteConfigurationException` used when something is broken in the site configuration
 * Datatig config file is now more forgiving - `type` field on a field on a record accepts any case or extra white space
+* A type has a string field automatically added for `markdown_body_is_field` if it is set and the field doesn't already exist. 
+  This makes it easier to configure by providing sensible defaults. 
 
 ### Changed
 
@@ -35,6 +37,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   * `FieldConfigModel.get_value_object_from_record` replaced with `get_value_object` with different parameters, to support `list-dictionaries`
 * When turning date fields to timestamps, previously 12:00:00 was assumed to try to avoid timezone issues. 
   Now we have proper timezones, assume 00:00:00
+* In `type`, default behavior of `markdown_body_is_field` has changed. 
+  Now it defaults to `body` only if `default_format` is Markdown, otherwise it's not set. 
+  User can specify `---` to avoid any default value.
 
 ### Removed
 

@@ -52,7 +52,7 @@
     var schema = JSON.parse("{{ type.get_json_schema_as_string() | escapejs }}");
     var pretty_json_indent = {{ type.get_pretty_json_indent() }};
     var data_format = "{{ type.get_default_format() }}";
-    var markdown_body_is_field = "{{ type.get_markdown_body_is_field()| escapejs }}";
+    var markdown_body_is_field = "{% if type.get_markdown_body_is_field() %}{{ type.get_markdown_body_is_field()| escapejs }}{% endif %}";
 </script>
 <script src="{{ url }}/web-edit-or-new.js"></script>
 {% endblock %}

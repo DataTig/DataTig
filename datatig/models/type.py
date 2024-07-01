@@ -1,5 +1,6 @@
 import json
 import os.path
+from typing import Optional
 
 from datatig.exceptions import SiteConfigurationException
 from datatig.jsondeepreaderwriter import JSONDeepReaderWriter
@@ -31,6 +32,7 @@ class TypeModel:
             raise SiteConfigurationException(
                 "Unknown Record ID mode in type {}".format(self._id)
             )
+        # Fields
         self._fields = {}
         for config in self._config.get("fields", []):
             field_config: FieldConfigModel = FieldStringConfigModel()
@@ -63,6 +65,19 @@ class TypeModel:
                     )
                 )
             self._fields[field_config.get_id()] = field_config
+        # Maybe add a field automatically for Markdown body?
+        markdown_body_is_field = self.get_markdown_body_is_field()
+        if markdown_body_is_field and not markdown_body_is_field in self._fields:
+            self._fields[markdown_body_is_field] = FieldStringConfigModel()
+            self._fields[markdown_body_is_field].load(
+                {
+                    "id": markdown_body_is_field,
+                    "title": "Body of the markdown file",
+                    "description": "The body of the markdown file. Markdown can be used in this.",
+                    "key": markdown_body_is_field,
+                    "multiline": True,
+                }
+            )
 
     def get_directory(self) -> str:
         return self._config.get("directory")
@@ -97,8 +112,17 @@ class TypeModel:
     def get_default_format(self) -> str:
         return self._config.get("default_format", "yaml")
 
-    def get_markdown_body_is_field(self) -> str:
-        return self._config.get("markdown_body_is_field", "body")
+    def get_markdown_body_is_field(self) -> Optional[str]:
+        x = self._config.get("markdown_body_is_field")
+        if x:
+            # If user has specified a value, use that.
+            # Or allow a special value to override
+            return x if x != "---" else None
+        elif self.get_default_format() == "md":
+            # If md is the standard format, we want a field to hold body.
+            return "body"
+        else:
+            return None
 
     def get_record_id_mode(self) -> str:
         return str(self._config.get("record_id_mode", "filename_only")).lower().strip()

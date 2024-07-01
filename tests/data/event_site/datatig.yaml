@@ -23,11 +23,15 @@ types:
     title: Submission Deadline
     type: date
     timezone: Europe/Berlin
+  - id: body
+    key: body
+    title: Body
   list_fields:
   - title
   - start
   - end
   pretty_json_indent: 2
+  markdown_body_is_field: body
 calendars:
   main:
     timezone: Europe/Berlin
