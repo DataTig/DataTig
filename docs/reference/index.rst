@@ -8,3 +8,4 @@ Reference
    cli.rst
    python-api.rst
    site-configuration.rst
+   output-database-structure.rst
