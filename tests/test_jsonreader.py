@@ -121,6 +121,11 @@ def test_json_site():
                 error = cur.fetchone()
                 assert 0 == error["c"]
             with closing(connection.cursor()) as cur:
+                cur.execute("SELECT * FROM type")
+                type = cur.fetchone()
+                # Nothing is defined, but a sensible default is picked
+                assert '["code"]' == type["list_fields"]
+            with closing(connection.cursor()) as cur:
                 cur.execute("SELECT * FROM record_datas WHERE id='1'")
                 type = cur.fetchone()
                 assert "1" == type["id"]

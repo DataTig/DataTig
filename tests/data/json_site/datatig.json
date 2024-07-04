@@ -40,7 +40,6 @@
         "type": "integer"
       }
     ],
-    "list_fields": [ "code", "title" ],
     "json_schema": "schema.json",
     "pretty_json_indent": 2,
     "record_id_mode": "filename_only"

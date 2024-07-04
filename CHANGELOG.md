@@ -41,6 +41,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * In `type`, default behavior of `markdown_body_is_field` has changed. 
   Now it defaults to `body` only if `default_format` is Markdown, otherwise it's not set. 
   User can specify `---` to avoid any default value.
+* In `type`, default behavior of `list_fields` has changed.
+  It now returns the first field rather than an empty list.
 
 ### Removed
 

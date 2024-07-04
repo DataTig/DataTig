@@ -86,7 +86,12 @@ class TypeModel:
         return self._config.get("directory")
 
     def get_list_fields(self) -> list:
-        return self._config.get("list_fields", [])  # TODO add some sensible defaults
+        if self._config.get("list_fields"):
+            return self._config.get("list_fields")
+        elif self._fields:
+            return [list(self._fields)[0]]
+        else:
+            return []
 
     def get_json_schema_as_dict(self) -> dict:
         if not self._cached_json_schema:

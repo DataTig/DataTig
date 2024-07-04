@@ -87,9 +87,6 @@ The following `datatig.yaml` file will collect all the events into a DataTig sit
     types:
     - id: event
       directory: _event
-      list_fields:
-      - title
-      - start
       default_format: md
       markdown_body_is_field: content
       fields:
