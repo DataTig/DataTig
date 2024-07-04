@@ -27,6 +27,8 @@ You can then set up DataTig in various ways with the existing Jekyll site, such 
 * Setting up DataTig to check the quality of the data (:doc:`How to do this with GitHub Actions<use-github-actions-to-check-your-data>`)
 * Building a static DataTig site in a subdirectory underneath the Jekyll site (:doc:`How to do this with GitHub Actions<use-github-actions-to-build-and-host-your-site>`)
 
+If you don't want the `datatig.yaml` file to appear in the output site, you can add it to the `exclude` key in `_config.yml`.
+
 Example
 -------
 
@@ -118,3 +120,10 @@ The following `datatig.yaml` file will collect all the events into a DataTig sit
             start: start
             end: end
             id: "event_{{record_id}}@example.com"
+
+To stop the `datatig.yaml` file appearing in the output site, add to `_config.yml`:
+
+.. code-block:: yaml
+
+    exclude:
+      - datatig.yaml

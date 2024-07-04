@@ -23,6 +23,7 @@ You can then set up DataTig in various ways with the existing Jekyll site, such 
 
 * Building a static DataTig site in a subdirectory underneath the Jekyll site (:doc:`How to do this with GitHub Actions<use-github-actions-to-build-and-host-your-site>`)
 
+If you don't want the `datatig.yaml` file to appear in the output site, you can add it to the `exclude` key in `_config.yml`.
 
 Example
 -------
@@ -64,6 +65,13 @@ For `datatig.yaml`:
           key: layout
           title: layout
           description: This should always be set to blog
+
+To stop the `datatig.yaml` file appearing in the output site, add to `_config.yml`:
+
+.. code-block:: yaml
+
+    exclude:
+      - datatig.yaml
 
 Real Example
 ------------
