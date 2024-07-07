@@ -40,7 +40,7 @@ Every type has the following options available:
 * `pretty_json_indent` - When writing back JSON files, how many spaces to ident by. Defaults to 4.
 * `default_format` - When creating new records, what is the default format? 'json', 'md' or 'yaml'. Defaults to 'yaml'.
 * `markdown_body_is_field` - When reading or writing markdown files, the body of the markdown file is put into a key with this name. Defaults to `body`. Set to `---` (3 dashes) to turn this off and make sure no default is used.
-* `record_id_mode` - When creating an id for a file, whether to include any directories it may be in too. Can be `directory_and_filename` or `filename_only`. Defaults to `filename_only`. (This default will change to `directory_and_filename` in the future, so if you put files in different directories always set this explicitly.)
+* `record_id_mode` - When creating an id for a file, whether to include any directories it may be in too. Can be `directory_and_filename` or `filename_only`. Defaults to `directory_and_filename`.
 
 A YAML example:
 

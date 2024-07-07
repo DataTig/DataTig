@@ -130,7 +130,11 @@ class TypeModel:
             return None
 
     def get_record_id_mode(self) -> str:
-        return str(self._config.get("record_id_mode", "filename_only")).lower().strip()
+        return (
+            str(self._config.get("record_id_mode", "directory_and_filename"))
+            .lower()
+            .strip()
+        )
 
     def get_new_item_json(self) -> dict:
         out: JSONDeepReaderWriter = JSONDeepReaderWriter({})
