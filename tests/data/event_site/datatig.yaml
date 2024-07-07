@@ -26,6 +26,7 @@ types:
   - id: body
     key: body
     title: Body
+    type: markdown
   list_fields:
   - title
   - start

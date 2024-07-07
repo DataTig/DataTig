@@ -78,6 +78,7 @@ Allowed types are:
 * `datetime`
 * `boolean`
 * `integer`
+* `markdown`
 
 The types `date` and `datetime` have the following extra options:
 

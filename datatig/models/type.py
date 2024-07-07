@@ -13,6 +13,7 @@ from .field_datetime import FieldDateTimeConfigModel
 from .field_integer import FieldIntegerConfigModel
 from .field_list_dictionaries import FieldListDictionariesConfigModel
 from .field_list_strings import FieldListStringsConfigModel
+from .field_markdown import FieldMarkdownConfigModel
 from .field_string import FieldStringConfigModel
 from .field_url import FieldURLConfigModel
 
@@ -51,6 +52,8 @@ class TypeModel:
                 field_config = FieldBooleanConfigModel()
             elif field_type == "integer":
                 field_config = FieldIntegerConfigModel()
+            elif field_type == "markdown":
+                field_config = FieldMarkdownConfigModel()
             elif field_type and field_type != "string":
                 raise SiteConfigurationException(
                     "Unknown field type {} in field {} in type {}".format(
@@ -68,14 +71,13 @@ class TypeModel:
         # Maybe add a field automatically for Markdown body?
         markdown_body_is_field = self.get_markdown_body_is_field()
         if markdown_body_is_field and not markdown_body_is_field in self._fields:
-            self._fields[markdown_body_is_field] = FieldStringConfigModel()
+            self._fields[markdown_body_is_field] = FieldMarkdownConfigModel()
             self._fields[markdown_body_is_field].load(
                 {
                     "id": markdown_body_is_field,
                     "title": "Body of the markdown file",
                     "description": "The body of the markdown file. Markdown can be used in this.",
                     "key": markdown_body_is_field,
-                    "multiline": True,
                 }
             )
 

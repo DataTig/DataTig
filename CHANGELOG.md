@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   * Many fields to `type` table
   * New table `site_config`
 * New field type `list-dictionaries`, which lets you also define the fields in the dictionaries.
+* New field type `markdown`.
 * Exception `SiteConfigurationException` used when something is broken in the site configuration
 * Datatig config file is now more forgiving - `type` field on a field on a record accepts any case or extra white space
 * A type has a string field automatically added for `markdown_body_is_field` if it is set and the field doesn't already exist. 

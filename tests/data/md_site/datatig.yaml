@@ -22,7 +22,7 @@ types:
   - id: markdown_body
     key: markdown_body
     title: Body
-    multiline: True
+    type: markdown
   list_fields:
   - title
   markdown_body_is_field: markdown_body

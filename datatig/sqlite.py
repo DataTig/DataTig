@@ -170,6 +170,7 @@ class DataStoreSQLite:
             "url",
             "string",
             "list-strings",
+            "markdown",
         ]:
             cur.execute(
                 """ALTER TABLE """
@@ -402,6 +403,7 @@ class DataStoreSQLite:
             if field.get_type() in [
                 "url",
                 "string",
+                "markdown",
             ] and isinstance(value, str):
                 out_fields.append("field_" + field.get_id())
                 out_values.append(value)

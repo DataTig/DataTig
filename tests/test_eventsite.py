@@ -98,7 +98,7 @@ def test_event_site():
                         "id": "submission_deadline",
                         "type": "date",
                     },
-                    "body": {"id": "body", "type": "string"},
+                    "body": {"id": "body", "type": "markdown"},
                 },
                 "id": "events",
                 "records_api_url": "/type/events/records_api.json",

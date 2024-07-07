@@ -55,7 +55,7 @@ For `datatig.yaml`:
         - id: content
           key: content
           title: Content
-          multiline: True
+          type: markdown
         # Often with blog posts you always want a `layout`
         # field which is set to a specific value.
         # There is no feature in DataTig to do this automatically
