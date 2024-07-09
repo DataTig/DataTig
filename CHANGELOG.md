@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * A type has a string field automatically added for `markdown_body_is_field` if it is set and the field doesn't already exist. 
   This makes it easier to configure by providing sensible defaults. 
 * Edit/New forms now have Markdown editor for markdown body
+* Table for `list-string` fields has `sort` column
 
 ### Changed
 

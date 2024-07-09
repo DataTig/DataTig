@@ -69,6 +69,7 @@ tables will have different columns depending on which fields are defined.
 For fields of type `list-strings`, the table is called `record_<type_id>___field_<field_id>`. It has the following columns:
 
 * `record_id`
+* `sort` Integer.
 * `value`
 
 For fields of type `list-dictionaries`, the table is called `record_<type_id>___field_<field_id>`.  It has the following columns:

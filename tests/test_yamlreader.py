@@ -66,12 +66,14 @@ def test_yaml_site():
                 assert 45 == record["field_age"]
             with closing(connection.cursor()) as cur:
                 cur.execute(
-                    "SELECT * FROM record_datas___field_tags WHERE record_id='1' ORDER BY value"
+                    "SELECT * FROM record_datas___field_tags WHERE record_id='1' ORDER BY sort ASC"
                 )
                 field_value = cur.fetchone()
                 assert "Cats" == field_value["value"]
+                assert 1 == field_value["sort"]
                 field_value = cur.fetchone()
                 assert "Dogs" == field_value["value"]
+                assert 2 == field_value["sort"]
             with closing(connection.cursor()) as cur:
                 cur.execute("SELECT * FROM record_datas WHERE id='2'")
                 record = cur.fetchone()

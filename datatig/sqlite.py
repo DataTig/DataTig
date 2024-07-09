@@ -213,6 +213,7 @@ class DataStoreSQLite:
             cur.execute(
                 """CREATE TABLE {table}___field_{field} (
                     record_id TEXT, 
+                    sort INTEGER NOT NULL,
                     value TEXT,
                     FOREIGN KEY(record_id) REFERENCES record_{type}(id)
                     ) 
@@ -355,15 +356,17 @@ class DataStoreSQLite:
                     and isinstance(value, list)
                     and len(value) > 0
                 ):
+                    sort = 1
                     for v in value:
                         cur.execute(
                             """INSERT INTO  record_"""
                             + record.get_type().get_id()
                             + """___field_"""
                             + field.get_id()
-                            + """ (record_id, value) VALUES (?, ?) """,
-                            [record.get_id(), str(v)],
+                            + """ (record_id, sort, value) VALUES (?, ?, ?) """,
+                            [record.get_id(), sort, str(v)],
                         )
+                        sort += 1
                 elif field.get_type() in ["list-dictionaries"]:
                     sort = 1
                     for sub_record in value_object.get_sub_records():
