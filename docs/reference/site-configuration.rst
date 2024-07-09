@@ -57,9 +57,9 @@ A YAML example:
       default_format: json
 
 Fields
-~~~~~~
+------
 
-Every field needs to be defined.
+Every field needs to be defined. Every field type has these options:
 
 * `id` - every field needs a unique ID within that type.
 * `key` - the path in the data to find this value. Note paths are allowed, not just keys.
@@ -67,30 +67,7 @@ Every field needs to be defined.
 * `description` - a description for this field.
 * `type` - a type for this field. Defaults to `string`.
 
-
-Allowed types are:
-
-* `string`
-* `url`
-* `list-strings`
-* `list-dictionaries` (`list-dicts` can be used for short)
-* `date`
-* `datetime`
-* `boolean`
-* `integer`
-* `markdown`
-
-The types `date` and `datetime` have the following extra options:
-
-* `timezone`: Defaults to `UTC`. Set to a location string like `Europe/Berlin`
-
-The type `list-dictionaries` has the following extra options:
-
-* `fields`: A list of fields to be found in the dictionary items. Definition is the same as above, but list types are not allowed. (So you can't have a list in a list.)
-
-The type `string` has the following extra options:
-
-* `multiline`: Defaults to false. Whether new lines are allowed in values
+Some field types have extra options. See below for details.
 
 A YAML example:
 
@@ -114,6 +91,60 @@ A YAML example:
         title: Description (EN)
         multiline: True
 
+Field Type `string`
+~~~~~~~~~~~~~~~~~~~
+
+The type `string` has the following extra options:
+
+* `multiline`: Defaults to false. Whether new lines are allowed in values
+
+Field Type `url`
+~~~~~~~~~~~~~~~~
+
+There are no extra configuration options.
+
+Field Type `date`
+~~~~~~~~~~~~~~~~~
+
+The types `date` and `datetime` have the following extra options:
+
+* `timezone`: Defaults to `UTC`. Set to a location string like `Europe/Berlin`
+
+Field Type `datetime`
+~~~~~~~~~~~~~~~~~~~~~
+
+The types `date` and `datetime` have the following extra options:
+
+* `timezone`: Defaults to `UTC`. Set to a location string like `Europe/Berlin`
+
+Field Type `boolean`
+~~~~~~~~~~~~~~~~~~~~
+
+There are no extra configuration options.
+
+Field Type `integer`
+~~~~~~~~~~~~~~~~~~~~
+
+There are no extra configuration options.
+
+Field Type `markdown`
+~~~~~~~~~~~~~~~~~~~~~
+
+There are no extra configuration options.
+
+Field Type `list-strings`
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There are no extra configuration options.
+
+Field Type `list-dictionaries`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As well as `list-dictionaries`, a type of `list-dicts` can be used for short.
+
+The type `list-dictionaries` has the following extra options:
+
+* `fields`: A list of fields to be found in the dictionary items. Definition is the same as above, but list types are not allowed. (So you can't have a list in a list.)
 
 Git Host
 --------
