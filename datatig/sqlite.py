@@ -297,7 +297,7 @@ class DataStoreSQLite:
                 )
 
                 for field in record.get_type().get_fields().values():
-                    if field.get_type() in ["list-strings"]:
+                    if field.get_type() in ["list-strings", "list-dictionaries"]:
                         cur.execute(
                             """DELETE FROM record_"""
                             + record.get_type().get_id()
