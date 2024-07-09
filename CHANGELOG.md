@@ -44,6 +44,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   User can specify `---` to avoid any default value.
 * In `type`, default behavior of `list_fields` has changed.
   It now returns the first field rather than an empty list.
+* Name of table in output database for `list-string` fields has changed to `record_<type_id>___field_<field_id>`
 
 ### Removed
 

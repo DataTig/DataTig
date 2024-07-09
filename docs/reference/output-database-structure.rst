@@ -4,6 +4,10 @@ Output Database Structure
 When run, a database is created with all the details of the site and the data. This page describes the structure of that
 database.
 
+Sometimes the id of a DataTig type or field is used in a database table or column name.
+In these cases, it is followed by 3 underscores (`___`).
+This clearly separates the 2 parts and avoids potential name clashes.
+
 Table `type`
 ~~~~~~~~~~~~
 
@@ -35,7 +39,7 @@ It has the following columns:
 * `sort`
 * `extra_config`
 
-Table `record_<type_id>`
+Tables `record_<type_id>`
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 For each type, a different table is created. This is because each type table will have different columns depending on
@@ -56,13 +60,13 @@ Fields of type `datetime` or `date` will have several columns:
 * `field_<field_id>` String, in ISO format.
 * `field_<field_id>___timestamp` Integer, the timestamp of this value.
 
-Tables for record fields with multiple values
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Tables `record_<type_id>___field_<field_id>`, for record fields with multiple values
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Fields that can have multiple values have extra tables. This is to allow for easier querying, and in some cases because
 tables will have different columns depending on which fields are defined.
 
-For fields of type `list-strings`, the table is called `record_<type_id>_field_<field_id>`. It has the following columns:
+For fields of type `list-strings`, the table is called `record_<type_id>___field_<field_id>`. It has the following columns:
 
 * `record_id`
 * `value`
@@ -73,8 +77,8 @@ For fields of type `list-dictionaries`, the table is called `record_<type_id>___
 * `sort` Integer.
 * extra columns for the fields in the dictionary.
 
-Table `record_error_<type>`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Tables `record_error_<type>`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For each type, a different table is created. This is to allow for easier querying.
 

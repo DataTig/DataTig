@@ -66,7 +66,7 @@ def test_yaml_site():
                 assert 45 == record["field_age"]
             with closing(connection.cursor()) as cur:
                 cur.execute(
-                    "SELECT * FROM record_datas_field_tags WHERE record_id='1' ORDER BY value"
+                    "SELECT * FROM record_datas___field_tags WHERE record_id='1' ORDER BY value"
                 )
                 field_value = cur.fetchone()
                 assert "Cats" == field_value["value"]

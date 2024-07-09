@@ -211,7 +211,7 @@ class DataStoreSQLite:
             )
         if type_field.get_type() in ["list-strings"]:
             cur.execute(
-                """CREATE TABLE {table}_field_{field} (
+                """CREATE TABLE {table}___field_{field} (
                     record_id TEXT, 
                     value TEXT,
                     FOREIGN KEY(record_id) REFERENCES record_{type}(id)
@@ -300,7 +300,7 @@ class DataStoreSQLite:
                         cur.execute(
                             """DELETE FROM record_"""
                             + record.get_type().get_id()
-                            + """_field_"""
+                            + """___field_"""
                             + field.get_id()
                             + """ WHERE record_id=? """,
                             [record.get_id()],
@@ -359,7 +359,7 @@ class DataStoreSQLite:
                         cur.execute(
                             """INSERT INTO  record_"""
                             + record.get_type().get_id()
-                            + """_field_"""
+                            + """___field_"""
                             + field.get_id()
                             + """ (record_id, value) VALUES (?, ?) """,
                             [record.get_id(), str(v)],
