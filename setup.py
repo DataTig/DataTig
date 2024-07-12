@@ -4,9 +4,15 @@ setuptools.setup(
     name="DataTig",
     version="0.5.0",
     description="DataTig helps you crowdsource and use data stored in files in a git repository.",
-    long_description="DataTig helps you crowdsource and use data stored in files in a git repository.",
+    long_description_content_type="text/markdown",
+    long_description="DataTig helps you crowdsource and use data stored in files in a git repository.\n\n"
+    + "Home Page: [https://www.datatig.com](https://www.datatig.com)\n\n"
+    + "Documentation: [https://datatig.readthedocs.io/en/latest/](https://datatig.readthedocs.io/en/latest/)\n\n"
+    + "Issues: [https://github.com/DataTig/DataTig/issues](https://github.com/DataTig/DataTig/issues)\n\n"
+    + "Source: [https://github.com/DataTig/DataTig](https://github.com/DataTig/DataTig)",
     url="https://github.com/DataTig/DataTig",
     project_urls={
+        "Home Page": "https://www.datatig.com",
         "Documentation": "https://datatig.readthedocs.io/en/latest/",
         "Issues": "https://github.com/DataTig/DataTig/issues",
         "Source": "https://github.com/DataTig/DataTig",

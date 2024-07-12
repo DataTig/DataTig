@@ -1,6 +1,8 @@
 # DataTig
 
-Please see the documentation: https://datatig.readthedocs.io/en/latest/
+Home page: https://www.datatig.com
+
+Documentation: https://datatig.readthedocs.io/en/latest/ (Or docs directory in this repository)
 
 Source: https://github.com/DataTig/DataTig
 
