@@ -8,50 +8,78 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-* YAML data files
-  * Can read files that are set up to have more than one document, as long as there is only one document in them.
-* New local server feature - currently used for internal testing
-* Calendars
-* Added `timezone` option to `date` and `datetime` fields
-* Added `multiline` option to `string` field
-* Added `description` option to all fields
-* Added `record_id_mode` option to type https://github.com/DataTig/DataTig/issues/13
-* Added extra fields to SQLite database to store more of the configuration used when building the site
-  * `description`, `sort` and `extra_config` fields to `type_field` table
-  * Many fields to `type` table
-  * New table `site_config`
+New fields types:
+
 * New field type `list-dictionaries`, which lets you also define the fields in the dictionaries.
 * New field type `markdown`.
-* Exception `SiteConfigurationException` used when something is broken in the site configuration
-* Datatig config file is now more forgiving - `type` field on a field on a record accepts any case or extra white space
+
+Field & type options:
+
+* Added `timezone` option to `date` and `datetime` fields.
+* Added `multiline` option to `string` field.
+* Added `description` option to all fields.
+* Added `record_id_mode` option to type. https://github.com/DataTig/DataTig/issues/13
 * A type has a string field automatically added for `markdown_body_is_field` if it is set and the field doesn't already exist. 
-  This makes it easier to configure by providing sensible defaults. 
-* Edit/New forms now have Markdown editor for markdown body
-* Table for `list-string` fields has `sort` column
+  This makes it easier to configure by providing sensible defaults.
+* Datatig config file is now more forgiving - `type` field on a field on a record accepts any case or extra white space.
+
+SQLite database:
+
+* Added extra fields to SQLite database to store more of the configuration used when building the site:
+  * `description`, `sort` and `extra_config` fields to `type_field` table.
+  * Many fields to `type` table.
+  * New table `site_config`.
+* Table for `list-string` fields has `sort` column.
+
+Misc:
+
+* Calendars.
+* Can read YAML data files that are set up to have more than one document, as long as there is only one document in them.
+* Exception `SiteConfigurationException` used when something is broken in the site configuration.
+* Edit/New forms now have Markdown editor for markdown body.
+* New local server feature - currently used for internal testing.
 
 ### Changed
 
-* process.go function, sys_exit -> sys_exit_on_error. Allows other Python code to use this as a library and continue
-  if fine but stop and return an error code if not. 
+SQLite database:
+
+* Name of table in output database for `list-string` fields has changed to `record_<type_id>___field_<field_id>`.
+
+Frictionless data package:
+
 * frictionless data package - all files now start `record_`. This matches the SQLite database and allows us
   to put other files in without possible name collisions.
-* Refactored internal Python API
-  * Constructor to FieldValueModel has changed
-  * `FieldConfigModel.get_value_object_from_record` replaced with `get_value_object` with different parameters, to support `list-dictionaries`
-* When turning date fields to timestamps, previously 12:00:00 was assumed to try to avoid timezone issues. 
-  Now we have proper timezones, assume 00:00:00
+
+Type options:
+
 * In `type`, default behavior of `markdown_body_is_field` has changed. 
   Now it defaults to `body` only if `default_format` is Markdown, otherwise it's not set. 
   User can specify `---` to avoid any default value.
 * In `type`, default behavior of `list_fields` has changed.
   It now returns the first field rather than an empty list.
-* Name of table in output database for `list-string` fields has changed to `record_<type_id>___field_<field_id>`
+
+Fields:
+
+* When turning date fields to timestamps, previously 12:00:00 was assumed to try to avoid timezone issues. 
+  Now we have proper timezones, assume 00:00:00.
+
+Internal Python API:
+
+* process.go function, sys_exit -> sys_exit_on_error. Allows other Python code to use this as a library and continue
+  if fine but stop and return an error code if not. 
+* Constructor to FieldValueModel has changed.
+* `FieldConfigModel.get_value_object_from_record` replaced with `get_value_object` with different parameters, to support `list-dictionaries`.
 
 ### Removed
 
-* Dropped support for Python 3.7 as that isn't supported any more.
-* Incomplete Guide Form feature.
+SQLite database:
+
 * Sqlite database drops field `fields` from `type` - it never had any data put in it and thus wasn't used.
+
+Misc:
+
+* Dropped support for Python 3.7 as that isn't supported anymore.
+* Incomplete Guide Form feature.
 
 ### Fixed
 
