@@ -66,3 +66,11 @@ class FieldBooleanValueModel(FieldValueModel):
 
     def different_to(self, other_field_value):
         return self._value != other_field_value._value
+
+    def get_api_value(self) -> dict:
+        if self.is_value_true():
+            return {"value": True}
+        elif self.is_value_false():
+            return {"value": False}
+        else:
+            return {"value": None}

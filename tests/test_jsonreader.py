@@ -28,6 +28,7 @@ def test_json_site():
                 "birthday": "2022-10-01",
                 "has_cat": True,
                 "age": 45,
+                "tags": ["a", "b"],
             } == one_json
         with open(
             os.path.join(staticsite_dir, "type", "datas", "record", "2", "data.json")
@@ -72,7 +73,6 @@ def test_json_site():
             type_api = json.load(fp)
             assert {
                 "fields": {
-                    "code": {"id": "code", "type": "string"},
                     "title": {"id": "title", "type": "string"},
                     "tags": {"id": "tags", "type": "list-strings"},
                     "birthday": {"id": "birthday", "type": "date"},
@@ -93,16 +93,19 @@ def test_json_site():
                         "api_url": "/type/datas/record/1/api.json",
                         "data_api_url": "/type/datas/record/1/data.json",
                         "id": "1",
+                        "fields": {"title": {"value": "One"}},
                     },
                     "2": {
                         "api_url": "/type/datas/record/2/api.json",
                         "data_api_url": "/type/datas/record/2/data.json",
                         "id": "2",
+                        "fields": {"title": {"value": "Two"}},
                     },
                     "3": {
                         "api_url": "/type/datas/record/3/api.json",
                         "data_api_url": "/type/datas/record/3/data.json",
                         "id": "3",
+                        "fields": {"title": {"value": "Two"}},
                     },
                 }
             } == type_records_api
@@ -110,7 +113,19 @@ def test_json_site():
             os.path.join(staticsite_dir, "type", "datas", "record", "1", "api.json")
         ) as fp:
             record_api = json.load(fp)
-            assert {"data_api_url": "/type/datas/record/1/data.json"} == record_api
+            assert {
+                "data_api_url": "/type/datas/record/1/data.json",
+                "fields": {
+                    "age": {"value": 45},
+                    "birthday": {
+                        "value_iso": "2022-10-01",
+                        "value_timestamp": 1664582400.0,
+                    },
+                    "has_cat": {"value": True},
+                    "tags": {"values": [{"value": "a"}, {"value": "b"}]},
+                    "title": {"value": "One"},
+                },
+            } == record_api
         # Test database
         with closing(
             sqlite3.connect(os.path.join(staticsite_dir, "database.sqlite"))
@@ -124,7 +139,7 @@ def test_json_site():
                 cur.execute("SELECT * FROM type")
                 type = cur.fetchone()
                 # Nothing is defined, but a sensible default is picked
-                assert '["code"]' == type["list_fields"]
+                assert '["title"]' == type["list_fields"]
             with closing(connection.cursor()) as cur:
                 cur.execute("SELECT * FROM record_datas WHERE id='1'")
                 type = cur.fetchone()

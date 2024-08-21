@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+* Field data to API
+
 ## [0.6.0] - 2024-07-12
 
 ### Added

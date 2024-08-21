@@ -159,6 +159,7 @@ class StaticWriter:
 
         api_records: dict = {"records": {}}
         for item_id in self._datastore.get_ids_in_type(type.get_id()):
+            item = self._datastore.get_item(type.get_id(), item_id)
             api_records["records"][item_id] = {
                 "id": item_id,
                 "api_url": self._url
@@ -173,7 +174,12 @@ class StaticWriter:
                 + "/record/"
                 + item_id
                 + "/data.json",
+                "fields": {},
             }
+            for field_id in type.get_list_fields():
+                api_records["records"][item_id]["fields"][
+                    field_id
+                ] = item.get_field_value(field_id).get_api_value()
         with open(
             os.path.join(self._out_dir, "type", type.get_id(), "records_api.json"), "w"
         ) as fp:
@@ -235,7 +241,10 @@ class StaticWriter:
             + "/record/"
             + record_id
             + "/data.json",
+            "fields": {},
         }
+        for field_id in type.get_fields().keys():
+            api["fields"][field_id] = record.get_field_value(field_id).get_api_value()
         with open(
             os.path.join(
                 self._out_dir, "type", type.get_id(), "record", record_id, "api.json"

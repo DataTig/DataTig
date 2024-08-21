@@ -89,6 +89,12 @@ class FieldListDictionariesSubRecordModel:
     def get_value(self, field_id):
         return self._fields[field_id]
 
+    def get_api_value(self) -> dict:
+        out: dict = {"fields": {}}
+        for field_id, field_value in self._fields.items():
+            out["fields"][field_id] = field_value.get_api_value()
+        return out
+
 
 class FieldListDictionariesValueModel(FieldValueModel):
     def __init__(
@@ -134,3 +140,9 @@ class FieldListDictionariesValueModel(FieldValueModel):
                 if v1.different_to(v2):
                     return True
         return False
+
+    def get_api_value(self) -> dict:
+        out = []
+        for sub_record in self._sub_records:
+            out.append(sub_record.get_api_value())
+        return {"values": out}

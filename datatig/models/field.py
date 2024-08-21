@@ -70,3 +70,7 @@ class FieldValueModel(ABC):
     @abstractmethod
     def different_to(self, other_field_value):
         pass
+
+    @abstractmethod
+    def get_api_value(self) -> dict:
+        pass

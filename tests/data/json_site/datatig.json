@@ -6,11 +6,6 @@
     "directory": "datas",
     "fields": [
       {
-        "id": "code",
-        "key": "code",
-        "title": "Code"
-      },
-      {
         "id": "title",
         "key": "title",
         "title": "Title"

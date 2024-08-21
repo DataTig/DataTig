@@ -68,3 +68,6 @@ class FieldListStringsValueModel(FieldValueModel):
 
     def different_to(self, other_field_value):
         return self._value != other_field_value._value
+
+    def get_api_value(self) -> dict:
+        return {"values": [{"value": i} for i in self._value]}

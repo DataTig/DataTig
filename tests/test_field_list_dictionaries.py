@@ -1,3 +1,4 @@
+import json
 import os
 import sqlite3
 import tempfile
@@ -54,6 +55,27 @@ def test_type_list_dictionaries_site():
                 assert subrecord["field_who"] == "18 years of age or younger"
                 subrecord = cur.fetchone()
                 assert subrecord["field_who"] == "65 years of age or older"
+        # Test API
+        with open(
+            os.path.join(
+                staticsite_dir,
+                "type",
+                "attraction",
+                "record",
+                "chocolate_museum",
+                "api.json",
+            )
+        ) as fp:
+            record_api = json.load(fp)
+            assert 3 == len(record_api["fields"]["tickets"]["values"])
+            assert {
+                "fields": {
+                    "price": {"value": 9},
+                    "title": {"value": "Kids"},
+                    "url": {"value": "https://example.com/choolate/kids"},
+                    "who": {"value": "18 years of age or younger"},
+                }
+            } == record_api["fields"]["tickets"]["values"][0]
 
 
 test_different_to_data = [

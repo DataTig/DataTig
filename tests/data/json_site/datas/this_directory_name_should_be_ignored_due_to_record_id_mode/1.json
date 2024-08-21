@@ -2,5 +2,6 @@
   "title": "One",
   "birthday": "2022-10-01",
   "has_cat": true,
-  "age": 45
+  "age": 45,
+  "tags": ["a", "b"]
 }

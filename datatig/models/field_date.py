@@ -138,3 +138,12 @@ class FieldDateValueModel(FieldValueModel):
 
     def different_to(self, other_field_value):
         return self._value != other_field_value._value
+
+    def get_api_value(self) -> dict:
+        if self._value:
+            return {
+                "value_iso": self.get_value(),
+                "value_timestamp": self.get_value_timestamp(),
+            }
+        else:
+            return {"value_iso": None, "value_timestamp": None}
