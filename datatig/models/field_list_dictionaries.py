@@ -55,7 +55,7 @@ class FieldListDictionariesConfigModel(FieldConfigModel):
         if isinstance(new_data, list):
             for item_data in new_data:
                 if isinstance(item_data, dict):
-                    sub_record = FieldListDictionariesSubRecordModel()
+                    sub_record = FieldListDictionariesSubRecordModel(item_data)
                     for field in self._fields.values():
                         sub_record.set_value(
                             field.get_id(), field.get_value_object(record, item_data)
@@ -80,8 +80,9 @@ class FieldListDictionariesConfigModel(FieldConfigModel):
 
 
 class FieldListDictionariesSubRecordModel:
-    def __init__(self):
-        self._fields = {}
+    def __init__(self, data: dict):
+        self._fields: dict = {}
+        self._data: dict = data
 
     def set_value(self, field_id, value):
         self._fields[field_id] = value
@@ -94,6 +95,9 @@ class FieldListDictionariesSubRecordModel:
         for field_id, field_value in self._fields.items():
             out["fields"][field_id] = field_value.get_api_value()
         return out
+
+    def get_data(self) -> dict:
+        return self._data
 
 
 class FieldListDictionariesValueModel(FieldValueModel):

@@ -46,15 +46,27 @@ def test_type_list_dictionaries_site():
                 cur.execute(
                     "SELECT * FROM record_attraction___field_tickets ORDER BY record_id ASC, sort ASC"
                 )
+                # a subrecord ...
                 subrecord = cur.fetchone()
                 assert (
                     subrecord["field_who"]
                     == "Anyone who can climb 533 steps. No lift! No Joke!"
                 )
+                subrecord_data = json.loads(subrecord["data"])
+                assert (
+                    subrecord_data["who"]
+                    == "Anyone who can climb 533 steps. No lift! No Joke!"
+                )
+                # next ...
                 subrecord = cur.fetchone()
                 assert subrecord["field_who"] == "18 years of age or younger"
+                subrecord_data = json.loads(subrecord["data"])
+                assert subrecord_data["who"] == "18 years of age or younger"
+                # next ...
                 subrecord = cur.fetchone()
                 assert subrecord["field_who"] == "65 years of age or older"
+                subrecord_data = json.loads(subrecord["data"])
+                assert subrecord_data["who"] == "65 years of age or older"
         # Test API
         with open(
             os.path.join(

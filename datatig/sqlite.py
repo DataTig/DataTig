@@ -227,6 +227,7 @@ class DataStoreSQLite:
                 """CREATE TABLE {table}___field_{field} (
                     record_id TEXT NOT NULL, 
                     sort INTEGER NOT NULL,
+                    data TEXT NOT NULL,
                     FOREIGN KEY(record_id) REFERENCES record_{type}(id)
                     ) 
                     """.format(
@@ -374,10 +375,11 @@ class DataStoreSQLite:
                             field.get_fields().values(),
                             lambda field_id: sub_record.get_value(field_id),
                         )
-                        insert_fields += ["record_id", "sort"]
+                        insert_fields += ["record_id", "sort", "data"]
                         insert_data += [
                             record.get_id(),
                             sort,
+                            json.dumps(sub_record.get_data(), default=str),
                         ]
                         sort += 1
                         cur.execute(

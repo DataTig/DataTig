@@ -40,7 +40,7 @@ It has the following columns:
 * `extra_config`
 
 Tables `record_<type_id>`
-~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For each type, a different table is created. This is because each type table will have different columns depending on
 which fields it has, and to allow for easier querying.
@@ -49,7 +49,7 @@ which fields it has, and to allow for easier querying.
 It has the following columns:
 
 * `id`
-* `data`
+* `data` A JSON string of the dictionary with all data for the record. This helps you use data that is not in a defined field.
 * `git_filename`
 * `format`
 
@@ -76,6 +76,7 @@ For fields of type `list-dictionaries`, the table is called `record_<type_id>___
 
 * `record_id`
 * `sort` Integer.
+* `data` A JSON string of the dictionary with all data for this item in the list. This helps you use data that is not in a defined field.
 * extra columns for the fields in the dictionary.
 
 Tables `record_error_<type>`

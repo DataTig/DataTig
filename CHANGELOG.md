@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 * Field data to API
+* SQLite tables for list dictionary fields, add `data` field https://github.com/DataTig/DataTig/issues/31
 
 ## [0.6.0] - 2024-07-12
 
