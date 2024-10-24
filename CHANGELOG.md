@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Field data to API
 * SQLite tables for list dictionary fields, add `data` field https://github.com/DataTig/DataTig/issues/31
 
+### Removed
+
+* Dropped support for Python 3.8 as that isn't supported anymore.
+
 ## [0.6.0] - 2024-07-12
 
 ### Added
