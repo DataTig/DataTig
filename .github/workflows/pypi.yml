@@ -1,4 +1,4 @@
-Name: Upload release to PyPI (Test & Live)
+name: Upload release to PyPI (Test & Live)
 on:
   push:
     branches: [TEST2]
