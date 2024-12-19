@@ -8,21 +8,15 @@ jobs:
       matrix:
         python-version: [ '3.9', '3.10', '3.11', '3.12', '3.13']
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         submodules: recursive
         fetch-depth: 0
     - name: Setup python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
         architecture: x64
-    - uses: actions/cache@v1
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}-${{ matrix.python-version }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
     - run: pip install -e .[Dev]
     - run: py.test .
 
