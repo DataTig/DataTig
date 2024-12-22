@@ -8,6 +8,9 @@ import pytest
 
 import datatig.process
 from datatig.models.field_list_dictionaries import FieldListDictionariesConfigModel
+from datatig.models.siteconfig import SiteConfigModel
+from datatig.repository_access import RepositoryAccessLocalFiles
+from datatig.sqlite import DataStoreSQLite
 
 
 def test_type_list_dictionaries_site():
@@ -88,6 +91,17 @@ def test_type_list_dictionaries_site():
                     "who": {"value": "18 years of age or younger"},
                 }
             } == record_api["fields"]["tickets"]["values"][0]
+        # TEST OBJECTS
+        config = SiteConfigModel(source_dir)
+        config.load_from_file(RepositoryAccessLocalFiles(source_dir))
+        db = DataStoreSQLite(config, os.path.join(staticsite_dir, "database.sqlite"))
+        # test get_urls_in_values()
+        record = db.get_item("attraction", "chocolate_museum")
+        assert [
+            "https://example.com/choolate/kids",
+            "https://example.com/choolate/biggest_kids",
+            "https://example.com/choolate/big_kids",
+        ] == record.get_urls_in_field_values()
 
 
 test_different_to_data = [

@@ -99,6 +99,12 @@ class FieldListDictionariesSubRecordModel:
     def get_data(self) -> dict:
         return self._data
 
+    def get_urls_in_values(self) -> list:
+        out: list = []
+        for field_id, field_value in self._fields.items():
+            out.extend(field_value.get_urls_in_value())
+        return out
+
 
 class FieldListDictionariesValueModel(FieldValueModel):
     def __init__(
@@ -150,3 +156,9 @@ class FieldListDictionariesValueModel(FieldValueModel):
         for sub_record in self._sub_records:
             out.append(sub_record.get_api_value())
         return {"values": out}
+
+    def get_urls_in_value(self):
+        out = []
+        for sub_record in self._sub_records:
+            out.extend(sub_record.get_urls_in_values())
+        return out

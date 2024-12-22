@@ -50,3 +50,6 @@ class FieldURLValueModel(FieldValueModel):
 
     def get_api_value(self) -> dict:
         return {"value": self._value}
+
+    def get_urls_in_value(self) -> list:
+        return [self._value] if self._value else []

@@ -121,3 +121,9 @@ class RecordModel:
                 out[field_id] = {"type": "diff"}
             # No else clause - if field values are the same, we don't add any data to the output
         return out
+
+    def get_urls_in_field_values(self):
+        out: list = []
+        for field_value in self._field_values.values():
+            out.extend(field_value.get_urls_in_value())
+        return out

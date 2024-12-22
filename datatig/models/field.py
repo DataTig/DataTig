@@ -74,3 +74,6 @@ class FieldValueModel(ABC):
     @abstractmethod
     def get_api_value(self) -> dict:
         pass
+
+    def get_urls_in_value(self) -> list:
+        return []

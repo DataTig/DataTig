@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+* record.get_urls_in_field_values() and field.get_urls_in_value() methods 
+  for link checking - in this library in the future and now in DataTig Hub
+
 ## [0.7.0] - 2024-11-06
 
 ### Added
