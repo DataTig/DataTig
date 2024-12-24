@@ -1,3 +1,5 @@
+import re
+
 from datatig.jsondeepreaderwriter import JSONDeepReaderWriter
 from datatig.models.field import FieldConfigModel, FieldValueModel
 
@@ -51,3 +53,11 @@ class FieldMarkdownValueModel(FieldValueModel):
 
     def get_api_value(self) -> dict:
         return {"value": self._value}
+
+    def get_urls_in_value(self) -> list:
+        if self._value:
+            # Only match absolute links for now (http...).
+            # Matching relative ones gets complicated, as we should apply some kind of base to them.
+            return re.findall("\[[^\]]+\]\(([hH][tT][tT][pP][^\) ]+)\)", self._value)
+        else:
+            return []

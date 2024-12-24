@@ -5,6 +5,9 @@ import tempfile
 from contextlib import closing
 
 import datatig.process
+from datatig.models.siteconfig import SiteConfigModel
+from datatig.repository_access import RepositoryAccessLocalFiles
+from datatig.sqlite import DataStoreSQLite
 
 
 def test_md_site():
@@ -25,7 +28,7 @@ def test_md_site():
             one_json = json.load(fp)
             assert {
                 "title": "One",
-                "markdown_body": "A page about 1.\n\nWe can have --- in the middle of lines and it still works fine!",
+                "markdown_body": "A page about 1.\n\nWe can have --- in the middle of lines and it still works fine!\n\nVisit [DataTig](https://www.datatig.com)!",
                 "birthday": "2019-09-30",
                 "has_cat": True,
                 "age": 42.1,
@@ -75,3 +78,12 @@ def test_md_site():
                 assert "2" == type["id"]
                 assert "2" == type["field_title"]
                 assert 43 == type["field_age"]
+        # TEST OBJECTS
+        config = SiteConfigModel(source_dir)
+        config.load_from_file(RepositoryAccessLocalFiles(source_dir))
+        db = DataStoreSQLite(config, os.path.join(staticsite_dir, "database.sqlite"))
+        # test get_urls_in_values()
+        record = db.get_item("datas", "1")
+        assert [
+            "https://www.datatig.com",
+        ] == record.get_urls_in_field_values()
