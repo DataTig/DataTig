@@ -39,7 +39,7 @@ The contents should be:
             architecture: x64
 
         - run: pip install datatig
-        - run: python -m datatig.cli check .
+        - run: python -m datatig check .
 
 Commit this and merge it into your default branch (`main`, or whatever you use).
 

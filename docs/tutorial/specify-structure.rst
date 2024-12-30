@@ -64,7 +64,7 @@ Now run the check function again.
 
 .. code-block:: bash
 
-    python -m datatig.cli check .
+    python -m datatig check .
 
 This time, the tool should tell you there is a problem with a bit of data.
 
@@ -79,7 +79,7 @@ Instead let's build the website again and look at it. This is the same instructi
 
 .. code-block:: bash
 
-    python -m datatig.cli build . --staticsiteoutput _site
+    python -m datatig build . --staticsiteoutput _site
     sh -c "cd _site && python3 -m http.server"
 
 Open a web browser and go to http://localhost:8000/type/shops

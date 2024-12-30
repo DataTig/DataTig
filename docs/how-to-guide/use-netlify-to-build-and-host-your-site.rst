@@ -19,7 +19,7 @@ In the top level of the repository, create a file `netlify.toml`. It's contents 
 
     [build]
       publish = "out"
-      command = "pip install datatig && export PYTHONPATH=$(pwd) && python -m datatig.cli build . --staticsiteoutput out"
+      command = "pip install datatig && export PYTHONPATH=$(pwd) && python -m datatig build . --staticsiteoutput out"
 
 In the top level of the repository, create a file `runtime.txt`. It's contents should be:
 

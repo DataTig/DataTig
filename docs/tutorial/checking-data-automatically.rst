@@ -22,7 +22,7 @@ Previously we have run checks manually by running:
 
 .. code-block:: bash
 
-    python -m datatig.cli check .
+    python -m datatig check .
 
 This is great, but it's not great we have to remember to do this! It would be very easy to forget.
 
@@ -48,7 +48,7 @@ Create a directory called "`.github`". Inside that, create a directory called "`
             architecture: x64
 
         - run: pip install datatig
-        - run: python -m datatig.cli check .
+        - run: python -m datatig check .
 
 The contents tell GitHub Actions when to run, how to install your data and DataTig and finally how to get DataTig to check the data. We won't go into the detail of these in this tutorial.
 

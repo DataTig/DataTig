@@ -58,7 +58,7 @@ The contents should be (edit as directed by the comments):
           run: "pip install datatig"
         - name: Build DataTig site
           # TODO: Replace the URL with the URL of your final site.
-          run: "python -m datatig.cli build . --staticsiteoutput _site --staticsiteurl https://xxxx.github.io/xxxxxxx"
+          run: "python -m datatig build . --staticsiteoutput _site --staticsiteurl https://xxxx.github.io/xxxxxxx"
         - name: Upload Artifact
           uses: actions/upload-pages-artifact@v3
           with:
@@ -90,7 +90,7 @@ Replace the "Build DataTig site" step of the above file with (edit as directed b
           run: "mkdir -p _site/datatig"
         - name: Build DataTig site
           # TODO: Replace the URL with the URL of your final site, but leave /datatig at the end
-          run: "python -m datatig.cli build . --staticsiteoutput _site/datatig --staticsiteurl https://xxxx.github.io/xxxxxxx/datatig"
+          run: "python -m datatig build . --staticsiteoutput _site/datatig --staticsiteurl https://xxxx.github.io/xxxxxxx/datatig"
         - name: Build Jekyll site
           run: "docker run --rm --volume=\"${{ github.workspace }}:/srv/jekyll:Z\" jekyll/builder:4 /bin/bash -c 'chmod 777 /srv/jekyll && jekyll build _site'"
 

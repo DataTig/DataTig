@@ -97,5 +97,8 @@ def main() -> None:
         )
 
 
+# DEPRECATED
+# Executing the datatig module directly is now the official way to call the CLI,
+# But the following code is left for backwards compatibility
 if __name__ == "__main__":
     main()

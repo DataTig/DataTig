@@ -20,7 +20,7 @@ We have seen how to manually build the website and see it on your computer.
 
 .. code-block:: bash
 
-    python -m datatig.cli build . --staticsiteoutput _site
+    python -m datatig build . --staticsiteoutput _site
     sh -c "cd _site && python3 -m http.server"
 
 This is great, but it's not great we have to remember to update this. Also, this is only available to you. Let's make this website available to everyone.
@@ -63,7 +63,7 @@ The contents should be (edit as directed by the comments):
           run: "pip install datatig"
         - name: Build DataTig site
           # TODO: Replace the URL with the URL of your final site.
-          run: "python -m datatig.cli build . --staticsiteoutput _site --staticsiteurl https://xxxx.github.io/yyyyyyy"
+          run: "python -m datatig build . --staticsiteoutput _site --staticsiteurl https://xxxx.github.io/yyyyyyy"
         - name: Upload Artifact
           uses: actions/upload-pages-artifact@v3
           with:

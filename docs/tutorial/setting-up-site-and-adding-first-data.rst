@@ -105,7 +105,7 @@ The tool can do several actions. It can check the data to make sure that it is i
 
 .. code-block:: bash
 
-    python -m datatig.cli check .
+    python -m datatig check .
 
 This should run with no output, meaning there were no errors.
 
@@ -121,7 +121,7 @@ First, let's build the website.
 
 .. code-block:: bash
 
-    python -m datatig.cli build . --staticsiteoutput _site
+    python -m datatig build . --staticsiteoutput _site
 
 This should build fine (you will not see any output) and in the new `_site` directory that just appeared, you should see some files.
 

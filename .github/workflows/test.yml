@@ -19,4 +19,7 @@ jobs:
         architecture: x64
     - run: pip install -e .[Dev]
     - run: py.test .
+    # Test CLI code, which isn't tested in Python tests. Just check we can get some output.
+    - run: python -m datatig build --sqliteoutput test1.sqlite tests/data/md_site/ && ls -al test1.sqlite
+    - run: python -m datatig.cli build --sqliteoutput test2.sqlite tests/data/md_site/ && ls -al test2.sqlite
 

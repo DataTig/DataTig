@@ -8,7 +8,7 @@ Call via Python:
 
 .. code-block:: bash
 
-    python -m datatig.cli --help
+    python -m datatig --help
 
 Build sub-command
 -----------------
@@ -23,7 +23,7 @@ Call with the directory of the data and at least one of these options:
 
 .. code-block:: bash
 
-    python -m datatig.cli build . --staticsiteoutput _site --sqliteoutput database.sqlite
+    python -m datatig build . --staticsiteoutput _site --sqliteoutput database.sqlite
 
 
 Any build errors will be printed to screen. (Data validation errors will not be) If encountered, the process will try to continue ignoring the problem. The exit code of the process will be 0 if a success, or -1 if there were any errors. This means you can use this as part of a C.I./C.D. pipeline and check the response.
@@ -45,7 +45,7 @@ The exit code of the process will be 0 if a success, or -1 if there were any err
 
 .. code-block:: bash
 
-    python -m datatig.cli check .
+    python -m datatig check .
 
 Versioned Build sub-command
 ---------------------------
