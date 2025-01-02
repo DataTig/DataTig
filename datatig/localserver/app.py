@@ -52,11 +52,6 @@ app.add_url_rule(
 # -----------------------------------------------------------  Static
 
 
-@app.route("/css/<path:path>")
-def static_css(path):
-    return send_from_directory("static/css", path)
-
-
-@app.route("/js/<path:path>")
-def static_js(path):
-    return send_from_directory("static/js", path)
+@app.route("/assets/<path:path>")
+def assets(path):
+    return send_from_directory("../assets/localserver", path)

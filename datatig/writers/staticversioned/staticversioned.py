@@ -34,7 +34,11 @@ class StaticVersionedWriter:
         jinja2_env = Environment(
             loader=FileSystemLoader(
                 searchpath=os.path.join(
-                    os.path.dirname(os.path.realpath(__file__)), "templates"
+                    os.path.dirname(os.path.realpath(__file__)),
+                    "..",
+                    "..",
+                    "templates",
+                    "staticversioned",
                 )
             ),
             autoescape=select_autoescape(["html", "xml"]),
@@ -59,7 +63,13 @@ class StaticVersionedWriter:
             self._write_template("", page, page, {}, jinja2_env)
 
         # Assets
-        assets_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets")
+        assets_dir = os.path.join(
+            os.path.dirname(os.path.realpath(__file__)),
+            "..",
+            "..",
+            "assets",
+            "staticversioned",
+        )
         for filename in [
             f
             for f in os.listdir(assets_dir)

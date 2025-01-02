@@ -36,7 +36,11 @@ class StaticWriter:
         jinja2_env = Environment(
             loader=FileSystemLoader(
                 searchpath=os.path.join(
-                    os.path.dirname(os.path.realpath(__file__)), "templates"
+                    os.path.dirname(os.path.realpath(__file__)),
+                    "..",
+                    "..",
+                    "templates",
+                    "static",
                 )
             ),
             autoescape=select_autoescape(["html", "xml"]),
@@ -93,7 +97,13 @@ class StaticWriter:
             json.dump(api, fp, indent=2)
 
         # Assets
-        assets_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets")
+        assets_dir = os.path.join(
+            os.path.dirname(os.path.realpath(__file__)),
+            "..",
+            "..",
+            "assets",
+            "static",
+        )
         for filename in [
             f
             for f in os.listdir(assets_dir)
