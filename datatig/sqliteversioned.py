@@ -20,7 +20,20 @@ class DataStoreSQLiteVersioned:
         self._out_filename: str = out_filename
         self._connection = sqlite3.connect(out_filename)
         self._connection.row_factory = sqlite3.Row
+        self._was_existing_database: bool = self._is_existing_database()
+        if not self._was_existing_database:
+            self._create()
 
+    def _is_existing_database(self) -> bool:
+        with closing(self._connection.cursor()) as cur:
+            # Check
+            cur.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name='type'",
+                [],
+            )
+            return bool(cur.fetchone())
+
+    def _create(self):
         with closing(self._connection.cursor()) as cur:
             cur.execute(
                 """CREATE TABLE config (

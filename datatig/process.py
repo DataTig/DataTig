@@ -119,6 +119,7 @@ def versioned_build(
     staticsite_output: str = None,
     staticsite_url: str = None,
     sqlite_output: str = None,
+    refs: list = [],
     refs_str: str = "",
     all_branches: bool = False,
     default_ref: str = "",
@@ -127,8 +128,9 @@ def versioned_build(
     # Repository Access
     repository_access = RepositoryAccessLocalGit(source_dir)
 
-    # Work out list of refs
-    refs: list = [i for i in refs_str.split(",") if i]
+    # Work out list of refs, if string given
+    if not refs and refs_str:
+        refs = [i for i in refs_str.split(",") if i]
     # Make list unique.
     # Might use something like "main,$BRANCH" in build servers, and then you might get passed "main,main"
     refs = list(set(refs))

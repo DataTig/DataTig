@@ -43,6 +43,11 @@ def main() -> None:
         "--defaultref", help="The Default ref.", default=""
     )
 
+    check_versioned_parser = subparsers.add_parser("checkversioned")
+    check_versioned_parser.add_argument("source")
+    check_versioned_parser.add_argument("main_branch")
+    check_versioned_parser.add_argument("check_branch")
+
     args = parser.parse_args()
 
     if args.subparser_name == "build":
