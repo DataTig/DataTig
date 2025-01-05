@@ -51,7 +51,7 @@ class RecordModel:
         self._format = data["format"]
         if errors_data is not None:
             for error_data in errors_data:
-                m = RecordErrorModel()
+                m = RecordErrorModel(type_id=self._type.get_id())
                 m.load_from_database(error_data)
                 self._errors.append(m)
 
@@ -67,7 +67,7 @@ class RecordModel:
         self._format = commit_type_record_row["format"]
         if errors_data is not None:
             for error_data in errors_data:
-                m = RecordErrorModel()
+                m = RecordErrorModel(type_id=self._type.get_id())
                 m.load_from_database(error_data)
                 self._errors.append(m)
 

@@ -463,7 +463,7 @@ class DataStoreSQLite:
         with closing(self._connection.cursor()) as cur:
             cur.execute("SELECT * FROM record_error_" + type_id, [])
             for data in cur.fetchall():
-                m = RecordErrorModel()
+                m = RecordErrorModel(type_id=type_id)
                 m.load_from_database(data)
                 yield m
 

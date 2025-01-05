@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * CLI responds on datatig module. Old way left for backwards compatibility
   https://github.com/DataTig/DataTig/issues/28
 
+Internal Python API:
+
+* Constructor to RecordErrorModel has changed.
+
 ## [0.7.0] - 2024-11-06
 
 ### Added

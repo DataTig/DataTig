@@ -468,7 +468,7 @@ class DataStoreSQLiteVersioned:
                 [commit1, type_id, record_id, commit2, type_id, record_id],
             )
             for row in cur.fetchall():
-                m = RecordErrorModel()
+                m = RecordErrorModel(type_id=type_id)
                 m.load_from_database(row)
                 out.append(m)
         return out
