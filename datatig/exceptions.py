@@ -4,3 +4,7 @@ class DuplicateRecordIdException(Exception):
 
 class SiteConfigurationException(Exception):
     pass
+
+
+class SiteConfigurationNotFoundException(Exception):
+    pass

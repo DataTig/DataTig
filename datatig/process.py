@@ -5,6 +5,7 @@ import tempfile
 
 from datatig.models.siteconfig import SiteConfigModel
 
+from .exceptions import SiteConfigurationNotFoundException
 from .readers.directory import process_type
 from .repository_access import RepositoryAccessLocalFiles, RepositoryAccessLocalGit
 from .sqlite import DataStoreSQLite
@@ -155,36 +156,42 @@ def versioned_build(
 
     # For each ref
     for ref in refs:
-        # Set the commit we want, get info
-        repository_access.set_ref(ref)
-        git_commit = repository_access.get_current_commit()
+        try:
+            # Set the commit we want, get info
+            repository_access.set_ref(ref)
+            git_commit = repository_access.get_current_commit()
 
-        # TODO if commit hash is already known to us, don't load data, it is already there
-        # (2 branches / refs can point to same commit)
+            # TODO if commit hash is already known to us, don't load data, it is already there
+            # (2 branches / refs can point to same commit)
 
-        # Config
-        config = SiteConfigModel(source_dir)
-        config.load_from_file(repository_access)
-        config_id: int = datastore.store_config(config)
+            # Config
+            config = SiteConfigModel(source_dir)
+            config.load_from_file(repository_access)
+            config_id: int = datastore.store_config(config)
 
-        # Save commit
-        datastore.store_git_commit(git_commit, config_id)
+            # Save commit
+            datastore.store_git_commit(git_commit, config_id)
 
-        # Process data
-        for type in config.get_types().values():
-            process_type(
-                config,
-                repository_access,
-                type,
-                lambda record: datastore.store_record(git_commit, record),
-                lambda error: datastore.store_error(git_commit, error),
+            # Process data
+            for type in config.get_types().values():
+                process_type(
+                    config,
+                    repository_access,
+                    type,
+                    lambda record: datastore.store_record(git_commit, record),
+                    lambda error: datastore.store_error(git_commit, error),
+                )
+
+            # Validate data
+            validate_json_schema = JsonSchemaValidatorVersioned(
+                config, datastore, git_commit
             )
-
-        # Validate data
-        validate_json_schema = JsonSchemaValidatorVersioned(
-            config, datastore, git_commit
-        )
-        validate_json_schema.go()
+            validate_json_schema.go()
+        except SiteConfigurationNotFoundException:
+            # TODO ideally would put nice message in any output about this.
+            # But at least now this doesn't crash whole build process.
+            # https://github.com/DataTig/DataTig/issues/27#issuecomment-2304002368
+            pass
 
     # If default ref not one of the refs we found ...
     if not datastore.is_ref_known(default_ref):

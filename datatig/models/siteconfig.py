@@ -3,7 +3,10 @@ import json
 
 import yaml
 
-from datatig.exceptions import SiteConfigurationException
+from datatig.exceptions import (
+    SiteConfigurationException,
+    SiteConfigurationNotFoundException,
+)
 from datatig.models.calendar import CalendarModel
 from datatig.models.type import TypeModel
 from datatig.repository_access import RepositoryAccess
@@ -26,7 +29,7 @@ class SiteConfigModel:
                 repository_access.get_contents_of_file("datatig.yaml")
             )
         else:
-            raise Exception("No Config File!")
+            raise SiteConfigurationNotFoundException("No Config File!")
         self._after_load()
 
     def load_from_serialised(self, config: dict):
