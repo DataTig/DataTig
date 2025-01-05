@@ -27,7 +27,7 @@ def go(
     sys_exit_on_error: bool = False,
 ) -> None:
 
-    had_errors = False
+    errors_count = 0
 
     # Repository Access
     repository_access = RepositoryAccessLocalFiles(source_dir)
@@ -70,7 +70,7 @@ def go(
                     + " HAS ERROR: "
                     + error.get_message()
                 )
-            had_errors = True
+            errors_count += 1
 
     # Look for validation errors
     if check_record_errors:
@@ -85,7 +85,7 @@ def go(
                         + " HAS VALIDATION ERROR: "
                         + error.get_message()
                     )
-                had_errors = True
+                errors_count += 1
 
     # Frictionless Output
     if frictionless_output:
@@ -107,9 +107,9 @@ def go(
         shutil.rmtree(temp_dir)
 
     # Print final message and exit, if requested
-    if had_errors:
+    if errors_count:
         if verbose:
-            print("ERRORS OCCURRED- See Above")
+            print("{} ERRORS OCCURRED- See Above".format(errors_count))
         if sys_exit_on_error:
             sys.exit(-1)
 

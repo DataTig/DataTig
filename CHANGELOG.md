@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * record.get_urls_in_field_values() and field.get_urls_in_value() methods 
   for link checking - in this library in the future and now in DataTig Hub
+* In check mode show count of how many errors https://github.com/DataTig/DataTig/issues/43
 
 ### Changed
 
