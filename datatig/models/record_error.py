@@ -1,5 +1,6 @@
 class RecordErrorModel:
-    def __init__(self):
+    def __init__(self, type_id=None):
+        self._type_id = type_id
         self._record_id = None
         self._message = None
         self._data_path = None
@@ -12,6 +13,9 @@ class RecordErrorModel:
         self._data_path = data["data_path"]
         self._schema_path = data["schema_path"]
         self._generator = data["generator"]
+
+    def get_type_id(self) -> str:
+        return self._type_id
 
     def get_record_id(self) -> str:
         return self._record_id
