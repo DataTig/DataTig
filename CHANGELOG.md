@@ -23,6 +23,10 @@ Internal Python API:
 
 * Constructor to RecordErrorModel has changed.
 
+### Fixed
+
+* How List Dictionaries fields are shown in some views
+
 ## [0.7.0] - 2024-11-06
 
 ### Added

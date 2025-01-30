@@ -119,7 +119,12 @@ class FieldListDictionariesValueModel(FieldValueModel):
         self._sub_records.append(sub_record)
 
     def get_value(self):
-        return "LIST OF " + str(len(self._sub_records)) + " SUB RECORDS"
+        if len(self._sub_records) == 0:
+            return ""
+        elif len(self._sub_records) == 1:
+            return "List of 1 dictionary"
+        else:
+            return "List of " + str(len(self._sub_records)) + " dictionaries"
 
     def get_sub_records(self) -> typing.List[FieldListDictionariesSubRecordModel]:
         return self._sub_records
