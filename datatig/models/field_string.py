@@ -1,3 +1,5 @@
+import re
+
 from datatig.jsondeepreaderwriter import JSONDeepReaderWriter
 from datatig.models.field import FieldConfigModel, FieldValueModel
 
@@ -54,3 +56,12 @@ class FieldStringValueModel(FieldValueModel):
 
     def get_api_value(self) -> dict:
         return {"value": self._value}
+
+    def get_urls_in_value(self) -> list:
+        if self._value:
+            # Sometimes we have HTML here, that causes problems cos we get URLs like
+            # http://cat.com">cat</a>.
+            # so until we sort that look for whitespace (or start of string) in front of match to filter out any HTML
+            return [i[1] for i in re.findall(r"(\s|^)(https?://[^\s]+)", self._value)]
+        else:
+            return []
