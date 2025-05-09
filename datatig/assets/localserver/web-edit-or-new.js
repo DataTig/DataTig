@@ -2,7 +2,6 @@
 const editor_options = {
     startval: data,
     schema: schema,
-    theme:'bootstrap4',
     iconlib: "fontawesome5"
 };
 

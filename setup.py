@@ -22,7 +22,7 @@ setuptools.setup(
     license="MIT",
     packages=setuptools.find_packages(exclude=["test"]),
     package_data={
-        "": ["*.html", "*.txt", "*.css", "*.js"],
+        "": ["*.html", "*.txt", "*.css", "*.js", "*.png"],
     },
     install_requires=[
         "Jinja2<3.1",

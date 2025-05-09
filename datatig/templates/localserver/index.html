@@ -4,11 +4,7 @@
 
 
 {% block breadcrumbs %}
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item active" aria-current="page">Home</li>
-      </ol>
-    </nav>
+    <span class="breadcrumb">Home</span>
 {% endblock %}
 
 {% block body %}
@@ -17,7 +13,7 @@
 <p>{{ site.get_description() }}</p>
 
 
-<table class="table">
+<table class="data">
     <tr>
         <th>id</th>
         <th>&nbsp;</th>
@@ -25,7 +21,7 @@
     {% for type_id, type in site.get_types().items() %}
         <tr>
             <td>{{ type_id }}</td>
-            <td><a href="/type/{{ type_id }}/"><button type="button" class="btn btn-link">View</button></a></td>
+            <td><a href="/type/{{ type_id }}/" class="button">View</a></td>
         </tr>
     {% endfor %}
 </table>

@@ -4,12 +4,10 @@
 
 
 {% block breadcrumbs %}
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ url }}/">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Errors</li>
-      </ol>
-    </nav>
+
+<span class="breadcrumb"><a href="{{ url }}/">Home</a></span>
+<span class="seperator">></span>
+<span class="breadcrumb">Errors</span>
 {% endblock %}
 
 {% block body %}
@@ -20,7 +18,7 @@
 
     {% if datastore.get_count_site_errors() %}
 
-        <table class="table">
+        <table class="data">
             <tr>
                 <th>Filename</th>
                 <th>Message</th>
@@ -45,7 +43,7 @@
         <h4>{{ type_id }}</h4>
         {% if datastore.get_count_record_errors_for_type(type_id) %}
 
-            <table class="table">
+            <table class="data">
                 <tr>
                     <th>id</th>
                     {% for field_name in type.get_list_fields() %}
@@ -79,7 +77,7 @@
                                 {% endif %}
                             </td>
                         {% endfor %}
-                        <td><a href="{{ url }}/type/{{ type.get_id() }}/record/{{ item_id }}/"><button type="button" class="btn btn-link">View</button></a></td>
+                        <td><a href="{{ url }}/type/{{ type.get_id() }}/record/{{ item_id }}/" class="button">View</a></td>
                     </tr>
                 {% endfor %}
             </table>

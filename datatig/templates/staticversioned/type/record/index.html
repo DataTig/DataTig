@@ -3,20 +3,18 @@
 {% block title %}{{ item_id }}{% endblock %}
 
 {% block breadcrumbs %}
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ url }}/">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ url }}/type/{{ type.get_id() }}/">{{ type.get_id() }}</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ item.get_id() }}</li>
-      </ol>
-    </nav>
+    <span class="breadcrumb"><a href="{{ url }}/">Home</a></span>
+    <span class="seperator">></span>
+    <span class="breadcrumb"><a href="{{ url }}/type/{{ type.get_id() }}/">Type: {{ type.get_id() }}</a></span>
+    <span class="seperator">></span>
+    <span class="breadcrumb">Record: {{ item.get_id() }}</span>
 {% endblock %}
 
 {% block body %}
 
 <h2>{{ item.get_id() }} - {{ type.get_id() }}</h2>
 
-<table class="table">
+<table class="data">
     {% for field_id, field in type.get_fields().items() %}
         <tr>
             <th>
@@ -51,9 +49,9 @@
 {% if item.get_errors() %}
     <p><i class="fas fa-times-circle"></i> There were errors:</p>
     <p class="text-right">
-        <a href="#" onclick="$('#validation_errors').toggle(); return false;"><button type="button" class="btn btn-secondary">Show/Hide</button></a>
+        <a href="#" onclick="$('#validation_errors').toggle(); return false;" class="button">Show/Hide</a>
     </p>
-    <table class="table" id="validation_errors">
+    <table class="data" id="validation_errors">
         <tr>
             <th>Message</th>
             <th>Data Path</th>
@@ -86,9 +84,9 @@
 
 <p  class="text-right">
     {% if default_config.get_github_url() %}
-        <a href="https://github.com/{{ default_config.get_github_url() }}/blob/{{ default_ref_str }}/{{  item.get_git_filename() }}"><button type="button" class="btn btn-primary">View on GitHub</button></a>
+        <a href="https://github.com/{{ default_config.get_github_url() }}/blob/{{ default_ref_str }}/{{  item.get_git_filename() }}" class="button">View on GitHub</a>
     {% endif %}
-    <a href="data.json"><button type="button" class="btn btn-primary">Download Raw JSON data</button></a>
+    <a href="data.json" class="button">Download Raw JSON data</a>
 </p>
 
 {% for ref_id, ref_data in refs.items() %}
@@ -108,7 +106,7 @@
 
         {% if ref_data['diff'] %}
 
-            <table class="table">
+            <table class="data">
                 {% for field_id, field_data in ref_data['diff'].items() %}
                     <tr>
                         <th>
@@ -144,7 +142,7 @@
 
             <p><i class="fas fa-times-circle"></i> There were errors added:</p>
 
-            <table class="table">
+            <table class="data">
                 <tr>
                     <th>Message</th>
                     <th>Data Path</th>
@@ -178,7 +176,7 @@
 
             <p><i class="fas fa-check-circle"></i> There were errors removed:</p>
 
-            <table class="table">
+            <table class="data">
                 <tr>
                     <th>Message</th>
                     <th>Data Path</th>
@@ -208,7 +206,7 @@
 
         <p  class="text-right">
             {% if default_config.get_github_url() %}
-                <a href="https://github.com/{{ default_config.get_github_url() }}/blob/{{ ref_id }}/{{  item.get_git_filename() }}"><button type="button" class="btn btn-primary">View on GitHub</button></a>
+                <a href="https://github.com/{{ default_config.get_github_url() }}/blob/{{ ref_id }}/{{  item.get_git_filename() }}" class="button">View on GitHub</a>
             {% endif %}
         </p>
 

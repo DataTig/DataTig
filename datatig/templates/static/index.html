@@ -4,11 +4,7 @@
 
 
 {% block breadcrumbs %}
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item active" aria-current="page">Home</li>
-      </ol>
-    </nav>
+    <span class="breadcrumb">Home</span>
 {% endblock %}
 
 {% block body %}
@@ -19,7 +15,7 @@
 
 <h2>Data</h2>
 
-<table class="table">
+<table class="data">
     <tr>
         <th>id</th>
         <th>&nbsp;</th>
@@ -27,7 +23,7 @@
     {% for type_id, type in site.get_types().items() %}
         <tr>
             <td>{{ type_id }}</td>
-            <td><a href="{{ url }}/type/{{ type_id }}/"><button type="button" class="btn btn-link">View</button></a></td>
+            <td><a href="{{ url }}/type/{{ type_id }}/" class="button">View</a></td>
         </tr>
     {% endfor %}
 </table>
@@ -35,7 +31,7 @@
 {% if site.get_calendars() %}
     <h2>Calendars</h2>
 
-    <table class="table">
+    <table class="data">
         <tr>
             <th>id</th>
             <th>&nbsp;</th>
@@ -43,7 +39,7 @@
         {% for calendar_id, calendar in site.get_calendars().items() %}
             <tr>
                 <td>{{ calendar_id }}</td>
-                <td><a href="{{ url }}/calendar/{{ calendar_id }}/"><button type="button" class="btn btn-link">View Calendar</button></a></td>
+                <td><a href="{{ url }}/calendar/{{ calendar_id }}/" class="button">View Calendar</a></td>
             </tr>
         {% endfor %}
     </table>
@@ -51,13 +47,13 @@
 {% endif %}
 
 <p class="text-right">
-    <a href="{{ url }}/errors.html"><button type="button" class="btn btn-primary">Errors ({{ datastore.get_count_site_errors() + datastore.get_count_record_errors() }})</button></a>
-    <a href="{{ url }}/database.sqlite"><button type="button" class="btn btn-primary">Download SQLite Database ({{ datastore_file_size_bytes }} bytes)</button></a>
-    <a href="{{ url }}/frictionless.zip"><button type="button" class="btn btn-primary">Download Frictionless Data Package (includes CSV's) ({{ frictionless_file_size_bytes }} bytes)</button></a>
+    <a href="{{ url }}/errors.html" class="button">Errors ({{ datastore.get_count_site_errors() + datastore.get_count_record_errors() }})</a>
+    <a href="{{ url }}/database.sqlite" class="button">Download SQLite Database ({{ datastore_file_size_bytes }} bytes)</a>
+    <a href="{{ url }}/frictionless.zip" class="button">Download Frictionless Data Package (includes CSV's) ({{ frictionless_file_size_bytes }} bytes)</a>
 </p>
 
 <p class="text-right">
-    <a href="{{ url }}/api.json"><button type="button" class="btn btn-secondary">API</button></a>
+    <a href="{{ url }}/api.json" class="button">API</a>
 </p>
 
 

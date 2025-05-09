@@ -4,14 +4,13 @@
 
 
 {% block breadcrumbs %}
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item"><a href="/type/{{ type.get_id() }}">{{ type.get_id() }}</a></li>
-        <li class="breadcrumb-item"><a href="/type/{{ type.get_id() }}/record/{{ record.get_id() }}/">{{ record.get_id() }}</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Edit in Browser</li>
-      </ol>
-    </nav>
+  <span class="breadcrumb"><a href="/">Home</a></span>
+  <span class="seperator">></span>
+  <span class="breadcrumb"><a href="/type/{{ type.get_id() }}">Type: {{ type.get_id() }}</a></span>
+  <span class="seperator">></span>
+  <span class="breadcrumb"><a href="/type/{{ type.get_id() }}/record/{{ record.get_id() }}/">Record: {{ record.get_id() }}</a></span>
+  <span class="seperator">></span>
+  <span class="breadcrumb">Edit in Browser</span>
 {% endblock %}
 
 {% block body %}
@@ -23,7 +22,7 @@
 
 <form method="post">
     <input type="hidden" name="data" id="raw_data_out">
-    <input type="submit" value="Save"  class="btn btn-warning">
+    <input type="submit" value="Save"  class="button">
 </form>
 
 

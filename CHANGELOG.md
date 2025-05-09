@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+* New Design System theme applied!
 * CLI responds on datatig module. Old way left for backwards compatibility
   https://github.com/DataTig/DataTig/issues/28
 

@@ -4,18 +4,14 @@
 
 
 {% block breadcrumbs %}
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item active" aria-current="page">Home</li>
-      </ol>
-    </nav>
+    <span class="breadcrumb">Home</span>
 {% endblock %}
 
 {% block body %}
 
 <h3>Types</h3>
 
-<table class="table">
+<table class="data">
     <tr>
         <th>id</th>
         <th>&nbsp;</th>
@@ -23,14 +19,14 @@
     {% for type_id, type in default_config.get_types().items() %}
         <tr>
             <td>{{ type_id }}</td>
-            <td><a href="{{ url }}/type/{{ type_id }}/"><button type="button" class="btn btn-link">View</button></a></td>
+            <td><a href="{{ url }}/type/{{ type_id }}/" class="button">View</a></td>
         </tr>
     {% endfor %}
 </table>
 
 <h3>Git References</h3>
 
-<table class="table">
+<table class="data">
     <tr>
         <th>Ref</th>
         <th>Commit</th>
@@ -44,14 +40,14 @@
             </td>
             <td>{{ git_commit_with_refs.get_commit_hash() }}</td>
             <td>
-                <a href="{{ url }}/ref/{{ git_commit_with_refs.get_ref() }}/"><button type="button" class="btn btn-link">View</button></a>
+                <a href="{{ url }}/ref/{{ git_commit_with_refs.get_ref() }}/" class="button">View</a>
             </td>
         </tr>
     {% endfor %}
 </table>
 
 <p class="text-right">
-    <a href="{{ url }}/database.sqlite"><button type="button" class="btn btn-primary">Download SQLite Database ({{ datastore_file_size_bytes }} bytes)</button></a>
+    <a href="{{ url }}/database.sqlite" class="button">Download SQLite Database ({{ datastore_file_size_bytes }} bytes)</a>
 </p>
 
 {% endblock %}

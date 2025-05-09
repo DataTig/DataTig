@@ -3,19 +3,16 @@
 {% block title %}{{ type.get_id() }}{% endblock %}
 
 {% block breadcrumbs %}
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ url }}/">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ type.get_id() }}</li>
-      </ol>
-    </nav>
+    <span class="breadcrumb"><a href="{{ url }}/">Home</a></span>
+    <span class="seperator">></span>
+    <span class="breadcrumb">Type: {{ type.get_id() }}</span>
 {% endblock %}
 
 {% block body %}
 
 <h2>{{ type.id }}</h2>
 
-<table class="table">
+<table class="data">
     <tr>
         <th>id</th>
         {% for field_name in type.get_list_fields() %}
@@ -49,18 +46,18 @@
                     {% endif %}
                 </td>
             {% endfor %}
-            <td><a href="{{ url }}/type/{{ type.get_id() }}/record/{{ item_id }}/"><button type="button" class="btn btn-link">View</button></a></td>
+            <td><a href="{{ url }}/type/{{ type.get_id() }}/record/{{ item_id }}/" class="button">View</a></td>
         </tr>
     {% endfor %}
 </table>
 
 <h3>New</h3>
 <p class="text-right">
-    <a href="newweb/"><button type="button" class="btn btn-primary">New</button></a>
+    <a href="newweb/" class="button">New</a>
 </p>
 
 <p class="text-right">
-    <a href="{{ url }}/type/{{ type.get_id() }}/api.json"><button type="button" class="btn btn-secondary">API</button></a>
+    <a href="{{ url }}/type/{{ type.get_id() }}/api.json" class="button">API</a>
 </p>
 
 

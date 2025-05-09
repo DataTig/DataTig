@@ -3,12 +3,9 @@
 {% block title %}{{ calendar.get_id() }}{% endblock %}
 
 {% block breadcrumbs %}
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ url }}/">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ calendar.get_id() }}</li>
-      </ol>
-    </nav>
+  <span class="breadcrumb"><a href="{{ url }}/">Home</a></span>
+  <span class="seperator">></span>
+  <span class="breadcrumb">Calendar: {{ calendar.get_id() }}</span>
 {% endblock %}
 
 {% block body %}

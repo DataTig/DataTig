@@ -55,3 +55,8 @@ app.add_url_rule(
 @app.route("/assets/<path:path>")
 def assets(path):
     return send_from_directory("../assets/localserver", path)
+
+
+@app.route("/assetsall/<path:path>")
+def assetsall(path):
+    return send_from_directory("../assets/all", path)

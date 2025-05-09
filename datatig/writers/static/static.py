@@ -97,24 +97,34 @@ class StaticWriter:
             json.dump(api, fp, indent=2)
 
         # Assets
-        assets_dir = os.path.join(
-            os.path.dirname(os.path.realpath(__file__)),
-            "..",
-            "..",
-            "assets",
-            "static",
-        )
-        for filename in [
-            f
-            for f in os.listdir(assets_dir)
-            if os.path.isfile(os.path.join(assets_dir, f))
-        ]:
-            name_bits = filename.split(".")
-            if name_bits[-1] in ["css", "js"]:
-                shutil.copy(
-                    os.path.join(assets_dir, filename),
-                    os.path.join(self._out_dir, filename),
-                )
+        assets_dirs = [
+            os.path.join(
+                os.path.dirname(os.path.realpath(__file__)),
+                "..",
+                "..",
+                "assets",
+                "all",
+            ),
+            os.path.join(
+                os.path.dirname(os.path.realpath(__file__)),
+                "..",
+                "..",
+                "assets",
+                "static",
+            ),
+        ]
+        for assets_dir in assets_dirs:
+            for filename in [
+                f
+                for f in os.listdir(assets_dir)
+                if os.path.isfile(os.path.join(assets_dir, f))
+            ]:
+                name_bits = filename.split(".")
+                if name_bits[-1] in ["css", "js", "png"]:
+                    shutil.copy(
+                        os.path.join(assets_dir, filename),
+                        os.path.join(self._out_dir, filename),
+                    )
 
         # Asset - Pygments
         with open(os.path.join(self._out_dir, "pygments.css"), "w") as fp:

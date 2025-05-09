@@ -67,7 +67,6 @@ function start() {
     const editor_options = {
         startval: data,
         schema: schema,
-        theme:'bootstrap4',
         iconlib: "fontawesome5",
     };
     editor = new JSONEditor(document.getElementById('editor_holder'), editor_options);

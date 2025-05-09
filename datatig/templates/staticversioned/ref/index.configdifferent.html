@@ -4,12 +4,9 @@
 
 
 {% block breadcrumbs %}
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ url }}/">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Ref {{ git_commit.get_refs_str() }}</li>
-      </ol>
-    </nav>
+  <span class="breadcrumb"><a href="{{ url }}/">Home</a></span>
+  <span class="seperator">></span>
+  <span class="breadcrumb">Ref: {{ git_commit.get_refs_str() }}</span>
 {% endblock %}
 
 {% block body %}
@@ -17,7 +14,7 @@
 <h2>Ref {{ git_commit.get_refs_str() }}</h2>
 
 <p class="text-right">
-    <a href="{{ url }}/ref/{{ git_commit.get_ref() }}/errors.html"><button type="button" class="btn btn-primary">Errors</button></a>
+    <a href="{{ url }}/ref/{{ git_commit.get_ref() }}/errors.html" class="button">Errors</a>
 </p>
 
 <h3>Comparison to default ref, {{  default_ref_str }}</h3>

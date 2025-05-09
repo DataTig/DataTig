@@ -4,12 +4,9 @@
 
 
 {% block breadcrumbs %}
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ url }}/">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Ref {{ git_commit.get_refs_str() }}</li>
-      </ol>
-    </nav>
+    <span class="breadcrumb"><a href="{{ url }}/">Home</a></span>
+    <span class="seperator">></span>
+    <span class="breadcrumb">Ref: {{ git_commit.get_refs_str() }}</span>
 {% endblock %}
 
 {% block body %}
@@ -17,14 +14,14 @@
 <h2>Ref {{ git_commit.get_refs_str() }}</h2>
 
 <p class="text-right">
-    <a href="{{ url }}/ref/{{ git_commit.get_ref() }}/errors.html"><button type="button" class="btn btn-primary">Errors</button></a>
+    <a href="{{ url }}/ref/{{ git_commit.get_ref() }}/errors.html" class="button">Errors</a>
 </p>
 
 <h3>Comparison to default ref, {{  default_ref_str }}</h3>
 
 <h4>Data changes</h4>
 
-<table class="table">
+<table class="data">
     <tr>
         <th>Type</th>
         <th>Record</th>
@@ -43,7 +40,7 @@
                 {{ data_difference_between_refs['action'] }}
             </td>
             <td>
-                <a href="{{ url }}/type/{{ data_difference_between_refs['type_id'] }}/record/{{ data_difference_between_refs['record_id'] }}/"><button type="button" class="btn btn-link">View</button></a>
+                <a href="{{ url }}/type/{{ data_difference_between_refs['type_id'] }}/record/{{ data_difference_between_refs['record_id'] }}/ class="button">View</a>
             </td>
         </tr>
     {% else %}
@@ -56,7 +53,7 @@
 
 <h4>General Errors Added</h4>
 
-<table class="table">
+<table class="data">
     <tr>
         <th>Filename</th>
         <th>Message</th>

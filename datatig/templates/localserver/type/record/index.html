@@ -4,13 +4,11 @@
 
 
 {% block breadcrumbs %}
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item"><a href="/type/{{ type.get_id() }}">{{ type.get_id() }}</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ record.get_id() }}</li>
-      </ol>
-    </nav>
+    <span class="breadcrumb"><a href="/">Home</a></span>
+    <span class="seperator">></span>
+    <span class="breadcrumb">Type: <a href="/type/{{ type.get_id() }}">{{ type.get_id() }}</a></span>
+    <span class="seperator">></span>
+    <span class="breadcrumb">Record: {{ record.get_id() }}</span>
 {% endblock %}
 
 {% block body %}
@@ -18,7 +16,7 @@
 
 <h2>{{ record.get_id() }} - {{ type.get_id() }}</h2>
 
-<table class="table">
+<table class="data">
     {% for field_id, field in type.get_fields().items() %}
         {% if field.get_type() != "list-dictionaries" %}
             <tr>
@@ -53,7 +51,7 @@
     {% if field.get_type() == "list-dictionaries" %}
         <h4>Field {{ field.get_title() }}</h4>
         {% if record.get_field_value(field_id).get_sub_records() %}
-            <table class="table">
+            <table class="data">
                 <tr>
                     {% for sub_field_id, sub_field in field.get_fields().items() %}
                         <th>{{ sub_field.get_title() }}</th>
@@ -90,9 +88,9 @@
 {% if record.get_errors() %}
     <p><i class="fas fa-times-circle"></i> There were errors:</p>
     <p class="text-right">
-        <a href="#" onclick="$('#validation_errors').toggle(); return false;"><button type="button" class="btn btn-secondary">Show/Hide</button></a>
+        <a href="#" onclick="$('#validation_errors').toggle(); return false;" class="button">Show/Hide</a>
     </p>
-    <table class="table" id="validation_errors">
+    <table class="data" id="validation_errors">
         <tr>
             <th>Message</th>
             <th>Data Path</th>
@@ -120,9 +118,9 @@
 
 <h3>Edit</h3>
 <p class="text-right">
-    <a href="/type/{{ type.get_id() }}/record/{{ record.get_id() }}/editweb"><button type="button" class="btn btn-primary">Edit in Browser</button></a>
+    <a href="/type/{{ type.get_id() }}/record/{{ record.get_id() }}/editweb" class="button">Edit in Browser</a>
     {% if site.get_github_url() %}
-        <a href="https://github.com/{{ site.get_github_url() }}/edit/{{ site.get_githost_primary_branch() }}/{{  record.get_git_filename() }}"><button type="button" class="btn btn-primary">Edit Raw data directly on GitHub</button></a>
+        <a href="https://github.com/{{ site.get_github_url() }}/edit/{{ site.get_githost_primary_branch() }}/{{  record.get_git_filename() }}" class="button">Edit Raw data directly on GitHub</a>
     {% endif %}
 </p>
 
@@ -134,7 +132,7 @@
 
 <p  class="text-right">
     {% if site.get_github_url() %}
-        <a href="https://github.com/{{ site.get_github_url() }}/blob/{{ site.get_githost_primary_branch() }}/{{  record.get_git_filename() }}"><button type="button" class="btn btn-primary">View on GitHub</button></a>
+        <a href="https://github.com/{{ site.get_github_url() }}/blob/{{ site.get_githost_primary_branch() }}/{{  record.get_git_filename() }}" class="button">View on GitHub</a>
     {% endif %}
 </p>
 
