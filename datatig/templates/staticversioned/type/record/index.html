@@ -47,7 +47,7 @@
 <h3>Errors</h3>
 
 {% if item.get_errors() %}
-    <p><i class="fas fa-times-circle"></i> There were errors:</p>
+    <p><i class="fa-solid fa-square-xmark"></i> There were errors:</p>
     <p class="text-right">
         <a href="#" onclick="$('#validation_errors').toggle(); return false;" class="button">Show/Hide</a>
     </p>
@@ -73,7 +73,7 @@
         {% endfor %}
     </table>
 {% else %}
-    <p><i class="fas fa-check-circle"></i> No errors</p>
+    <p><i class="fa-solid fa-circle-check"></i> No errors</p>
 {% endif %}
 
 <h3>Raw Data</h3>
@@ -84,9 +84,9 @@
 
 <p  class="text-right">
     {% if default_config.get_github_url() %}
-        <a href="https://github.com/{{ default_config.get_github_url() }}/blob/{{ default_ref_str }}/{{  item.get_git_filename() }}" class="button">View on GitHub</a>
+        <a href="https://github.com/{{ default_config.get_github_url() }}/blob/{{ default_ref_str }}/{{  item.get_git_filename() }}" class="button"><i class="fa-brands fa-github"></i> View on GitHub</a>
     {% endif %}
-    <a href="data.json" class="button">Download Raw JSON data</a>
+    <a href="data.json" class="button"><i class="fa-solid fa-download"></i> Download Raw JSON data</a>
 </p>
 
 {% for ref_id, ref_data in refs.items() %}
@@ -140,7 +140,7 @@
 
         {% if ref_data['record_errors_added'] %}
 
-            <p><i class="fas fa-times-circle"></i> There were errors added:</p>
+            <p><i class="fa-solid fa-square-xmark"></i> There were errors added:</p>
 
             <table class="data">
                 <tr>
@@ -166,7 +166,7 @@
 
         {% else %}
 
-            <p><i class="fas fa-check-circle"></i> No errors were added.</p>
+            <p><i class="fa-solid fa-circle-check"></i> No errors were added.</p>
 
         {% endif %}
 
@@ -174,7 +174,7 @@
 
         {% if ref_data['record_errors_removed'] %}
 
-            <p><i class="fas fa-check-circle"></i> There were errors removed:</p>
+            <p><i class="fa-solid fa-circle-check"></i>There were errors removed:</p>
 
             <table class="data">
                 <tr>

@@ -41,12 +41,12 @@
 </div>
 
 <p class="text-right">
-    <a href="#" onclick="copy(); return false;" class="button">Copy Data</a>
+    <a href="#" onclick="copy(); return false;" class="button"><i class="fa-solid fa-download"></i> Copy Data</a>
 </p>
 {% if site.get_github_url() %}
     <p>Go to the Github page to edit <em>{{  item.get_git_filename() }}</em> and copy and paste in the content above.</p>
     <p class="text-right">
-        <a href="https://github.com/{{ site.get_github_url() }}/edit/{{ site.get_githost_primary_branch() }}/{{  item.get_git_filename() }}" target="_new" class="button">Edit on GitHub</a>
+        <a href="https://github.com/{{ site.get_github_url() }}/edit/{{ site.get_githost_primary_branch() }}/{{  item.get_git_filename() }}" target="_new" class="button"><i class="fa-brands fa-github"></i> Edit on GitHub</a>
     </p>
 {% else %}
     <p>In the git repository, edit <em>{{  item.get_git_filename() }}</em> and copy and paste in the content above.</p>

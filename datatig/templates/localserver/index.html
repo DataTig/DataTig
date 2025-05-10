@@ -21,7 +21,7 @@
     {% for type_id, type in site.get_types().items() %}
         <tr>
             <td>{{ type_id }}</td>
-            <td><a href="/type/{{ type_id }}/" class="button">View</a></td>
+            <td><a href="/type/{{ type_id }}/" class="button">View <i class="fa-solid fa-arrow-right"></i></a></td>
         </tr>
     {% endfor %}
 </table>

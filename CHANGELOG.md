@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * New Design System theme applied!
 * CLI responds on datatig module. Old way left for backwards compatibility
   https://github.com/DataTig/DataTig/issues/28
+* Font Awesome is now bundled instead of being loaded via CDN
 
 Internal Python API:
 
@@ -27,6 +28,7 @@ Internal Python API:
 ### Fixed
 
 * How List Dictionaries fields are shown in some views
+* Broken button on new record page in static website
 
 ## [0.7.0] - 2024-11-06
 

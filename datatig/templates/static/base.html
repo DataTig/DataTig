@@ -3,10 +3,12 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}{% endblock %} - {{ site.get_title() }} - DataTig</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
         <link rel="stylesheet" type="text/css" href="{{ url }}/main.css">
         <link rel="stylesheet" type="text/css" href="{{ url }}/pygments.css">
         <meta name="robots" content="noindex, nofollow">
+        <link href="{{ url }}/fontawesome-free-6.7.2-web/css/fontawesome.min.css" rel="stylesheet" />
+        <link href="{{ url }}/fontawesome-free-6.7.2-web/css/brands.min.css" rel="stylesheet" />
+        <link href="{{ url }}/fontawesome-free-6.7.2-web/css/solid.min.css" rel="stylesheet" />
         {% block head %}{% endblock %}
     </head>
     <body>
@@ -45,7 +47,6 @@
         </footer>
 
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
         {% block javascript %}{% endblock %}
     </body>
 </html>

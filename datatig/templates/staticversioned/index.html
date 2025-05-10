@@ -19,7 +19,7 @@
     {% for type_id, type in default_config.get_types().items() %}
         <tr>
             <td>{{ type_id }}</td>
-            <td><a href="{{ url }}/type/{{ type_id }}/" class="button">View</a></td>
+            <td><a href="{{ url }}/type/{{ type_id }}/" class="button">View <i class="fa-solid fa-arrow-right"></i></a></td>
         </tr>
     {% endfor %}
 </table>
@@ -40,14 +40,14 @@
             </td>
             <td>{{ git_commit_with_refs.get_commit_hash() }}</td>
             <td>
-                <a href="{{ url }}/ref/{{ git_commit_with_refs.get_ref() }}/" class="button">View</a>
+                <a href="{{ url }}/ref/{{ git_commit_with_refs.get_ref() }}/" class="button">View <i class="fa-solid fa-arrow-right"></i></a>
             </td>
         </tr>
     {% endfor %}
 </table>
 
 <p class="text-right">
-    <a href="{{ url }}/database.sqlite" class="button">Download SQLite Database ({{ datastore_file_size_bytes }} bytes)</a>
+    <a href="{{ url }}/database.sqlite" class="button"><i class="fa-solid fa-database"></i> Download SQLite Database ({{ datastore_file_size_bytes }} bytes)</a>
 </p>
 
 {% endblock %}

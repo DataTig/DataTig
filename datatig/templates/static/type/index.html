@@ -46,18 +46,18 @@
                     {% endif %}
                 </td>
             {% endfor %}
-            <td><a href="{{ url }}/type/{{ type.get_id() }}/record/{{ item_id }}/" class="button">View</a></td>
+            <td><a href="{{ url }}/type/{{ type.get_id() }}/record/{{ item_id }}/" class="button">View <i class="fa-solid fa-arrow-right"></i></a></td>
         </tr>
     {% endfor %}
 </table>
 
 <h3>New</h3>
 <p class="text-right">
-    <a href="newweb/" class="button">New</a>
+    <a href="newweb/" class="button"><i class="fa-solid fa-pencil"></i> New</a>
 </p>
 
 <p class="text-right">
-    <a href="{{ url }}/type/{{ type.get_id() }}/api.json" class="button">API</a>
+    <a href="{{ url }}/type/{{ type.get_id() }}/api.json" class="button"><i class="fa-solid fa-robot"></i> API</a>
 </p>
 
 

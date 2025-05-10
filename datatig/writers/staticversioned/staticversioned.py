@@ -63,7 +63,7 @@ class StaticVersionedWriter:
             self._write_template("", page, page, {}, jinja2_env)
 
         # Assets
-        assets_dirs = [
+        self._copy_assets(
             os.path.join(
                 os.path.dirname(os.path.realpath(__file__)),
                 "..",
@@ -71,6 +71,9 @@ class StaticVersionedWriter:
                 "assets",
                 "all",
             ),
+            self._out_dir,
+        )
+        self._copy_assets(
             os.path.join(
                 os.path.dirname(os.path.realpath(__file__)),
                 "..",
@@ -78,19 +81,8 @@ class StaticVersionedWriter:
                 "assets",
                 "staticversioned",
             ),
-        ]
-        for assets_dir in assets_dirs:
-            for filename in [
-                f
-                for f in os.listdir(assets_dir)
-                if os.path.isfile(os.path.join(assets_dir, f))
-            ]:
-                name_bits = filename.split(".")
-                if name_bits[-1] in ["css", "js", "png"]:
-                    shutil.copy(
-                        os.path.join(assets_dir, filename),
-                        os.path.join(self._out_dir, filename),
-                    )
+            self._out_dir,
+        )
 
         # Asset - Pygments
         with open(os.path.join(self._out_dir, "pygments.css"), "w") as fp:
@@ -109,6 +101,22 @@ class StaticVersionedWriter:
             self._datastore.get_file_name(),
             os.path.join(self._out_dir, "database.sqlite"),
         )
+
+    def _copy_assets(self, assets_dir: str, out_dir: str):
+        os.makedirs(out_dir, exist_ok=True)
+        for filename in os.listdir(assets_dir):
+            if os.path.isfile(os.path.join(assets_dir, filename)):
+                name_bits = filename.split(".")
+                if name_bits[-1] in ["css", "js", "png", "txt", "ttf", "woff2"]:
+                    shutil.copy(
+                        os.path.join(assets_dir, filename),
+                        os.path.join(out_dir, filename),
+                    )
+            elif os.path.isdir(os.path.join(assets_dir, filename)):
+                self._copy_assets(
+                    os.path.join(assets_dir, filename),
+                    os.path.join(out_dir, filename),
+                )
 
     def _go_ref(
         self,
