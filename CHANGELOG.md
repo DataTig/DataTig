@@ -29,6 +29,7 @@ Internal Python API:
 
 * How List Dictionaries fields are shown in some views
 * Broken button on new record page in static website
+* Design on mobile browsers
 
 ## [0.7.0] - 2024-11-06
 
