@@ -40,14 +40,14 @@
     <textarea id="raw_data_out" readonly="readonly"></textarea>
 </div>
 
-<p class="text-right">
+<div class="links">
     <a href="#" onclick="copy(); return false;" class="button"><i class="fa-solid fa-download"></i> Copy Data</a>
-</p>
+</div>
 {% if site.get_github_url() %}
     <p>Go to the Github page to edit <em>{{  item.get_git_filename() }}</em> and copy and paste in the content above.</p>
-    <p class="text-right">
+    <div class="links">
         <a href="https://github.com/{{ site.get_github_url() }}/edit/{{ site.get_githost_primary_branch() }}/{{  item.get_git_filename() }}" target="_new" class="button"><i class="fa-brands fa-github"></i> Edit on GitHub</a>
-    </p>
+    </div>
 {% else %}
     <p>In the git repository, edit <em>{{  item.get_git_filename() }}</em> and copy and paste in the content above.</p>
 {% endif %}

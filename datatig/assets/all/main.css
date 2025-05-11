@@ -26,6 +26,15 @@ html, body {
 
 
 
+.links {
+    text-align: right;
+    padding: 10px 0;
+    a {
+        display: inline-block;
+        margin: 5px;
+    }
+}
+
 a.button, input.button {
     display: inline-block;
     background: var(--main-background-color);
@@ -192,17 +201,6 @@ ul.repositories, ul.branches {
 }
 
 
-.links {
-    text-align: right;
-    padding: 10px 0;
-    a {
-        display: inline-block;
-        margin: 5px;
-    }
-}
-
-
-
 /* From main tool */
 
 form#edit_form input[type="url"],
@@ -300,6 +298,7 @@ ul.blog-meta {
 }
 
 table.data {
+    background: var(--page-background);
     tr {
         th {
             font-family: var(--highlight-font);
@@ -317,6 +316,7 @@ table.data {
 
 
 table.summary {
+    background: var(--page-background);
     tr {
         th {
             font-family: var(--highlight-font);

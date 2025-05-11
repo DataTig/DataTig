@@ -48,9 +48,9 @@
 
 {% if item.get_errors() %}
     <p><i class="fa-solid fa-square-xmark"></i> There were errors:</p>
-    <p class="text-right">
+    <div class="links">
         <a href="#" onclick="$('#validation_errors').toggle(); return false;" class="button">Show/Hide</a>
-    </p>
+    </div>
     <table class="data" id="validation_errors">
         <tr>
             <th>Message</th>
@@ -82,12 +82,12 @@
     {{ record_data_html|safe }}
 </div>
 
-<p  class="text-right">
+<div class="links">
     {% if default_config.get_github_url() %}
         <a href="https://github.com/{{ default_config.get_github_url() }}/blob/{{ default_ref_str }}/{{  item.get_git_filename() }}" class="button"><i class="fa-brands fa-github"></i> View on GitHub</a>
     {% endif %}
     <a href="data.json" class="button"><i class="fa-solid fa-download"></i> Download Raw JSON data</a>
-</p>
+</div>
 
 {% for ref_id, ref_data in refs.items() %}
     <h3>Ref: {{ ref_id }}</h3>
@@ -204,11 +204,11 @@
 
         {% endif %}
 
-        <p  class="text-right">
+        <div class="links">
             {% if default_config.get_github_url() %}
                 <a href="https://github.com/{{ default_config.get_github_url() }}/blob/{{ ref_id }}/{{  item.get_git_filename() }}" class="button">View on GitHub</a>
             {% endif %}
-        </p>
+        </div>
 
     {% endif %}
 

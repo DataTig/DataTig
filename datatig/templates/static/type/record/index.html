@@ -95,9 +95,9 @@
 
 {% if item.get_errors() %}
     <p><i class="fa-solid fa-square-xmark"></i> There were errors:</p>
-    <p class="text-right">
+    <div class="links">
         <a href="#" onclick="$('#validation_errors').toggle(); return false;" class="button">Show/Hide</a>
-    </p>
+    </div>
     <table class="data" id="validation_errors">
         <tr>
             <th>Message</th>
@@ -137,12 +137,12 @@
 {% endif %}
 
 <h3>Edit</h3>
-<p class="text-right">
+<div class="links">
     <a href="editweb/" class="button"><i class="fa-solid fa-pencil"></i> Edit in Browser</a>
     {% if site.get_github_url() %}
         <a href="https://github.com/{{ site.get_github_url() }}/edit/{{ site.get_githost_primary_branch() }}/{{  item.get_git_filename() }}" class="button"><i class="fa-solid fa-pencil"></i> Edit Raw data directly on GitHub</a>
     {% endif %}
-</p>
+</div>
 
 <h3>Raw Data</h3>
 
@@ -150,15 +150,15 @@
     {{ record_data_html|safe }}
 </div>
 
-<p  class="text-right">
+<div class="links">
     {% if site.get_github_url() %}
         <a href="https://github.com/{{ site.get_github_url() }}/blob/{{ site.get_githost_primary_branch() }}/{{  item.get_git_filename() }}" class="button"><i class="fa-brands fa-github"></i> View on GitHub</a>
     {% endif %}
     <a href="data.json" class="button"><i class="fa-solid fa-download"></i> Download Raw JSON data</a>
-</p>
+</div>
 
 
-<p  class="text-right">
+<div class="links">
     <a href="api.json" class="button"><i class="fa-solid fa-robot"></i> API</a>
-</p>
+</div>
 {% endblock %}
