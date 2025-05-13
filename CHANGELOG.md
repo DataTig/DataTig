@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   for link checking - in this library in the future and now in DataTig Hub
 * In check mode show count of how many errors https://github.com/DataTig/DataTig/issues/43
 * New CLI command "versionedcheck" - currently used for internal testing
-
+* `unique_items` option to `list-dictionaries` and `list-string` field types https://github.com/DataTig/DataTig/issues/39
 
 ### Changed
 
