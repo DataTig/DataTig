@@ -27,23 +27,27 @@ class FieldListDictionariesConfigModel(FieldConfigModel):
             "description": self._description,
             "type": "array",
             "items": build_results.get_json_schema(),
+            "uniqueItems": self._extra_config["unique_items"],
         }
 
     def _load_extra_config(self, config: dict) -> None:
-        for config in config.get("fields", []):
+        # Fields
+        for field_config_json in config.get("fields", []):
             field_config: FieldConfigModel = FieldStringConfigModel()
-            if config.get("type") == "url":
+            if field_config_json.get("type") == "url":
                 field_config = FieldURLConfigModel()
-            elif config.get("type") == "date":
+            elif field_config_json.get("type") == "date":
                 field_config = FieldDateConfigModel()
-            elif config.get("type") == "datetime":
+            elif field_config_json.get("type") == "datetime":
                 field_config = FieldDateTimeConfigModel()
-            elif config.get("type") == "boolean":
+            elif field_config_json.get("type") == "boolean":
                 field_config = FieldBooleanConfigModel()
-            elif config.get("type") == "integer":
+            elif field_config_json.get("type") == "integer":
                 field_config = FieldIntegerConfigModel()
-            field_config.load(config)
+            field_config.load(field_config_json)
             self._fields[field_config.get_id()] = field_config
+        # Unique Items
+        self._extra_config["unique_items"] = config.get("unique_items", False)
 
     def get_new_item_json(self):
         return []

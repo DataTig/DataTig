@@ -47,6 +47,7 @@ def test_list_strings():
     field1.id = "tags"
     field1._key = "tags"
     field1._title = "Tags"
+    field1._load_extra_config({})
     fields = [field1]
     result = build_json_schema(fields)
     assert {
@@ -57,6 +58,30 @@ def test_list_strings():
                 "title": "Tags",
                 "description": "",
                 "type": "array",
+                "uniqueItems": False,
+            }
+        },
+        "type": "object",
+    } == result.get_json_schema()
+
+
+def test_list_strings_unique():
+    field1 = FieldListStringsConfigModel()
+    field1.id = "tags"
+    field1._key = "tags"
+    field1._title = "Tags"
+    field1._load_extra_config({"unique_items": True})
+    fields = [field1]
+    result = build_json_schema(fields)
+    assert {
+        "$schema": "http://json-schema.org/draft-07/schema",
+        "properties": {
+            "tags": {
+                "items": {"type": "string"},
+                "title": "Tags",
+                "description": "",
+                "type": "array",
+                "uniqueItems": True,
             }
         },
         "type": "object",
@@ -68,6 +93,7 @@ def test_all_types_at_once():
     field1.id = "title"
     field1._key = "title"
     field1._title = "Title"
+    field1._load_extra_config({})
     field2 = FieldURLConfigModel()
     field2.id = "url"
     field2._key = "url"
@@ -76,6 +102,7 @@ def test_all_types_at_once():
     field3.id = "tags"
     field3._key = "tags"
     field3._title = "Tags"
+    field3._load_extra_config({})
     fields = [field1, field2, field3]
     result = build_json_schema(fields)
     assert {
@@ -86,6 +113,7 @@ def test_all_types_at_once():
                 "title": "Tags",
                 "description": "",
                 "type": "array",
+                "uniqueItems": False,
             },
             "title": {"title": "Title", "description": "", "type": "string"},
             "url": {
@@ -125,6 +153,7 @@ def test_root_and_many_layers_deep_at_once():
     field1.id = "title"
     field1._key = "title"
     field1._title = "Title"
+    field1._load_extra_config({})
     field2 = FieldURLConfigModel()
     field2.id = "url"
     field2._key = "information/url"
@@ -133,6 +162,7 @@ def test_root_and_many_layers_deep_at_once():
     field3.id = "tags"
     field3._key = "information/labelling/tags"
     field3._title = "Tags"
+    field3._load_extra_config({})
     fields = [field1, field2, field3]
     result = build_json_schema(fields)
     assert {
@@ -147,6 +177,7 @@ def test_root_and_many_layers_deep_at_once():
                                 "title": "Tags",
                                 "description": "",
                                 "type": "array",
+                                "uniqueItems": False,
                             }
                         },
                         "type": "object",
@@ -167,22 +198,19 @@ def test_root_and_many_layers_deep_at_once():
 
 
 def test_list_dictionaries():
-    field1 = FieldListDictionariesConfigModel()
-    field1.id = "musicians"
-    field1._key = "musicians"
-    field1._title = "Musicians"
-    field2 = FieldURLConfigModel()
-    field2.id = "url"
-    field2._key = "information/url"
-    field2._title = "URL"
-    field1._fields["url"] = field2
-    field3 = FieldStringConfigModel()
-    field3.id = "formal_name"
-    field3._key = "names/formal"
-    field3._title = "Formal Name"
-    field1._fields["formal_name"] = field3
-    fields = [field1]
-    result = build_json_schema(fields)
+    field = FieldListDictionariesConfigModel()
+    field.id = "musicians"
+    field._key = "musicians"
+    field._title = "Musicians"
+    field._load_extra_config(
+        {
+            "fields": [
+                {"id": "url", "key": "information/url", "title": "URL", "type": "url"},
+                {"id": "formal_name", "key": "names/formal", "title": "Formal Name"},
+            ]
+        }
+    )
+    result = build_json_schema([field])
     assert {
         "$schema": "http://json-schema.org/draft-07/schema",
         "properties": {
@@ -216,6 +244,51 @@ def test_list_dictionaries():
                 "title": "Musicians",
                 "description": "",
                 "type": "array",
+                "uniqueItems": False,
+            }
+        },
+        "type": "object",
+    } == result.get_json_schema()
+
+
+def test_list_dictionaries_unique():
+    field = FieldListDictionariesConfigModel()
+    field.id = "musicians"
+    field._key = "musicians"
+    field._title = "Musicians"
+    field._load_extra_config(
+        {
+            "fields": [
+                {"id": "url", "key": "information/url", "title": "URL", "type": "url"},
+            ],
+            "unique_items": True,
+        }
+    )
+    result = build_json_schema([field])
+    assert {
+        "$schema": "http://json-schema.org/draft-07/schema",
+        "properties": {
+            "musicians": {
+                "items": {
+                    "properties": {
+                        "information": {
+                            "properties": {
+                                "url": {
+                                    "format": "uri",
+                                    "title": "URL",
+                                    "description": "",
+                                    "type": "string",
+                                }
+                            },
+                            "type": "object",
+                        },
+                    },
+                    "type": "object",
+                },
+                "title": "Musicians",
+                "description": "",
+                "type": "array",
+                "uniqueItems": True,
             }
         },
         "type": "object",
