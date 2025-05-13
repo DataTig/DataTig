@@ -12,7 +12,11 @@ class FieldListStringsConfigModel(FieldConfigModel):
             "description": self._description,
             "type": "array",
             "items": {"type": "string"},
+            "uniqueItems": self._extra_config["unique_items"],
         }
+
+    def _load_extra_config(self, config: dict) -> None:
+        self._extra_config["unique_items"] = config.get("unique_items", False)
 
     def get_new_item_json(self):
         return []
