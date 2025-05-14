@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * In check mode show count of how many errors https://github.com/DataTig/DataTig/issues/43
 * New CLI command "versionedcheck" - currently used for internal testing
 * `unique_items` option to `list-dictionaries` and `list-string` field types https://github.com/DataTig/DataTig/issues/39
+* `min_length` and `max_length` options to `string` field type https://github.com/DataTig/DataTig/issues/40
+* `string_min_length` and `string_max_length` options to `list-strings` field type https://github.com/DataTig/DataTig/issues/37
+
 
 ### Changed
 

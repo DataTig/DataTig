@@ -7,16 +7,27 @@ class FieldListStringsConfigModel(FieldConfigModel):
         return "list-strings"
 
     def get_json_schema(self) -> dict:
-        return {
+        out: dict = {
             "title": self._title,
             "description": self._description,
             "type": "array",
             "items": {"type": "string"},
             "uniqueItems": self._extra_config["unique_items"],
         }
+        if self._extra_config["string_min_length"]:
+            out["items"]["minLength"] = self._extra_config["string_min_length"]
+        if self._extra_config["string_max_length"]:
+            out["items"]["maxLength"] = self._extra_config["string_max_length"]
+        return out
 
     def _load_extra_config(self, config: dict) -> None:
         self._extra_config["unique_items"] = config.get("unique_items", False)
+        self._extra_config["string_min_length"] = (
+            int(config.get("string_min_length", 0)) or None
+        )
+        self._extra_config["string_max_length"] = (
+            int(config.get("string_max_length", 0)) or None
+        )
 
     def get_new_item_json(self):
         return []

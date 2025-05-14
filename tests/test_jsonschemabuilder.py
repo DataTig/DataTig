@@ -10,12 +10,36 @@ def test_string():
     field1.id = "title"
     field1._key = "title"
     field1._title = "Title"
+    field1._load_extra_config({})
     fields = [field1]
     result = build_json_schema(fields)
     assert {
         "$schema": "http://json-schema.org/draft-07/schema",
         "properties": {
             "title": {"title": "Title", "description": "", "type": "string"}
+        },
+        "type": "object",
+    } == result.get_json_schema()
+
+
+def test_string_min_max_length():
+    field1 = FieldStringConfigModel()
+    field1.id = "title"
+    field1._key = "title"
+    field1._title = "Title"
+    field1._load_extra_config({"min_length": 5, "max_length": 10})
+    fields = [field1]
+    result = build_json_schema(fields)
+    assert {
+        "$schema": "http://json-schema.org/draft-07/schema",
+        "properties": {
+            "title": {
+                "title": "Title",
+                "description": "",
+                "type": "string",
+                "minLength": 5,
+                "maxLength": 10,
+            }
         },
         "type": "object",
     } == result.get_json_schema()
@@ -36,6 +60,29 @@ def test_url():
                 "title": "URL",
                 "description": "",
                 "type": "string",
+            }
+        },
+        "type": "object",
+    } == result.get_json_schema()
+
+
+def test_list_strings_min_max_length():
+    field1 = FieldListStringsConfigModel()
+    field1.id = "tags"
+    field1._key = "tags"
+    field1._title = "Tags"
+    field1._load_extra_config({"string_min_length": 10, "string_max_length": 50})
+    fields = [field1]
+    result = build_json_schema(fields)
+    assert {
+        "$schema": "http://json-schema.org/draft-07/schema",
+        "properties": {
+            "tags": {
+                "items": {"type": "string", "minLength": 10, "maxLength": 50},
+                "title": "Tags",
+                "description": "",
+                "type": "array",
+                "uniqueItems": False,
             }
         },
         "type": "object",
@@ -132,6 +179,7 @@ def test_1_layer_deep():
     field1.id = "title_en"
     field1._key = "title/en"
     field1._title = "Title (En)"
+    field1._load_extra_config({})
     fields = [field1]
     result = build_json_schema(fields)
     assert {
