@@ -1,0 +1,12 @@
+{
+  "boolean": true,
+  "datetime": "2025-01-01 00:00:00",
+  "integer": 1,
+  "list_dictionaries": [
+    { "string": "DataTig" }
+  ],
+  "list_strings": ["DataTig"],
+  "markdown": "DataTig",
+  "string": "DataTig",
+  "url": "https://www.datatig.com/"
+}

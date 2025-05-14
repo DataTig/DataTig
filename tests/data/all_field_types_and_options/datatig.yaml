@@ -1,0 +1,53 @@
+title: Field Options Site
+types:
+- id: datas
+  directory: datas
+  fields:
+  - id: boolean
+    key: boolean
+    type: boolean
+    required: True
+  - id: date
+    key: date
+    type: date
+    required: True
+    timezone: Europe/Berlin
+  - id: datetime
+    key: datetime
+    type: datetime
+    timezone: Europe/Berlin
+    required: True
+  - id: integer
+    key: integer
+    type: integer
+    required: True
+  - id: list_dictionaries
+    key: list_dictionaries
+    type: list-dictionaries
+    required: True
+    unique_items: True
+    fields:
+      - id: string
+        key: string
+        required: True
+  - id: list_strings
+    key: list_strings
+    type: list-strings
+    unique_items: True
+    string_min_length: 2
+    string_max_length: 20
+    required: True
+  - id: markdown
+    key: markdown
+    type: markdown
+    required: True
+  - id: string
+    key: string
+    required: True
+    multiline: True
+    min_length: 2
+    max_length: 20
+  - id: url
+    key: url
+    type: url
+    required: True
