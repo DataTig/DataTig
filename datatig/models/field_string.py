@@ -10,6 +10,8 @@ class FieldStringConfigModel(FieldConfigModel):
 
     def _load_extra_config(self, config: dict) -> None:
         self._extra_config["multiline"] = bool(config.get("multiline", False))
+        self._extra_config["min_length"] = int(config.get("min_length", 0)) or None
+        self._extra_config["max_length"] = int(config.get("max_length", 0)) or None
 
     def get_json_schema(self) -> dict:
         out = {
@@ -19,6 +21,10 @@ class FieldStringConfigModel(FieldConfigModel):
         }
         if self._extra_config.get("multiline"):
             out["format"] = "textarea"
+        if self._extra_config["min_length"]:
+            out["minLength"] = self._extra_config["min_length"]
+        if self._extra_config["max_length"]:
+            out["maxLength"] = self._extra_config["max_length"]
         return out
 
     def get_new_item_json(self):
