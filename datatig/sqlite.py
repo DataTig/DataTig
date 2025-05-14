@@ -73,6 +73,7 @@ class DataStoreSQLite:
                 description TEXT,
                 sort INTEGER NOT NULL,
                 extra_config TEXT,
+                required INTEGER NOT NULL,
                 PRIMARY KEY(type_id, id),
                 FOREIGN KEY(type_id) REFERENCES type(id)
                 )"""
@@ -147,8 +148,8 @@ class DataStoreSQLite:
     def _create_type_add_field(self, cur, type, type_field, parent_keys=[]):
         cur.execute(
             """INSERT INTO type_field (
-            type_id , id, key, type, title, description, sort, extra_config
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+            type_id , id, key, type, title, description, sort, extra_config, required
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
             [
                 type.get_id(),
                 "/".join(parent_keys + [type_field.get_id()]),
@@ -158,6 +159,7 @@ class DataStoreSQLite:
                 type_field.get_description(),
                 self._type_field_sort,
                 json.dumps(type_field.get_extra_config()),
+                1 if type_field.get_required() else 0,
             ],
         )
         self._type_field_sort += 1
