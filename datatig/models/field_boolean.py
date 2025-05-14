@@ -6,12 +6,12 @@ class FieldBooleanConfigModel(FieldConfigModel):
     def get_type(self) -> str:
         return "boolean"
 
-    def get_json_schema(self) -> dict:
+    def get_json_schema(self) -> tuple[dict, bool]:
         return {
             "type": "boolean",
             "title": self._title,
             "description": self._description,
-        }
+        }, self._required
 
     def get_new_item_json(self):
         return None

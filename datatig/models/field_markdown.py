@@ -11,13 +11,13 @@ class FieldMarkdownConfigModel(FieldConfigModel):
     def _load_extra_config(self, config: dict) -> None:
         pass
 
-    def get_json_schema(self) -> dict:
+    def get_json_schema(self) -> tuple[dict, bool]:
         return {
             "type": "string",
             "title": self._title,
             "description": self._description,
             "format": "textarea",
-        }
+        }, self._required
 
     def get_new_item_json(self):
         return None

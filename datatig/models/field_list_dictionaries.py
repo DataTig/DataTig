@@ -20,7 +20,7 @@ class FieldListDictionariesConfigModel(FieldConfigModel):
     def get_type(self) -> str:
         return "list-dictionaries"
 
-    def get_json_schema(self) -> dict:
+    def get_json_schema(self) -> tuple[dict, bool]:
         build_results = build_json_schema(self._fields.values(), child_schema=True)
         return {
             "title": self._title,
@@ -28,7 +28,7 @@ class FieldListDictionariesConfigModel(FieldConfigModel):
             "type": "array",
             "items": build_results.get_json_schema(),
             "uniqueItems": self._extra_config["unique_items"],
-        }
+        }, self._required
 
     def _load_extra_config(self, config: dict) -> None:
         # Fields

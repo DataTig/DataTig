@@ -13,7 +13,7 @@ class FieldStringConfigModel(FieldConfigModel):
         self._extra_config["min_length"] = int(config.get("min_length", 0)) or None
         self._extra_config["max_length"] = int(config.get("max_length", 0)) or None
 
-    def get_json_schema(self) -> dict:
+    def get_json_schema(self) -> tuple[dict, bool]:
         out = {
             "type": "string",
             "title": self._title,
@@ -25,7 +25,7 @@ class FieldStringConfigModel(FieldConfigModel):
             out["min_length"] = self._extra_config["min_length"]
         if self._extra_config["max_length"]:
             out["max_length"] = self._extra_config["max_length"]
-        return out
+        return out, self._required
 
     def get_new_item_json(self):
         return None

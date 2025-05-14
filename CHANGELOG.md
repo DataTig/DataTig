@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * `unique_items` option to `list-dictionaries` and `list-string` field types https://github.com/DataTig/DataTig/issues/39
 * `min_length` and `max_length` options to `string` field type https://github.com/DataTig/DataTig/issues/40
 * `string_min_length` and `string_max_length` options to `list-strings` field type https://github.com/DataTig/DataTig/issues/37
-
+* `required` option to all field types https://github.com/DataTig/DataTig/issues/42
 
 ### Changed
 
@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 Internal Python API:
 
 * Constructor to RecordErrorModel has changed.
+* Return value of FieldConfigModel.get_json_schema has changed
 
 ### Fixed
 

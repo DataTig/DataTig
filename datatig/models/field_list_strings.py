@@ -6,7 +6,7 @@ class FieldListStringsConfigModel(FieldConfigModel):
     def get_type(self) -> str:
         return "list-strings"
 
-    def get_json_schema(self) -> dict:
+    def get_json_schema(self) -> tuple[dict, bool]:
         out: dict = {
             "title": self._title,
             "description": self._description,
@@ -18,7 +18,7 @@ class FieldListStringsConfigModel(FieldConfigModel):
             out["items"]["min_length"] = self._extra_config["string_min_length"]
         if self._extra_config["string_max_length"]:
             out["items"]["max_length"] = self._extra_config["string_max_length"]
-        return out
+        return out, self._required
 
     def _load_extra_config(self, config: dict) -> None:
         self._extra_config["unique_items"] = config.get("unique_items", False)
