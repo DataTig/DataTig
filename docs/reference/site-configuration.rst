@@ -97,6 +97,7 @@ Field Type `string`
 The type `string` has the following extra options:
 
 * `multiline`: Defaults to false. Whether new lines are allowed in values
+* `min_length` and `max_length`: Defaults to not set. Min or Max length of string allowed.
 
 Field Type `url`
 ~~~~~~~~~~~~~~~~
@@ -138,6 +139,7 @@ Field Type `list-strings`
 The type `list-strings` has the following extra options:
 
 * `unique_items`: Boolean. If true, every value in the list must be unique.
+* `string_min_length` and `string_max_length`: Defaults to not set. Min or Max length of the strings allowed.
 
 Field Type `list-dictionaries`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
