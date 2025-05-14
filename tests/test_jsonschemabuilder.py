@@ -7,12 +7,8 @@ from datatig.models.field_url import FieldURLConfigModel
 
 def test_string():
     field1 = FieldStringConfigModel()
-    field1.id = "title"
-    field1._key = "title"
-    field1._title = "Title"
-    field1._load_extra_config({})
-    fields = [field1]
-    result = build_json_schema(fields)
+    field1.load({"id": "title", "key": "title", "title": "Title"})
+    result = build_json_schema([field1])
     assert {
         "$schema": "http://json-schema.org/draft-07/schema",
         "properties": {
@@ -24,12 +20,16 @@ def test_string():
 
 def test_string_min_max_length():
     field1 = FieldStringConfigModel()
-    field1.id = "title"
-    field1._key = "title"
-    field1._title = "Title"
-    field1._load_extra_config({"min_length": 5, "max_length": 10})
-    fields = [field1]
-    result = build_json_schema(fields)
+    field1.load(
+        {
+            "id": "title",
+            "key": "title",
+            "title": "Title",
+            "min_length": 5,
+            "max_length": 10,
+        }
+    )
+    result = build_json_schema([field1])
     assert {
         "$schema": "http://json-schema.org/draft-07/schema",
         "properties": {
@@ -47,11 +47,8 @@ def test_string_min_max_length():
 
 def test_url():
     field1 = FieldURLConfigModel()
-    field1.id = "url"
-    field1._key = "url"
-    field1._title = "URL"
-    fields = [field1]
-    result = build_json_schema(fields)
+    field1.load({"id": "url", "key": "url", "title": "URL"})
+    result = build_json_schema([field1])
     assert {
         "$schema": "http://json-schema.org/draft-07/schema",
         "properties": {
@@ -68,12 +65,16 @@ def test_url():
 
 def test_list_strings_min_max_length():
     field1 = FieldListStringsConfigModel()
-    field1.id = "tags"
-    field1._key = "tags"
-    field1._title = "Tags"
-    field1._load_extra_config({"string_min_length": 10, "string_max_length": 50})
-    fields = [field1]
-    result = build_json_schema(fields)
+    field1.load(
+        {
+            "id": "tags",
+            "key": "tags",
+            "title": "Tags",
+            "string_min_length": 10,
+            "string_max_length": 50,
+        }
+    )
+    result = build_json_schema([field1])
     assert {
         "$schema": "http://json-schema.org/draft-07/schema",
         "properties": {
@@ -91,12 +92,8 @@ def test_list_strings_min_max_length():
 
 def test_list_strings():
     field1 = FieldListStringsConfigModel()
-    field1.id = "tags"
-    field1._key = "tags"
-    field1._title = "Tags"
-    field1._load_extra_config({})
-    fields = [field1]
-    result = build_json_schema(fields)
+    field1.load({"id": "tags", "key": "tags", "title": "Tags"})
+    result = build_json_schema([field1])
     assert {
         "$schema": "http://json-schema.org/draft-07/schema",
         "properties": {
@@ -114,12 +111,8 @@ def test_list_strings():
 
 def test_list_strings_unique():
     field1 = FieldListStringsConfigModel()
-    field1.id = "tags"
-    field1._key = "tags"
-    field1._title = "Tags"
-    field1._load_extra_config({"unique_items": True})
-    fields = [field1]
-    result = build_json_schema(fields)
+    field1.load({"id": "tags", "key": "tags", "title": "Tags", "unique_items": True})
+    result = build_json_schema([field1])
     assert {
         "$schema": "http://json-schema.org/draft-07/schema",
         "properties": {
@@ -137,21 +130,12 @@ def test_list_strings_unique():
 
 def test_all_types_at_once():
     field1 = FieldStringConfigModel()
-    field1.id = "title"
-    field1._key = "title"
-    field1._title = "Title"
-    field1._load_extra_config({})
+    field1.load({"id": "title", "key": "title", "title": "Title"})
     field2 = FieldURLConfigModel()
-    field2.id = "url"
-    field2._key = "url"
-    field2._title = "URL"
+    field2.load({"id": "url", "key": "url", "title": "URL"})
     field3 = FieldListStringsConfigModel()
-    field3.id = "tags"
-    field3._key = "tags"
-    field3._title = "Tags"
-    field3._load_extra_config({})
-    fields = [field1, field2, field3]
-    result = build_json_schema(fields)
+    field3.load({"id": "tags", "key": "tags", "title": "Tags"})
+    result = build_json_schema([field1, field2, field3])
     assert {
         "$schema": "http://json-schema.org/draft-07/schema",
         "properties": {
@@ -176,12 +160,8 @@ def test_all_types_at_once():
 
 def test_1_layer_deep():
     field1 = FieldStringConfigModel()
-    field1.id = "title_en"
-    field1._key = "title/en"
-    field1._title = "Title (En)"
-    field1._load_extra_config({})
-    fields = [field1]
-    result = build_json_schema(fields)
+    field1.load({"id": "title_en", "key": "title/en", "title": "Title (En)"})
+    result = build_json_schema([field1])
     assert {
         "$schema": "http://json-schema.org/draft-07/schema",
         "properties": {
@@ -198,21 +178,12 @@ def test_1_layer_deep():
 
 def test_root_and_many_layers_deep_at_once():
     field1 = FieldStringConfigModel()
-    field1.id = "title"
-    field1._key = "title"
-    field1._title = "Title"
-    field1._load_extra_config({})
+    field1.load({"id": "title", "key": "title", "title": "Title"})
     field2 = FieldURLConfigModel()
-    field2.id = "url"
-    field2._key = "information/url"
-    field2._title = "URL"
+    field2.load({"id": "url", "key": "information/url", "title": "URL"})
     field3 = FieldListStringsConfigModel()
-    field3.id = "tags"
-    field3._key = "information/labelling/tags"
-    field3._title = "Tags"
-    field3._load_extra_config({})
-    fields = [field1, field2, field3]
-    result = build_json_schema(fields)
+    field3.load({"id": "tags", "key": "information/labelling/tags", "title": "Tags"})
+    result = build_json_schema([field1, field2, field3])
     assert {
         "$schema": "http://json-schema.org/draft-07/schema",
         "properties": {
@@ -247,15 +218,15 @@ def test_root_and_many_layers_deep_at_once():
 
 def test_list_dictionaries():
     field = FieldListDictionariesConfigModel()
-    field.id = "musicians"
-    field._key = "musicians"
-    field._title = "Musicians"
-    field._load_extra_config(
+    field.load(
         {
+            "id": "musicians",
+            "key": "musicians",
+            "title": "Musicians",
             "fields": [
                 {"id": "url", "key": "information/url", "title": "URL", "type": "url"},
                 {"id": "formal_name", "key": "names/formal", "title": "Formal Name"},
-            ]
+            ],
         }
     )
     result = build_json_schema([field])
@@ -301,11 +272,11 @@ def test_list_dictionaries():
 
 def test_list_dictionaries_unique():
     field = FieldListDictionariesConfigModel()
-    field.id = "musicians"
-    field._key = "musicians"
-    field._title = "Musicians"
-    field._load_extra_config(
+    field.load(
         {
+            "id": "musicians",
+            "key": "musicians",
+            "title": "Musicians",
             "fields": [
                 {"id": "url", "key": "information/url", "title": "URL", "type": "url"},
             ],
