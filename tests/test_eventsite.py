@@ -56,7 +56,10 @@ def test_event_site():
                 type = cur.fetchone()
                 assert "events" == type["id"]
                 assert "events" == type["directory"]
-                assert "http://json-schema.org/draft-07/schema" in type["json_schema"]
+                assert (
+                    "https://json-schema.org/draft/2020-12/schema"
+                    in type["json_schema"]
+                )
                 assert '["title", "start", "end"]' == type["list_fields"]
                 assert 2 == type["pretty_json_indent"]
                 assert "yaml" == type["default_format"]

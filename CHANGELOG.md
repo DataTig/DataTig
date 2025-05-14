@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * CLI responds on datatig module. Old way left for backwards compatibility
   https://github.com/DataTig/DataTig/issues/28
 * Font Awesome is now bundled instead of being loaded via CDN
+* The JSON Schema generated for each type is now the latest version of JSON Schema (2020-12) https://github.com/DataTig/DataTig/issues/51
 
 Internal Python API:
 

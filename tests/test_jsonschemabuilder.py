@@ -10,7 +10,7 @@ def test_string():
     field1.load({"id": "title", "key": "title", "title": "Title"})
     result = build_json_schema([field1])
     assert {
-        "$schema": "http://json-schema.org/draft-07/schema",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
         "properties": {
             "title": {"title": "Title", "description": "", "type": "string"}
         },
@@ -31,7 +31,7 @@ def test_string_min_max_length():
     )
     result = build_json_schema([field1])
     assert {
-        "$schema": "http://json-schema.org/draft-07/schema",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
         "properties": {
             "title": {
                 "title": "Title",
@@ -50,7 +50,7 @@ def test_url():
     field1.load({"id": "url", "key": "url", "title": "URL"})
     result = build_json_schema([field1])
     assert {
-        "$schema": "http://json-schema.org/draft-07/schema",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
         "properties": {
             "url": {
                 "format": "uri",
@@ -76,7 +76,7 @@ def test_list_strings_min_max_length():
     )
     result = build_json_schema([field1])
     assert {
-        "$schema": "http://json-schema.org/draft-07/schema",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
         "properties": {
             "tags": {
                 "items": {"type": "string", "minLength": 10, "maxLength": 50},
@@ -95,7 +95,7 @@ def test_list_strings():
     field1.load({"id": "tags", "key": "tags", "title": "Tags"})
     result = build_json_schema([field1])
     assert {
-        "$schema": "http://json-schema.org/draft-07/schema",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
         "properties": {
             "tags": {
                 "items": {"type": "string"},
@@ -114,7 +114,7 @@ def test_list_strings_unique():
     field1.load({"id": "tags", "key": "tags", "title": "Tags", "unique_items": True})
     result = build_json_schema([field1])
     assert {
-        "$schema": "http://json-schema.org/draft-07/schema",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
         "properties": {
             "tags": {
                 "items": {"type": "string"},
@@ -137,7 +137,7 @@ def test_all_types_at_once():
     field3.load({"id": "tags", "key": "tags", "title": "Tags"})
     result = build_json_schema([field1, field2, field3])
     assert {
-        "$schema": "http://json-schema.org/draft-07/schema",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
         "properties": {
             "tags": {
                 "items": {"type": "string"},
@@ -163,7 +163,7 @@ def test_1_layer_deep():
     field1.load({"id": "title_en", "key": "title/en", "title": "Title (En)"})
     result = build_json_schema([field1])
     assert {
-        "$schema": "http://json-schema.org/draft-07/schema",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
         "properties": {
             "title": {
                 "properties": {
@@ -185,7 +185,7 @@ def test_root_and_many_layers_deep_at_once():
     field3.load({"id": "tags", "key": "information/labelling/tags", "title": "Tags"})
     result = build_json_schema([field1, field2, field3])
     assert {
-        "$schema": "http://json-schema.org/draft-07/schema",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
         "properties": {
             "information": {
                 "properties": {
@@ -231,7 +231,7 @@ def test_list_dictionaries():
     )
     result = build_json_schema([field])
     assert {
-        "$schema": "http://json-schema.org/draft-07/schema",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
         "properties": {
             "musicians": {
                 "items": {
@@ -285,7 +285,7 @@ def test_list_dictionaries_unique():
     )
     result = build_json_schema([field])
     assert {
-        "$schema": "http://json-schema.org/draft-07/schema",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
         "properties": {
             "musicians": {
                 "items": {

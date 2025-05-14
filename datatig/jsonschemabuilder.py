@@ -16,7 +16,7 @@ def build_json_schema(fields: list, child_schema=False) -> BuildJSONSchemaResult
         "properties": {},
     }
     if not child_schema:
-        json_schema["$schema"] = "http://json-schema.org/draft-07/schema"
+        json_schema["$schema"] = "https://json-schema.org/draft/2020-12/schema"
 
     for field in fields:
         key_bits = field.get_key().split("/")
