@@ -36,6 +36,10 @@ test_site_configuration_exception_data = [
         "Calendar uses an unknown end field end_at in type events",
     ),
     ("unknown_record_id_mode", "Unknown Record ID mode in type datas"),
+    (
+        "string_length_not_int",
+        "Error configuring field string in type datas. Original error was: invalid literal for int() with base 10: 'a few'",
+    ),
 ]
 
 

@@ -60,7 +60,18 @@ class TypeModel:
                         field_type, field_config.get_id(), self._id
                     )
                 )
-            field_config.load(config)
+            try:
+                field_config.load(config)
+            except SiteConfigurationException as err:
+                # load() has already provided the right error type, so just pass it up
+                raise err
+            except Exception as err:
+                # If load() crashes with any other error, wrap it
+                raise SiteConfigurationException(
+                    "Error configuring field {} in type {}. Original error was: {}".format(
+                        field_config.get_id(), self._id, err
+                    )
+                )
             if field_config.get_id() in self._fields:
                 raise SiteConfigurationException(
                     "More than one field with the same id {} in type {}".format(

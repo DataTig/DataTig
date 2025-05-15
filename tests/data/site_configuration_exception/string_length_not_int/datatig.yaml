@@ -1,0 +1,9 @@
+title: Field Options Site
+types:
+- id: datas
+  directory: datas
+  fields:
+  - id: string
+    key: string
+    min_length: a few
+    max_length: not to many
