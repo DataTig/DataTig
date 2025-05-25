@@ -93,10 +93,17 @@ class TypeModel:
             )
 
     def get_directory(self) -> str:
+        """Returns directory relative to datatig config file."""
         return self._config.get("directory")
 
     def get_directory_in_git_repository(self) -> str:
+        """Returns directory relative to datatig config file.
+        (May be used in DataTig Hub)"""
         return self._config.get("directory")
+
+    def get_directory_in_githost_repository(self) -> str:
+        """Returns directory relative to root of git repository."""
+        return self._siteconfig.get_githost_directory() + self._config.get("directory")
 
     def get_list_fields(self) -> list:
         if self._config.get("list_fields"):
@@ -166,3 +173,6 @@ class TypeModel:
 
     def get_field(self, field_id) -> FieldConfigModel:
         return self._fields.get(field_id)
+
+    def get_site_config(self):
+        return self._siteconfig

@@ -42,14 +42,14 @@
     <a href="#" onclick="copy(); return false;" class="button"><i class="fa-solid fa-download"></i> Copy Data</a>
 </div>
 {% if site.get_github_url() %}
-    <p>Go to the Github page to add a new file in <em>{{ type.directory_in_git_repository }}</em> with a "{{ type.get_default_format() }}" extension and copy and paste in the content above.</p>
+    <p>Go to the Github page to add a new file in <em>{{ type.get_directory_in_githost_repository() }}</em> with a "{{ type.get_default_format() }}" extension and copy and paste in the content above.</p>
     <div class="links">
-        <a href="https://github.com/{{ site.get_github_url() }}/new/{{ site.get_githost_primary_branch() }}/{{  type.get_directory_in_git_repository() }}" target="_new" class="button">
+        <a href="https://github.com/{{ site.get_github_url() }}/new/{{ site.get_githost_primary_branch() }}/{{  type.get_directory_in_githost_repository() }}" target="_new" class="button">
             <i class="fa-brands fa-github"></i> Edit on GitHub
         </a>
     </div>
 {% else %}
-    <p>In the git repository, create a new file in <em>{{ type.directory_in_git_repository }}</em> with a "{{ type.get_default_format() }}" extension and copy and paste in the content above.</p>
+    <p>In the git repository, create a new file in <em>{{ type.get_directory_in_githost_repository() }}</em> with a "{{ type.get_default_format() }}" extension and copy and paste in the content above.</p>
 {% endif %}
 
 {% endblock %}

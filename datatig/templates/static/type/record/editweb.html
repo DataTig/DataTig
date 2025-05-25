@@ -44,12 +44,12 @@
     <a href="#" onclick="copy(); return false;" class="button"><i class="fa-solid fa-download"></i> Copy Data</a>
 </div>
 {% if site.get_github_url() %}
-    <p>Go to the Github page to edit <em>{{  item.get_git_filename() }}</em> and copy and paste in the content above.</p>
+    <p>Go to the Github page to edit <em>{{  item.get_githost_filename() }}</em> and copy and paste in the content above.</p>
     <div class="links">
-        <a href="https://github.com/{{ site.get_github_url() }}/edit/{{ site.get_githost_primary_branch() }}/{{  item.get_git_filename() }}" target="_new" class="button"><i class="fa-brands fa-github"></i> Edit on GitHub</a>
+        <a href="https://github.com/{{ site.get_github_url() }}/edit/{{ site.get_githost_primary_branch() }}/{{  item.get_githost_filename() }}" target="_new" class="button"><i class="fa-brands fa-github"></i> Edit on GitHub</a>
     </div>
 {% else %}
-    <p>In the git repository, edit <em>{{  item.get_git_filename() }}</em> and copy and paste in the content above.</p>
+    <p>In the git repository, edit <em>{{  item.get_githost_filename() }}</em> and copy and paste in the content above.</p>
 {% endif %}
 
 {% endblock %}

@@ -101,7 +101,9 @@ class RepositoryAccessLocalGit(RepositoryAccess):
 
     def get_contents_of_file(self, file_name: str) -> str:
         process = subprocess.Popen(
-            ["git", "show", self._ref + ":" + file_name],
+            # the ./ is important or it always looks in the root of the git repository, regardless of the current working directory.
+            # we may want to look in a subdirectory of the git repository.
+            ["git", "show", self._ref + ":./" + file_name],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             cwd=self._source_dir,

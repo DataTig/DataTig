@@ -157,12 +157,14 @@ Git Host
 You can specify information about where this git repository is hosted.
 
 Currently the only hosts supported are:
+
 * `GitHub.com <GitHub.com>`_
 
 In a `githost` object, specify the following keys:
 
 * `url` - the URL of the repository. This should not contain the hostname but just the organisation and repository. eg `org-id/register`.
 * `primary_branch` - the name of the default or primary branch. Defaults to `main`.
+* `directory` - if the datatig files are not in the root of the repository, specify where they are here.
 
 A YAML example:
 
@@ -171,6 +173,7 @@ A YAML example:
     githost:
         url: org-id/register
         primary_branch: main
+        directory: src
 
 .. _reference_site_configuration_calendars:
 

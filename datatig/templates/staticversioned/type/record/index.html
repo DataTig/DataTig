@@ -84,7 +84,7 @@
 
 <div class="links">
     {% if default_config.get_github_url() %}
-        <a href="https://github.com/{{ default_config.get_github_url() }}/blob/{{ default_ref_str }}/{{  item.get_git_filename() }}" class="button"><i class="fa-brands fa-github"></i> View on GitHub</a>
+        <a href="https://github.com/{{ default_config.get_github_url() }}/blob/{{ default_ref_str }}/{{  item.get_githost_filename() }}" class="button"><i class="fa-brands fa-github"></i> View on GitHub</a>
     {% endif %}
     <a href="data.json" class="button"><i class="fa-solid fa-download"></i> Download Raw JSON data</a>
 </div>
@@ -206,7 +206,7 @@
 
         <div class="links">
             {% if default_config.get_github_url() %}
-                <a href="https://github.com/{{ default_config.get_github_url() }}/blob/{{ ref_id }}/{{  item.get_git_filename() }}" class="button">View on GitHub</a>
+                <a href="https://github.com/{{ default_config.get_github_url() }}/blob/{{ ref_id }}/{{  item.get_githost_filename() }}" class="button">View on GitHub</a>
             {% endif %}
         </div>
 

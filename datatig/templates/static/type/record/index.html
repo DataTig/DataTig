@@ -140,7 +140,7 @@
 <div class="links">
     <a href="editweb/" class="button"><i class="fa-solid fa-pencil"></i> Edit in Browser</a>
     {% if site.get_github_url() %}
-        <a href="https://github.com/{{ site.get_github_url() }}/edit/{{ site.get_githost_primary_branch() }}/{{  item.get_git_filename() }}" class="button"><i class="fa-solid fa-pencil"></i> Edit Raw data directly on GitHub</a>
+        <a href="https://github.com/{{ site.get_github_url() }}/edit/{{ site.get_githost_primary_branch() }}/{{  item.get_githost_filename() }}" class="button"><i class="fa-solid fa-pencil"></i> Edit Raw data directly on GitHub</a>
     {% endif %}
 </div>
 
@@ -152,7 +152,7 @@
 
 <div class="links">
     {% if site.get_github_url() %}
-        <a href="https://github.com/{{ site.get_github_url() }}/blob/{{ site.get_githost_primary_branch() }}/{{  item.get_git_filename() }}" class="button"><i class="fa-brands fa-github"></i> View on GitHub</a>
+        <a href="https://github.com/{{ site.get_github_url() }}/blob/{{ site.get_githost_primary_branch() }}/{{  item.get_githost_filename() }}" class="button"><i class="fa-brands fa-github"></i> View on GitHub</a>
     {% endif %}
     <a href="data.json" class="button"><i class="fa-solid fa-download"></i> Download Raw JSON data</a>
 </div>

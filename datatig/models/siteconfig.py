@@ -58,6 +58,17 @@ class SiteConfigModel:
     def get_githost_primary_branch(self) -> str:
         return self._config.get("githost", {}).get("primary_branch", "main")
 
+    def get_githost_directory(self) -> str:
+        """Always returns an empty string if no directory.
+        Or if directory, always returns string with no slash at start and a slash at the end.
+        This makes it suitable for dropping into URLs with no further checking."""
+        x = self._config.get("githost", {}).get("directory", "") or ""
+        if x.startswith("/"):
+            x = x[1:]
+        if x and not x.endswith("/"):
+            x = x + "/"
+        return x
+
     def get_types(self) -> dict:
         return self._types
 

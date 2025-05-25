@@ -75,7 +75,12 @@ class RecordModel:
         return self._format
 
     def get_git_filename(self) -> str:
+        """Returns filename relative to datatig config file."""
         return self._git_filename
+
+    def get_githost_filename(self) -> str:
+        """Returns filename relative to root of git repository."""
+        return self._type.get_site_config().get_githost_directory() + self._git_filename
 
     def get_data(self) -> dict:
         return self._data
