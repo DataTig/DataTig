@@ -59,6 +59,10 @@ class FieldValueModel(ABC):
         self._record = record
         self._field = field
 
+    @abstractmethod
+    def has_value(self) -> bool:
+        pass
+
     def get_frictionless_csv_data_values(self) -> list:
         """Should return a list of exactly the same number of elements as get_frictionless_csv_field_specifications() returns."""
         return []

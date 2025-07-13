@@ -76,6 +76,9 @@ class FieldDateTimeValueModel(FieldValueModel):
             timezone = pytz.timezone(self._field.get_timezone())
             self._value = timezone.localize(value)
 
+    def has_value(self) -> bool:
+        return isinstance(self._value, datetime.datetime)
+
     def get_value_datetime_object(
         self,
         fallback_hour=0,

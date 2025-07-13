@@ -47,6 +47,9 @@ class FieldBooleanValueModel(FieldValueModel):
         elif isinstance(value, int):
             self._value = value > 0
 
+    def has_value(self) -> bool:
+        return isinstance(self._value, bool)
+
     def get_value(self):
         return self._value
 

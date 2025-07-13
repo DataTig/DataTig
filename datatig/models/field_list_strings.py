@@ -66,6 +66,9 @@ class FieldListStringsValueModel(FieldValueModel):
             value = [value]
         self._value = value
 
+    def has_value(self) -> bool:
+        return len(self._value) > 0
+
     def get_value(self):
         return self._value
 

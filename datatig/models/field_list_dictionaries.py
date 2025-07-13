@@ -122,6 +122,9 @@ class FieldListDictionariesValueModel(FieldValueModel):
     def add_sub_record(self, sub_record: FieldListDictionariesSubRecordModel):
         self._sub_records.append(sub_record)
 
+    def has_value(self) -> bool:
+        return len(self._sub_records) > 0
+
     def get_value(self):
         if len(self._sub_records) == 0:
             return ""

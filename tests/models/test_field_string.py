@@ -32,3 +32,23 @@ def test_get_urls_in_value(data, expected_value):
     record._data = data
     value = config.get_value_object(record, data)
     assert expected_value == value.get_urls_in_value()
+
+
+test_set_value_data = [
+    ({}, False, None),
+    # none values
+    ({"cat": None}, False, None),
+    # values
+    ({"cat": "floffy"}, True, "floffy"),
+]
+
+
+@pytest.mark.parametrize("data, has_value, expected_value", test_set_value_data)
+def test_set_value(data, has_value, expected_value):
+    config = FieldStringConfigModel()
+    config._key = "cat"
+    record = RecordModel()
+    record._data = data
+    value = config.get_value_object(record, data)
+    assert has_value == value.has_value()
+    assert expected_value == value.get_value()

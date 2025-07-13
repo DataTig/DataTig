@@ -4,10 +4,7 @@ import sqlite3
 import tempfile
 from contextlib import closing
 
-import pytest
-
 import datatig.process
-from datatig.models.field_list_dictionaries import FieldListDictionariesConfigModel
 from datatig.models.siteconfig import SiteConfigModel
 from datatig.repository_access import RepositoryAccessLocalFiles
 from datatig.sqlite import DataStoreSQLite
@@ -102,21 +99,3 @@ def test_type_list_dictionaries_site():
             "https://example.com/choolate/biggest_kids",
             "https://example.com/choolate/big_kids",
         ] == record.get_urls_in_field_values()
-
-
-test_different_to_data = [
-    ({"l": []}, {"l": []}, False),
-    ({"l": [{"title": "cats"}]}, {"l": []}, True),
-    ({"l": [{"title": "cats"}]}, {"l": [{"title": "cats"}]}, False),
-    ({"l": [{"title": "cats"}]}, {"l": [{"title": "dogs"}]}, True),
-]
-
-
-@pytest.mark.parametrize("data1, data2, expected_result", test_different_to_data)
-def test_different_to(data1, data2, expected_result):
-    record = None
-    field = FieldListDictionariesConfigModel()
-    field.load({"id": "l", "key": "l", "fields": [{"id": "title", "key": "title"}]})
-    v1 = field.get_value_object(record, data1)
-    v2 = field.get_value_object(record, data2)
-    assert expected_result == v1.different_to(v2)

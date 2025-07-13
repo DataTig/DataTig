@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * Datatig currently assumes `datatig.yml` is at the root of a git repository; allow to be in subdirs with new `githost/directory` option https://github.com/DataTig/DataTig/issues/53
 
+Internal Python API:
+
+* Add `has_value` to `FieldValueModel` & all fields.
+
 ### Fixed
 
 - A directory was not being shown properly on the web form for a new record in the static site.

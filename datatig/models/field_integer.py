@@ -43,6 +43,9 @@ class FieldIntegerValueModel(FieldValueModel):
         elif isinstance(value, float):
             self._value = int(value)
 
+    def has_value(self) -> bool:
+        return isinstance(self._value, int)
+
     def get_value(self):
         return self._value
 

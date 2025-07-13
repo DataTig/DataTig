@@ -90,6 +90,9 @@ class FieldDateValueModel(FieldValueModel):
         elif isinstance(value, datetime.datetime):
             self._value = value.date()
 
+    def has_value(self) -> bool:
+        return isinstance(self._value, datetime.date)
+
     def get_value_datetime_object(
         self,
         fallback_hour=0,

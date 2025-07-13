@@ -51,6 +51,9 @@ class FieldStringValueModel(FieldValueModel):
     def set_value(self, value):
         self._value = str(value) if value is not None else None
 
+    def has_value(self) -> bool:
+        return isinstance(self._value, str)
+
     def get_value(self):
         return self._value
 

@@ -39,6 +39,9 @@ class FieldURLValueModel(FieldValueModel):
     def set_value(self, value):
         self._value = value
 
+    def has_value(self) -> bool:
+        return isinstance(self._value, str)
+
     def get_value(self):
         return self._value
 
