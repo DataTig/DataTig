@@ -17,6 +17,7 @@ Internal Python API:
 ### Fixed
 
 - A directory was not being shown properly on the web form for a new record in the static site.
+- For some fields, if not set in data, the phrase "None" is printed to UI https://github.com/DataTig/DataTig/issues/54
 
 ## [0.8.0] - 2025-05-16
 

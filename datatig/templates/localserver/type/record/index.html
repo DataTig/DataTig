@@ -24,22 +24,24 @@
                     {{ field.get_title() }}
                 </th>
                 <td>
-                    {% if field.get_type() == 'url' %}
-                        <a href="{{ record.get_field_value(field_id).get_value() }}">{{ record.get_field_value(field_id).get_value() }}</a>
-                    {% elif field.get_type() == 'list-strings' %}
-                        <ul>
-                            {% for value in record.get_field_value(field_id).get_value() %}
-                                <li>{{ value }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% elif field.get_type() == 'boolean' %}
-                        {% if record.get_field_value(field_id).is_value_true() %}
-                            True
-                        {% elif record.get_field_value(field_id).is_value_false() %}
-                            False
+                    {% if record.get_field_value(field_id).has_value() %}
+                        {% if field.get_type() == 'url' %}
+                            <a href="{{ record.get_field_value(field_id).get_value() }}">{{ record.get_field_value(field_id).get_value() }}</a>
+                        {% elif field.get_type() == 'list-strings' %}
+                            <ul>
+                                {% for value in record.get_field_value(field_id).get_value() %}
+                                    <li>{{ value }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% elif field.get_type() == 'boolean' %}
+                            {% if record.get_field_value(field_id).is_value_true() %}
+                                True
+                            {% elif record.get_field_value(field_id).is_value_false() %}
+                                False
+                            {% endif %}
+                        {% else %}
+                            {{ record.get_field_value(field_id).get_value() }}
                         {% endif %}
-                    {% else %}
-                        {{ record.get_field_value(field_id).get_value() }}
                     {% endif %}
                 </td>
             </tr>
