@@ -1,8 +1,8 @@
 import datetime
+import zoneinfo
 from typing import Optional
 
 import dateparser
-import pytz
 
 from datatig.exceptions import SiteConfigurationException
 from datatig.jsondeepreaderwriter import JSONDeepReaderWriter
@@ -15,15 +15,15 @@ class FieldDateTimeConfigModel(FieldConfigModel):
 
     def _load_extra_config(self, config: dict) -> None:
         self._extra_config["timezone"] = config.get("timezone", "UTC")
-        if self._extra_config["timezone"] != "UTC":
-            try:
-                pytz.timezone(self._extra_config["timezone"])
-            except pytz.exceptions.UnknownTimeZoneError:
-                raise SiteConfigurationException(
-                    "DateTime field {} has unknown timezone {}".format(
-                        self._id, self._extra_config["timezone"]
-                    )
+        if (
+            self._extra_config["timezone"] != "UTC"
+            and not self._extra_config["timezone"] in zoneinfo.available_timezones()
+        ):
+            raise SiteConfigurationException(
+                "DateTime field {} has unknown timezone {}".format(
+                    self._id, self._extra_config["timezone"]
                 )
+            )
 
     def get_json_schema(self) -> dict:
         return {
@@ -73,8 +73,9 @@ class FieldDateTimeValueModel(FieldValueModel):
                 },
             )
         elif isinstance(value, datetime.datetime):
-            timezone = pytz.timezone(self._field.get_timezone())
-            self._value = timezone.localize(value)
+            self._value = value.replace(
+                tzinfo=zoneinfo.ZoneInfo(self._field.get_timezone())
+            )
 
     def has_value(self) -> bool:
         return isinstance(self._value, datetime.datetime)

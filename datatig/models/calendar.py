@@ -1,4 +1,4 @@
-import pytz
+import zoneinfo
 
 from datatig.exceptions import SiteConfigurationException
 from datatig.models.calendar_data import CalendarDataModel
@@ -21,15 +21,13 @@ class CalendarModel:
             calendar_data.load_from_config(data_config)
             self._datas.append(calendar_data)
         self._timezone = config.get("timezone", "UTC")
-        if self._timezone != "UTC":
-            try:
-                pytz.timezone(self._timezone)
-            except pytz.exceptions.UnknownTimeZoneError:
-                raise SiteConfigurationException(
-                    "Calendar {} has unknown timezone {}".format(
-                        self._id, self._timezone
-                    )
-                )
+        if (
+            self._timezone != "UTC"
+            and self._timezone not in zoneinfo.available_timezones()
+        ):
+            raise SiteConfigurationException(
+                "Calendar {} has unknown timezone {}".format(self._id, self._timezone)
+            )
 
     def get_id(self) -> str:
         return self._id
