@@ -138,6 +138,9 @@ class FieldDateValueModel(FieldValueModel):
         else:
             return None
 
+    def get_timezone(self) -> str:
+        return self._field.get_timezone()  # type: ignore
+
     def get_frictionless_csv_data_values(self):
         return [self.get_value(), self.get_value_timestamp()]
 

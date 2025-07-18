@@ -1,0 +1,45 @@
+title: Events Site with multiple timezones
+description: The data for a test
+types:
+- id: events
+  directory: events
+  fields:
+  - id: title
+    key: title
+    title: Title
+    description: The title of this event
+  - id: timezone
+    key: timezone
+    title: TimeZone
+    type: timezone
+  - id: start
+    key: start
+    title: Start
+    type: datetime
+    timezone: Europe/Berlin
+    timezone_field: timezone
+  - id: end
+    key: end
+    title: End
+    type: datetime
+    timezone: Europe/Berlin
+    timezone_field: timezone
+  - id: body
+    key: body
+    title: Body
+    type: markdown
+  list_fields:
+  - title
+  - start
+  - end
+  pretty_json_indent: 2
+  markdown_body_is_field: body
+calendars:
+  main:
+    timezone: Europe/Berlin
+    datas:
+      type: events
+      summary: title
+githost:
+  url: datatig/test
+  primary_branch: gh_pages
