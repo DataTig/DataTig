@@ -151,6 +151,11 @@ The type `list-dictionaries` has the following extra options:
 * `fields`: A list of fields to be found in the dictionary items. Definition is the same as above, but list types are not allowed. (So you can't have a list in a list.)
 * `unique_items`: Boolean. If true, every value in the list must be unique.
 
+Field Type `timezone`
+~~~~~~~~~~~~~~~~~~~~~
+
+There are no extra configuration options.
+
 Git Host
 --------
 

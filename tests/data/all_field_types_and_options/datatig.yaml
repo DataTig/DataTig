@@ -42,3 +42,6 @@ types:
   - id: url
     key: url
     type: url
+  - id: timezone
+    key: timezone
+    type: timezone

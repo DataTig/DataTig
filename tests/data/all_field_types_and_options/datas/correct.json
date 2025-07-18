@@ -10,5 +10,6 @@
   "list_strings": ["DataTig","YAML"],
   "markdown": "DataTig",
   "string": "DataTig",
-  "url": "https://www.datatig.com/"
+  "url": "https://www.datatig.com/",
+  "timezone": "Europe/London"
 }
