@@ -160,6 +160,11 @@ There must be an extra option `choices` which is a list with at least one item, 
 * A string
 * A dict with a `value` key. Optionally, this dict can have a `title` key.
 
+Field Type `timezone`
+~~~~~~~~~~~~~~~~~~~~~
+
+There are no extra configuration options.
+
 Git Host
 --------
 

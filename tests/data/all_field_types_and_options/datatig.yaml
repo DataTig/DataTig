@@ -39,3 +39,6 @@ types:
       - bowler
       - value: top
         title: Top
+  - id: timezone
+    key: timezone
+    type: timezone
