@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * Datatig currently assumes `datatig.yml` is at the root of a git repository; allow to be in subdirs with new `githost/directory` option https://github.com/DataTig/DataTig/issues/53
 * New field type `timezone`.
+* New option `timezone_field` to `datetime` field types. Add new timezone output to `datetime` fields in API, Frictionless Data, Database.
 
 Internal Python API:
 

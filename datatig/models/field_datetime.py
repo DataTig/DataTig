@@ -24,6 +24,9 @@ class FieldDateTimeConfigModel(FieldConfigModel):
                     self._id, self._extra_config["timezone"]
                 )
             )
+        self._extra_config["timezone_field"] = config.get("timezone_field")
+        # TODO ideally we'd validate the field exists here,
+        # but we don't seem to have access to anything to do that against
 
     def get_json_schema(self) -> dict:
         return {
@@ -51,6 +54,11 @@ class FieldDateTimeConfigModel(FieldConfigModel):
                 "type": "datetime",
             },
             {
+                "name": "field_" + self.get_id() + "___timezone",
+                "title": self.get_title() + " (Timezone)",
+                "type": "string",
+            },
+            {
                 "name": "field_" + self.get_id() + "___timestamp",
                 "title": self.get_title() + " (Timestamp)",
                 "type": "integer",
@@ -60,22 +68,36 @@ class FieldDateTimeConfigModel(FieldConfigModel):
     def get_timezone(self) -> str:
         return self.get_extra_config().get("timezone", "UTC")
 
+    def get_timezone_field(self) -> Optional[str]:
+        return self.get_extra_config().get("timezone_field")
+
 
 class FieldDateTimeValueModel(FieldValueModel):
     def set_value(self, value):
+        # Work out timezone to use
+        self._timezone = self._field.get_timezone()
+        if self._field.get_timezone_field():
+            fieldvalue = self._record.get_field_value(self._field.get_timezone_field())
+            if fieldvalue:
+                timezone_from_field = fieldvalue.get_value()
+                if timezone_from_field:
+                    if timezone_from_field in zoneinfo.available_timezones():
+                        self._timezone = timezone_from_field
+                    else:
+                        # TODO raise some kind of error here
+                        pass
+        # Now can process values
         self._value = None
         if isinstance(value, str):
             self._value = dateparser.parse(
                 value,
                 settings={
-                    "TIMEZONE": self._field.get_timezone(),
+                    "TIMEZONE": self._timezone,
                     "RETURN_AS_TIMEZONE_AWARE": True,
                 },
             )
         elif isinstance(value, datetime.datetime):
-            self._value = value.replace(
-                tzinfo=zoneinfo.ZoneInfo(self._field.get_timezone())
-            )
+            self._value = value.replace(tzinfo=zoneinfo.ZoneInfo(self._timezone))
 
     def has_value(self) -> bool:
         return isinstance(self._value, datetime.datetime)
@@ -103,8 +125,11 @@ class FieldDateTimeValueModel(FieldValueModel):
         else:
             return None
 
+    def get_timezone(self) -> str:
+        return self._timezone
+
     def get_frictionless_csv_data_values(self):
-        return [self.get_value(), self.get_value_timestamp()]
+        return [self.get_value(), self._timezone, self.get_value_timestamp()]
 
     def different_to(self, other_field_value):
         return self._value != other_field_value._value
@@ -114,6 +139,11 @@ class FieldDateTimeValueModel(FieldValueModel):
             return {
                 "value_iso": self.get_value(),
                 "value_timestamp": self.get_value_timestamp(),
+                "timezone": self._timezone,
             }
         else:
-            return {"value_iso": None, "value_timestamp": None}
+            return {
+                "value_iso": None,
+                "value_timestamp": None,
+                "timezone": self._timezone,
+            }

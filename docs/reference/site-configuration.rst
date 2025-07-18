@@ -107,16 +107,17 @@ There are no extra configuration options.
 Field Type `date`
 ~~~~~~~~~~~~~~~~~
 
-The types `date` and `datetime` have the following extra options:
+The type `date` has the following extra option:
 
 * `timezone`: Defaults to `UTC`. Set to a location string like `Europe/Berlin`
 
 Field Type `datetime`
 ~~~~~~~~~~~~~~~~~~~~~
 
-The types `date` and `datetime` have the following extra options:
+The type `datetime` has the following extra options:
 
 * `timezone`: Defaults to `UTC`. Set to a location string like `Europe/Berlin`
+* `timezone_field`: The id of another field on the record that says what time zone to use. That field should be on type `timezone` and should be defined before this field.
 
 Field Type `boolean`
 ~~~~~~~~~~~~~~~~~~~~

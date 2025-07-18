@@ -198,6 +198,14 @@ class DataStoreSQLite:
                 + table_name
                 + """ ADD field_"""
                 + type_field.get_id()
+                + """___timezone TEXT """,
+                [],
+            )
+            cur.execute(
+                """ALTER TABLE """
+                + table_name
+                + """ ADD field_"""
+                + type_field.get_id()
                 + """___timestamp INTEGER """,
                 [],
             )
@@ -418,11 +426,12 @@ class DataStoreSQLite:
                 "datetime",
                 "date",
             ] and isinstance(value, str):
-
                 out_fields.append("field_" + field.get_id())
                 out_values.append(value)
                 out_fields.append("field_" + field.get_id() + "___timestamp")
                 out_values.append(value_object.get_value_timestamp())
+                out_fields.append("field_" + field.get_id() + "___timezone")
+                out_values.append(value_object.get_timezone())
             elif (
                 field.get_type() in ["list-strings"]
                 and isinstance(value, list)
