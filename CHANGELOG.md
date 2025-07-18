@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * ... and `required` column to `type_field` table in SQLite database
 * New field type `enum` https://github.com/DataTig/DataTig/issues/38
 * In field config, if `key` is not set it will default to the value of `id` https://github.com/DataTig/DataTig/issues/29
+* New field type `timezone`.
 
 Internal Python API:
 

@@ -16,6 +16,7 @@ from .field_list_dictionaries import FieldListDictionariesConfigModel
 from .field_list_strings import FieldListStringsConfigModel
 from .field_markdown import FieldMarkdownConfigModel
 from .field_string import FieldStringConfigModel
+from .field_timezone import FieldTimeZoneConfigModel
 from .field_url import FieldURLConfigModel
 
 
@@ -57,6 +58,8 @@ class TypeModel:
                 field_config = FieldMarkdownConfigModel()
             elif field_type == "enum":
                 field_config = FieldEnumConfigModel()
+            elif field_type == "timezone":
+                field_config = FieldTimeZoneConfigModel()
             elif field_type and field_type != "string":
                 raise SiteConfigurationException(
                     "Unknown field type {} in field {} in type {}".format(

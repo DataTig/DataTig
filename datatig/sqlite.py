@@ -175,6 +175,7 @@ class DataStoreSQLite:
             "string",
             "list-strings",
             "markdown",
+            "timezone",
         ]:
             cur.execute(
                 """ALTER TABLE """
@@ -430,6 +431,7 @@ class DataStoreSQLite:
                 "url",
                 "string",
                 "markdown",
+                "timezone",
             ] and isinstance(value, str):
                 out_fields.append("field_" + field.get_id())
                 out_values.append(value)
