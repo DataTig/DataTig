@@ -202,6 +202,40 @@ def test_database_event_3(fixture_event_site):
             assert 1704409200 == type["field_submission_deadline___timestamp"]
 
 
+def test_database_event_different_timezones_1(fixture_event_site):
+    # This has different results to test_database_event_different_timezones_2
+    # when it should have the same!!! (As the values in input files are the same)
+    # See https://github.com/DataTig/DataTig/issues/56
+    with closing(
+        sqlite3.connect(os.path.join(fixture_event_site, "database.sqlite"))
+    ) as connection:
+        connection.row_factory = sqlite3.Row
+        with closing(connection.cursor()) as cur:
+            cur.execute("SELECT * FROM record_events WHERE id='different_timezones_1'")
+            type = cur.fetchone()
+            assert "2025-01-01T06:00:00+01:00" == type["field_start"]
+            assert 1735707600 == type["field_start___timestamp"]
+            assert "2025-01-01T07:00:00+01:00" == type["field_end"]
+            assert 1735711200 == type["field_end___timestamp"]
+
+
+def test_database_event_different_timezones_2(fixture_event_site):
+    # This has different results to test_database_event_different_timezones_1
+    # when it should have the same!!! (As the values in input files are the same)
+    # See https://github.com/DataTig/DataTig/issues/56
+    with closing(
+        sqlite3.connect(os.path.join(fixture_event_site, "database.sqlite"))
+    ) as connection:
+        connection.row_factory = sqlite3.Row
+        with closing(connection.cursor()) as cur:
+            cur.execute("SELECT * FROM record_events WHERE id='different_timezones_2'")
+            type = cur.fetchone()
+            assert "2025-01-01T10:00:00+01:00" == type["field_start"]
+            assert 1735722000 == type["field_start___timestamp"]
+            assert "2025-01-01T11:00:00+01:00" == type["field_end"]
+            assert 1735725600 == type["field_end___timestamp"]
+
+
 def test_database_calendar_config(fixture_event_site):
     with closing(
         sqlite3.connect(os.path.join(fixture_event_site, "database.sqlite"))
@@ -225,7 +259,7 @@ def test_database_calendar_main_count(fixture_event_site):
             cur.execute(
                 "SELECT count(*) AS c FROM calendar_event WHERE calendar_id='main'"
             )
-            assert 3 == cur.fetchone()["c"]
+            assert 5 == cur.fetchone()["c"]
 
 
 def test_database_calendar_deadline_1(fixture_event_site):
