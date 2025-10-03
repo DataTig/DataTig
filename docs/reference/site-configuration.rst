@@ -62,8 +62,8 @@ Fields
 Every field needs to be defined. Every field type has these options:
 
 * `id` - every field needs a unique ID within that type.
-* `key` - the path in the data to find this value. Note paths are allowed, not just keys.
-* `title` - a title for this field.
+* `key` - the path in the data to find this value. Note paths are allowed, not just keys. If not set, the value of `id` will be used.
+* `title` - a title for this field. If not set, the value of `id` will be used.
 * `description` - a description for this field.
 * `type` - a type for this field. Defaults to `string`.
 

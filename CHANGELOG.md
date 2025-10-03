@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 Internal Python API:
 
 * Add `has_value` to `FieldValueModel` & all fields.
+* In field config, if `key` is not set it will default to the value of `id` https://github.com/DataTig/DataTig/issues/29
 
 ### Fixed
 

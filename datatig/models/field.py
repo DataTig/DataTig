@@ -13,7 +13,7 @@ class FieldConfigModel(ABC):
         self._id = config.get("id")
         self._title = config.get("title", self._id)
         self._description = config.get("description", "")
-        self._key = config.get("key")
+        self._key = config.get("key", self._id)
         self._load_extra_config(config)
 
     def _load_extra_config(self, config: dict) -> None:
