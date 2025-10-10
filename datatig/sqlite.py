@@ -40,6 +40,8 @@ class DataStoreSQLite:
 
     def _create(self):
         with closing(self._connection.cursor()) as cur:
+            # TODO For Testing, you may want to enable foreign_keys https://github.com/DataTig/DataTig/issues/57
+            # cur.execute("PRAGMA foreign_keys = ON")
             cur.execute(
                 """CREATE TABLE site_config (
                 key TEXT,
@@ -248,7 +250,7 @@ class DataStoreSQLite:
         # Always create basic table, so consuming apps can easily SELECT and see if there are any calendars or not.
         cur.execute(
             """CREATE TABLE calendar (
-                id TEXT,
+                id TEXT PRIMARY KEY,
                 timezone TEXT
                 )"""
         )
