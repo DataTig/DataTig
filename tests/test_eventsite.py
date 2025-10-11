@@ -236,6 +236,21 @@ def test_database_event_different_timezones_2(fixture_event_site):
             assert 1735725600 == type["field_end___timestamp"]
 
 
+def test_database_event_dateonly(fixture_event_site):
+    with closing(
+        sqlite3.connect(os.path.join(fixture_event_site, "database.sqlite"))
+    ) as connection:
+        connection.row_factory = sqlite3.Row
+        with closing(connection.cursor()) as cur:
+            cur.execute("SELECT * FROM record_events WHERE id='dateonly'")
+            type = cur.fetchone()
+            assert "dateonly" == type["id"]
+            assert "2023-11-01T00:00:00+01:00" == type["field_start"]
+            assert 1698793200 == type["field_start___timestamp"]
+            assert "2023-11-01T00:00:00+01:00" == type["field_end"]
+            assert 1698793200 == type["field_end___timestamp"]
+
+
 def test_database_calendar_config(fixture_event_site):
     with closing(
         sqlite3.connect(os.path.join(fixture_event_site, "database.sqlite"))
@@ -259,7 +274,7 @@ def test_database_calendar_main_count(fixture_event_site):
             cur.execute(
                 "SELECT count(*) AS c FROM calendar_event WHERE calendar_id='main'"
             )
-            assert 5 == cur.fetchone()["c"]
+            assert 6 == cur.fetchone()["c"]
 
 
 def test_database_calendar_deadline_1(fixture_event_site):

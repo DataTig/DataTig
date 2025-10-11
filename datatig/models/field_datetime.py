@@ -76,6 +76,16 @@ class FieldDateTimeValueModel(FieldValueModel):
             self._value = value.replace(
                 tzinfo=zoneinfo.ZoneInfo(self._field.get_timezone())
             )
+        elif isinstance(value, datetime.date):
+            self._value = datetime.datetime(
+                value.year,
+                value.month,
+                value.day,
+                0,
+                0,
+                0,
+                tzinfo=zoneinfo.ZoneInfo(self._field.get_timezone()),
+            )
 
     def has_value(self) -> bool:
         return isinstance(self._value, datetime.datetime)
