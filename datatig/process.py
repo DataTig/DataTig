@@ -224,6 +224,16 @@ def versioned_build(
                             + error.get_data_path()
                         )
                     errors_count += 1
+                for error in datastore.get_errors_added_between_refs(
+                    default_ref, check_errors_on_ref
+                ):
+                    if verbose:
+                        print(
+                            "FILENAME {} HAS ERROR: {} ".format(
+                                error.get_filename(), error.get_message()
+                            )
+                        )
+                    errors_count += 1
             elif check_errors_on_ref_mode == "all_in_changed_records":
                 for difference_def in datastore.get_data_differences_between_refs(
                     default_ref, check_errors_on_ref
@@ -247,6 +257,16 @@ def versioned_build(
                                     + error.get_data_path()
                                 )
                             errors_count += 1
+                for error in datastore.get_errors_added_between_refs(
+                    default_ref, check_errors_on_ref
+                ):
+                    if verbose:
+                        print(
+                            "FILENAME {} HAS ERROR: {} ".format(
+                                error.get_filename(), error.get_message()
+                            )
+                        )
+                    errors_count += 1
             else:
                 raise Exception("UNKNOWN MODE!")
         else:

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 * Datatig currently assumes `datatig.yml` is at the root of a git repository; allow to be in subdirs with new `githost/directory` option https://github.com/DataTig/DataTig/issues/53
+* `versionedcheck` CLI now shows errors where files could not be parsed (previously only showed validation errors where files could be parsed)
 
 Internal Python API:
 
