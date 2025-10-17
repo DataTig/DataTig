@@ -7,6 +7,7 @@ class FieldConfigModel(ABC):
         self._key = None
         self._title = None
         self._description: str = ""
+        self._required: bool = False
         self._extra_config = {}
 
     def load(self, config: dict) -> None:
@@ -14,6 +15,7 @@ class FieldConfigModel(ABC):
         self._title = config.get("title", self._id)
         self._description = config.get("description", "")
         self._key = config.get("key", self._id)
+        self._required = bool(config.get("required", False))
         self._load_extra_config(config)
 
     def _load_extra_config(self, config: dict) -> None:
@@ -24,6 +26,7 @@ class FieldConfigModel(ABC):
         self._title = data["title"]
         self._description = data["description"]
         self._key = data["key"]
+        self._required = data["required"]
 
     def get_id(self) -> str:
         return self._id
@@ -37,6 +40,9 @@ class FieldConfigModel(ABC):
     def get_description(self) -> str:
         return self._description
 
+    def get_required(self) -> bool:
+        return self._required
+
     def get_extra_config(self) -> dict:
         return self._extra_config
 
@@ -48,6 +54,9 @@ class FieldConfigModel(ABC):
 
     def get_frictionless_csv_resource_specifications(self) -> list:
         return []
+
+    def get_json_schema(self) -> dict:
+        return {}
 
 
 class FieldValueModel(ABC):

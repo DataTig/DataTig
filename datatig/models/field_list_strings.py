@@ -14,7 +14,15 @@ class FieldListStringsConfigModel(FieldConfigModel):
             "items": {"type": "string"},
             "uniqueItems": self._extra_config["unique_items"],
         }
-        if self._extra_config["string_min_length"]:
+        if self._required:
+            out["minLength"] = 1
+            if self._extra_config["string_min_length"]:
+                out["items"]["minLength"] = max(
+                    1, self._extra_config["string_min_length"]
+                )
+            else:
+                out["items"]["minLength"] = 1
+        elif self._extra_config["string_min_length"]:
             out["items"]["minLength"] = self._extra_config["string_min_length"]
         if self._extra_config["string_max_length"]:
             out["items"]["maxLength"] = self._extra_config["string_max_length"]

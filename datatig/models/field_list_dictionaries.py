@@ -22,13 +22,16 @@ class FieldListDictionariesConfigModel(FieldConfigModel):
 
     def get_json_schema(self) -> dict:
         build_results = build_json_schema(self._fields.values(), child_schema=True)
-        return {
+        out: dict = {
             "title": self._title,
             "description": self._description,
             "type": "array",
             "items": build_results.get_json_schema(),
             "uniqueItems": self._extra_config["unique_items"],
         }
+        if self._required:
+            out["minLength"] = 1
+        return out
 
     def _load_extra_config(self, config: dict) -> None:
         # Fields

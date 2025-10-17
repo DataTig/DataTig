@@ -7,12 +7,15 @@ class FieldURLConfigModel(FieldConfigModel):
         return "url"
 
     def get_json_schema(self) -> dict:
-        return {
+        out: dict = {
             "type": "string",
             "format": "uri",
             "title": self._title,
             "description": self._description,
         }
+        if self._required:
+            out["minLength"] = 1
+        return out
 
     def get_new_item_json(self):
         return None

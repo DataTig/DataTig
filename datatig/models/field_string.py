@@ -21,7 +21,11 @@ class FieldStringConfigModel(FieldConfigModel):
         }
         if self._extra_config.get("multiline"):
             out["format"] = "textarea"
-        if self._extra_config["min_length"]:
+        if self._required and self._extra_config["min_length"]:
+            out["minLength"] = max(1, self._extra_config["min_length"])
+        elif self._required:
+            out["minLength"] = 1
+        elif self._extra_config["min_length"]:
             out["minLength"] = self._extra_config["min_length"]
         if self._extra_config["max_length"]:
             out["maxLength"] = self._extra_config["max_length"]

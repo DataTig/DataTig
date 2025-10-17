@@ -12,12 +12,15 @@ class FieldMarkdownConfigModel(FieldConfigModel):
         pass
 
     def get_json_schema(self) -> dict:
-        return {
+        out: dict = {
             "type": "string",
             "title": self._title,
             "description": self._description,
             "format": "textarea",
         }
+        if self._required:
+            out["minLength"] = 1
+        return out
 
     def get_new_item_json(self):
         return None

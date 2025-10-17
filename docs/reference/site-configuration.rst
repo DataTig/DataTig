@@ -66,6 +66,7 @@ Every field needs to be defined. Every field type has these options:
 * `title` - a title for this field. If not set, the value of `id` will be used.
 * `description` - a description for this field.
 * `type` - a type for this field. Defaults to `string`.
+* `required` - Defaults to False.
 
 Some field types have extra options. See below for details.
 

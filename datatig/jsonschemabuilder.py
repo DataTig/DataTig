@@ -23,6 +23,12 @@ def build_json_schema(fields: list, child_schema=False) -> BuildJSONSchemaResult
         final_key = key_bits.pop()
         json_schema_insert = json_schema
         for key_bit in key_bits:
+            if field.get_required():
+                json_schema_insert["required"] = (
+                    json_schema_insert["required"] + [key_bit]
+                    if "required" in json_schema_insert
+                    else [key_bit]
+                )
             if not json_schema_insert["properties"].get(key_bit):
                 json_schema_insert["properties"][key_bit] = {
                     "type": "object",
@@ -30,5 +36,11 @@ def build_json_schema(fields: list, child_schema=False) -> BuildJSONSchemaResult
                 }
             json_schema_insert = json_schema_insert["properties"][key_bit]
         json_schema_insert["properties"][final_key] = field.get_json_schema()
+        if field.get_required():
+            json_schema_insert["required"] = (
+                json_schema_insert["required"] + [final_key]
+                if "required" in json_schema_insert
+                else [final_key]
+            )
 
     return BuildJSONSchemaResults(json_schema)

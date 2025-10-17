@@ -312,3 +312,115 @@ def test_list_dictionaries_unique():
         },
         "type": "object",
     } == result.get_json_schema()
+
+
+def test_required():
+    field1 = FieldStringConfigModel()
+    field1.load({"id": "title", "key": "title", "title": "Title", "required": True})
+    result = build_json_schema([field1])
+    assert {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+            "title": {
+                "title": "Title",
+                "description": "",
+                "type": "string",
+                "minLength": 1,
+            }
+        },
+        "type": "object",
+        "required": ["title"],
+    } == result.get_json_schema()
+
+
+def test_multiple_at_one_level_required():
+    field1 = FieldStringConfigModel()
+    field1.load({"id": "title", "key": "title", "title": "Title", "required": True})
+    field2 = FieldURLConfigModel()
+    field2.load({"id": "url", "key": "url", "title": "URL", "required": True})
+    result = build_json_schema([field1, field2])
+    assert {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+            "title": {
+                "title": "Title",
+                "description": "",
+                "type": "string",
+                "minLength": 1,
+            },
+            "url": {
+                "format": "uri",
+                "title": "URL",
+                "description": "",
+                "type": "string",
+                "minLength": 1,
+            },
+        },
+        "type": "object",
+        "required": ["title", "url"],
+    } == result.get_json_schema()
+
+
+def test_required_1_layer_deep():
+    field1 = FieldStringConfigModel()
+    field1.load(
+        {"id": "title_en", "key": "title/en", "title": "Title (En)", "required": True}
+    )
+    result = build_json_schema([field1])
+    assert {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+            "title": {
+                "properties": {
+                    "en": {
+                        "title": "Title (En)",
+                        "description": "",
+                        "type": "string",
+                        "minLength": 1,
+                    }
+                },
+                "type": "object",
+                "required": ["en"],
+            },
+        },
+        "type": "object",
+        "required": ["title"],
+    } == result.get_json_schema()
+
+
+def test_required_2_layers_deep():
+    field1 = FieldStringConfigModel()
+    field1.load(
+        {
+            "id": "title_en",
+            "key": "data/title/en",
+            "title": "Title (En)",
+            "required": True,
+        }
+    )
+    result = build_json_schema([field1])
+    assert {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+            "data": {
+                "properties": {
+                    "title": {
+                        "properties": {
+                            "en": {
+                                "title": "Title (En)",
+                                "description": "",
+                                "type": "string",
+                                "minLength": 1,
+                            }
+                        },
+                        "type": "object",
+                        "required": ["en"],
+                    }
+                },
+                "type": "object",
+                "required": ["title"],
+            }
+        },
+        "type": "object",
+        "required": ["data"],
+    } == result.get_json_schema()
