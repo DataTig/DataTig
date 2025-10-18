@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * `versionedcheck` CLI now shows errors where files could not be parsed (previously only showed validation errors where files could be parsed)
 * `required` option to all field types https://github.com/DataTig/DataTig/issues/42
 * ... and `required` column to `type_field` table in SQLite database
+* New field type `enum` https://github.com/DataTig/DataTig/issues/38
 
 Internal Python API:
 
