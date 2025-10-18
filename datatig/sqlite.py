@@ -246,6 +246,23 @@ class DataStoreSQLite:
                     sub_type_field,
                     parent_keys=parent_keys + [type_field.get_id()],
                 )
+        elif type_field.get_type() == "enum":
+            cur.execute(
+                """ALTER TABLE """
+                + table_name
+                + """ ADD field_"""
+                + type_field.get_id()
+                + """ TEXT """,
+                [],
+            )
+            cur.execute(
+                """ALTER TABLE """
+                + table_name
+                + """ ADD field_"""
+                + type_field.get_id()
+                + """___title TEXT """,
+                [],
+            )
 
     def _create_calendars(self, cur):
         # Calendars!
@@ -440,7 +457,11 @@ class DataStoreSQLite:
             elif field.get_type() == "integer" and isinstance(value, int):
                 out_fields.append("field_" + field.get_id())
                 out_values.append(value)
-
+            elif field.get_type() == "enum":
+                out_fields.append("field_" + field.get_id())
+                out_values.append(value)
+                out_fields.append("field_" + field.get_id() + "___title")
+                out_values.append(value_object.get_value_title())
         return out_fields, out_values
 
     def store_json_schema_validation_errors(self, type_id, item_id, errors) -> None:

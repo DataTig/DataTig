@@ -40,6 +40,8 @@
                             {% elif item.get_field_value(field_id).is_value_false() %}
                                 False
                             {% endif %}
+                        {% elif field.get_type() == 'enum' %}
+                            {{ item.get_field_value(field_id).get_value_title() }}
                         {% else %}
                             {{ item.get_field_value(field_id).get_value() }}
                         {% endif %}

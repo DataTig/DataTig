@@ -10,6 +10,7 @@ from .field import FieldConfigModel
 from .field_boolean import FieldBooleanConfigModel
 from .field_date import FieldDateConfigModel
 from .field_datetime import FieldDateTimeConfigModel
+from .field_enum import FieldEnumConfigModel
 from .field_integer import FieldIntegerConfigModel
 from .field_list_dictionaries import FieldListDictionariesConfigModel
 from .field_list_strings import FieldListStringsConfigModel
@@ -54,6 +55,8 @@ class TypeModel:
                 field_config = FieldIntegerConfigModel()
             elif field_type == "markdown":
                 field_config = FieldMarkdownConfigModel()
+            elif field_type == "enum":
+                field_config = FieldEnumConfigModel()
             elif field_type and field_type != "string":
                 raise SiteConfigurationException(
                     "Unknown field type {} in field {} in type {}".format(

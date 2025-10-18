@@ -103,3 +103,13 @@ def test_list_dictionaries_not_unique(fixture_all_field_types_and_options):
         errors[0]["message"]
         == "[{'string': 'DataTig'}, {'string': 'DataTig'}] has non-unique elements"
     )
+
+
+def test_enum_bad_choice(fixture_all_field_types_and_options):
+    res = fixture_all_field_types_and_options.execute(
+        "SELECT * FROM record_error_datas WHERE record_id='enum_bad_choice' ORDER BY data_path ASC, message ASC"
+    )
+    errors = res.fetchall()
+    assert len(errors) == 1
+    assert errors[0]["data_path"] == "hat"
+    assert errors[0]["message"] == "'baseball cap' is not one of ['bowler', 'top']"

@@ -33,3 +33,9 @@ types:
     max_length: 20
   - id: url
     type: url
+  - id: hat
+    type: enum
+    choices:
+      - bowler
+      - value: top
+        title: Top
