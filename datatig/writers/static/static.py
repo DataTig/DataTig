@@ -205,9 +205,9 @@ class StaticWriter:
                 "fields": {},
             }
             for field_id in type.get_list_fields():
-                api_records["records"][item_id]["fields"][
-                    field_id
-                ] = item.get_field_value(field_id).get_api_value()
+                api_records["records"][item_id]["fields"][field_id] = (
+                    item.get_field_value(field_id).get_api_value()
+                )
         with open(
             os.path.join(self._out_dir, "type", type.get_id(), "records_api.json"), "w"
         ) as fp:

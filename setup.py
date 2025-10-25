@@ -33,15 +33,15 @@ setuptools.setup(
     ],
     extras_require={
         "Dev": [
-            "pytest==7.1.2",
-            "black==22.6.0",
-            "isort==5.10.1",
-            "flake8==4.0.1",
-            "mypy==0.971",
+            "pytest==8.4.2",
+            "black==25.9.0",
+            "isort==7.0.0",
+            "flake8==7.3.0",
+            "mypy==1.18.2",
         ],
         "localserver": ["flask"],
     },
-    python_requires=">=3.9",
+    python_requires=">=3.10",
     classifiers=[
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",

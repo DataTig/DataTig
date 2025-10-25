@@ -26,6 +26,10 @@ Internal Python API:
 - Add a primary key to `calendar` table, so when you enable foreign key checks you don't get errors.
 - Handling of dates in date time fields
 
+### Removed
+
+* Dropped support for Python 3.9 as that isn't supported anymore.
+
 ## [0.8.0] - 2025-05-16
 
 ### Added

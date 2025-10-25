@@ -64,6 +64,6 @@ class FieldMarkdownValueModel(FieldValueModel):
         if self._value:
             # Only match absolute links for now (http...).
             # Matching relative ones gets complicated, as we should apply some kind of base to them.
-            return re.findall("\[[^\]]+\]\(([hH][tT][tT][pP][^\) ]+)\)", self._value)
+            return re.findall(r"\[[^\]]+\]\(([hH][tT][tT][pP][^\) ]+)\)", self._value)
         else:
             return []

@@ -8,7 +8,8 @@ class GitCommitModel:
 
     def get_ref(self) -> list:
         """Returns the main ref out of the list of possibilities.
-        At the moment, each list only has one ref so it's not clear which one to return!"""
+        At the moment, each list only has one ref so it's not clear which one to return!
+        """
         return self._refs[0]
 
     def get_refs(self) -> list:

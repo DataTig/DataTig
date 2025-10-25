@@ -1,4 +1,5 @@
 import json
+from typing import Optional
 
 from .record_error import RecordErrorModel
 from .type import TypeModel
@@ -41,7 +42,9 @@ class RecordModel:
         self._git_filename = git_filename
         self._format = "md"
 
-    def load_from_database(self, data: dict, errors_data: list = None) -> None:
+    def load_from_database(
+        self, data: dict, errors_data: Optional[list] = None
+    ) -> None:
         self._data = json.loads(data["data"])
         for field_id, field_config in self._type.get_fields().items():
             self._field_values[field_id] = field_config.get_value_object(
@@ -56,7 +59,10 @@ class RecordModel:
                 self._errors.append(m)
 
     def load_from_versioned_database(
-        self, commit_type_record_row: dict, data_row: dict, errors_data: list = None
+        self,
+        commit_type_record_row: dict,
+        data_row: dict,
+        errors_data: Optional[list] = None,
     ) -> None:
         self._data = json.loads(data_row["data"])
         for field_id, field_config in self._type.get_fields().items():

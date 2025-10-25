@@ -12,9 +12,9 @@ class ViewTypeIndex(BaseView):
         if not self._template_variables["type"]:
             return "404"  # TODO
 
-        self._template_variables[
-            "records"
-        ] = datastore.database_class().get_ids_in_type(type_id)
+        self._template_variables["records"] = (
+            datastore.database_class().get_ids_in_type(type_id)
+        )
 
         return self._jinja2_env.get_template("localserver/type/index.html").render(
             self._template_variables

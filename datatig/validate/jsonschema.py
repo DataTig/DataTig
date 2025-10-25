@@ -65,17 +65,17 @@ def _json_schema_validator(type_config: TypeModel):
     schema: dict = type_config.get_json_schema_as_dict()
     schema_version = str(schema.get("$schema", ""))
     if schema_version.startswith("http://json-schema.org/draft-03/schema"):
-        schema_validator = jsonschema.validators.Draft3Validator(schema)
+        schema_validator = jsonschema.validators.Draft3Validator(schema)  # type: ignore
     elif schema_version.startswith("http://json-schema.org/draft-04/schema"):
-        schema_validator = jsonschema.validators.Draft4Validator(schema)
+        schema_validator = jsonschema.validators.Draft4Validator(schema)  # type: ignore
     elif schema_version.startswith("http://json-schema.org/draft-06/schema"):
-        schema_validator = jsonschema.validators.Draft6Validator(schema)
+        schema_validator = jsonschema.validators.Draft6Validator(schema)  # type: ignore
     elif schema_version.startswith("http://json-schema.org/draft-07/schema"):
-        schema_validator = jsonschema.validators.Draft7Validator(schema)
+        schema_validator = jsonschema.validators.Draft7Validator(schema)  # type: ignore
     elif schema_version.startswith("https://json-schema.org/draft/2019-09/schema"):
-        schema_validator = jsonschema.validators.Draft201909Validator(schema)
+        schema_validator = jsonschema.validators.Draft201909Validator(schema)  # type: ignore
     else:
-        schema_validator = jsonschema.validators.Draft202012Validator(schema)
+        schema_validator = jsonschema.validators.Draft202012Validator(schema)  # type: ignore
     return schema_validator
 
 

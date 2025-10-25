@@ -2,6 +2,7 @@ import os
 import shutil
 import sys
 import tempfile
+from typing import Optional
 
 from datatig.models.siteconfig import SiteConfigModel
 
@@ -18,10 +19,10 @@ from .writers.staticversioned.staticversioned import StaticVersionedWriter
 
 def go(
     source_dir: str,
-    staticsite_output: str = None,
-    staticsite_url: str = None,
-    sqlite_output: str = None,
-    frictionless_output: str = None,
+    staticsite_output: Optional[str] = None,
+    staticsite_url: Optional[str] = None,
+    sqlite_output: Optional[str] = None,
+    frictionless_output: Optional[str] = None,
     verbose: bool = False,
     check_errors: bool = False,
     check_record_errors: bool = False,
@@ -117,9 +118,9 @@ def go(
 
 def versioned_build(
     source_dir: str,
-    staticsite_output: str = None,
-    staticsite_url: str = None,
-    sqlite_output: str = None,
+    staticsite_output: Optional[str] = None,
+    staticsite_url: Optional[str] = None,
+    sqlite_output: Optional[str] = None,
     refs: list = [],
     refs_str: str = "",
     all_branches: bool = False,
