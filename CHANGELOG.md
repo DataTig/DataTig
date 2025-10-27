@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * In field config, if `key` is not set it will default to the value of `id` https://github.com/DataTig/DataTig/issues/29
 * New field type `timezone`.
 * New option `timezone_field` to `datetime` field types. Add new timezone output to `date` and `datetime` fields in API, Frictionless Data, Database. https://github.com/DataTig/DataTig/issues/59
+* Better validtion of values in `url` type fields https://github.com/DataTig/DataTig/issues/47
 
 Internal Python API:
 

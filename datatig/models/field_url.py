@@ -7,9 +7,13 @@ class FieldURLConfigModel(FieldConfigModel):
         return "url"
 
     def get_json_schema(self) -> dict:
+        pattern = "(http|https)://[^ ]+"
         out: dict = {
             "type": "string",
             "format": "uri",
+            "pattern": (
+                "^" + pattern + "$" if self._required else "(^$)|(^" + pattern + "$)"
+            ),
             "title": self._title,
             "description": self._description,
         }
@@ -43,7 +47,7 @@ class FieldURLValueModel(FieldValueModel):
         self._value = value
 
     def has_value(self) -> bool:
-        return isinstance(self._value, str)
+        return isinstance(self._value, str) and bool(self._value)
 
     def get_value(self):
         return self._value
