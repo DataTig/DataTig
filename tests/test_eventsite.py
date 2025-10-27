@@ -57,11 +57,16 @@ def test_database_event_site_config(fixture_event_site):
     ) as connection:
         connection.row_factory = sqlite3.Row
         with closing(connection.cursor()) as cur:
-            cur.execute("SELECT * FROM site_config ORDER BY key ASC")
-            assert "The data for a test" == cur.fetchone()["value"]
-            assert "gh_pages" == cur.fetchone()["value"]
-            assert "datatig/test" == cur.fetchone()["value"]
-            assert "Events Site" == cur.fetchone()["value"]
+            cur.execute("SELECT * FROM site_config")
+            expected = {
+                "title": "Events Site",
+                "description": "The data for a test",
+                "githost/url": "datatig/test",
+                "githost/primary_branch": "gh_pages",
+                "githost/directory": "",
+            }
+            for c in cur.fetchall():
+                assert c["value"] == expected[c["key"]]
         with closing(connection.cursor()) as cur:
             cur.execute("SELECT * FROM type")
             type = cur.fetchone()

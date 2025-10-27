@@ -96,6 +96,7 @@ class DataStoreSQLite:
             "description": self._site_config.get_description(),
             "githost/url": self._site_config.get_github_url(),
             "githost/primary_branch": self._site_config.get_githost_primary_branch(),
+            "githost/directory": self._site_config.get_githost_directory(),
         }.items():
             cur.execute(
                 """INSERT INTO site_config (key, value) VALUES (?, ?)""",
