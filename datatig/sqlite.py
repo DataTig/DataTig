@@ -22,6 +22,8 @@ class DataStoreSQLite:
         self._site_config: SiteConfigModel = site_config
         self._out_filename: str = out_filename
         self._connection = sqlite3.connect(out_filename)
+        with closing(self._connection.cursor()) as cur:
+            cur.execute("PRAGMA foreign_keys = ON")
         self._connection.row_factory = sqlite3.Row
         self._was_existing_database: bool = self._is_existing_database()
         if self._was_existing_database and error_if_existing_database:

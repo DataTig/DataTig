@@ -25,7 +25,7 @@ Internal Python API:
 
 - A directory was not being shown properly on the web form for a new record in the static site.
 - For some fields, if not set in data, the phrase "None" is printed to UI https://github.com/DataTig/DataTig/issues/54
-- Add a primary key to `calendar` table, so when you enable foreign key checks you don't get errors.
+- Enable foreign key checks in SQLite, and add a primary key to `calendar` table to stop that error.
 - Handling of dates in date time fields
 
 ### Removed
