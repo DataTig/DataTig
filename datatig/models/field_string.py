@@ -10,8 +10,16 @@ class FieldStringConfigModel(FieldConfigModel):
 
     def _load_extra_config(self, config: dict) -> None:
         self._extra_config["multiline"] = bool(config.get("multiline", False))
-        self._extra_config["min_length"] = int(config.get("min_length", 0)) or None
-        self._extra_config["max_length"] = int(config.get("max_length", 0)) or None
+        if config.get("min_length"):
+            self._extra_config["min_length"] = int(config.get("min_length"))  # type: ignore
+            # TODO check value makes sense here eg is not negative number or zero
+        else:
+            self._extra_config["min_length"] = None
+        if config.get("max_length"):
+            self._extra_config["max_length"] = int(config.get("max_length"))  # type: ignore
+            # TODO check value makes sense here eg is not negative number or zero
+        else:
+            self._extra_config["max_length"] = None
 
     def get_json_schema(self) -> dict:
         out = {

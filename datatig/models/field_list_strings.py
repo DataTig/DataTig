@@ -30,12 +30,20 @@ class FieldListStringsConfigModel(FieldConfigModel):
 
     def _load_extra_config(self, config: dict) -> None:
         self._extra_config["unique_items"] = config.get("unique_items", False)
-        self._extra_config["string_min_length"] = (
-            int(config.get("string_min_length", 0)) or None
-        )
-        self._extra_config["string_max_length"] = (
-            int(config.get("string_max_length", 0)) or None
-        )
+        if config.get("string_min_length"):
+            self._extra_config["string_min_length"] = int(
+                config.get("string_min_length")  # type: ignore
+            )
+            # TODO check value makes sense here eg is not negative number or zero
+        else:
+            self._extra_config["string_min_length"] = None
+        if config.get("string_max_length"):
+            self._extra_config["string_max_length"] = int(
+                config.get("string_max_length")  # type: ignore
+            )
+            # TODO check value makes sense here eg is not negative number or zero
+        else:
+            self._extra_config["string_max_length"] = None
 
     def get_new_item_json(self):
         return []

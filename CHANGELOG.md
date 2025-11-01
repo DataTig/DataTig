@@ -27,6 +27,7 @@ Internal Python API:
 - For some fields, if not set in data, the phrase "None" is printed to UI https://github.com/DataTig/DataTig/issues/54
 - Enable foreign key checks in SQLite, and add a primary key to `calendar` table to stop that error.
 - Handling of dates in date time fields
+- More rebust loading of field config options
 
 ### Removed
 
