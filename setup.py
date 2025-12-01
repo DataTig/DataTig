@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="DataTig",
-    version="0.8.0",
+    version="0.9.0",
     description="DataTig helps you crowdsource and use data stored in files in a git repository.",
     long_description_content_type="text/markdown",
     long_description="DataTig helps you crowdsource and use data stored in files in a git repository.\n\n"
@@ -43,10 +43,10 @@ setuptools.setup(
     },
     python_requires=">=3.10",
     classifiers=[
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
     ],
 )
