@@ -8,6 +8,9 @@ from datatig.staticpipes.pipes.datatig_write_frictionless_output import (
 )
 from datatig.staticpipes.pipes.pygments_css import PipePygmentsCSS
 from datatig.staticpipes.pipes.staticsite_root_html import PipeStaticSiteRootHTML
+from datatig.staticpipes.pipes.staticsite_sqlite_database import (
+    PipeStaticSiteSqliteDatabase,
+)
 from datatig.templates import DIRECTORY as DIRECTORY_TEMPLATES
 
 
@@ -39,6 +42,7 @@ class BundleDataTigStaticSite(BaseBundle):
             PipeDatatigFrictionless(),
             PipePygmentsCSS(),
             PipeStaticSiteRootHTML(jinja2_environment=jinja2_environment),
+            PipeStaticSiteSqliteDatabase(),
         ]
         self._secondary_source_directory_paths: dict = {
             "bundle_datatig_staticsite_assets": DIRECTORY_ASSETS,
