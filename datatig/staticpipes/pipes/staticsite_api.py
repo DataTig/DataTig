@@ -58,3 +58,14 @@ class PipeStaticSiteAPI(BasePipe):
                 "api.json",
                 json.dumps(api_type, indent=2),
             )
+
+        #  Calendar
+        for calendar_id, calendar_config in config.get_calendars().items():
+            api_calendar: dict = {
+                "id": calendar_id,
+            }
+            self.build_directory.write(
+                "/calendar/{}".format(calendar_id),
+                "api.json",
+                json.dumps(api_calendar, indent=2),
+            )
