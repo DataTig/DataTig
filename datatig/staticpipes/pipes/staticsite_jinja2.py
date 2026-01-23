@@ -48,3 +48,16 @@ class PipeStaticSiteJinja2(BasePipe):
                     "bundle_datatig_staticsite_templates:static/type/newweb.html"
                 ).render(context),
             )
+
+        # For each Calendar
+        for calendar_id, calendar_config in config.get_calendars().items():
+            context = current_info.get_context()
+            context.update({"calendar": calendar_config})
+
+            self.build_directory.write(
+                "/calendar/{}".format(calendar_id),
+                "index.html",
+                actual_jinja2_environment.get_template(
+                    "bundle_datatig_staticsite_templates:static/calendar/index.html"
+                ).render(context),
+            )
