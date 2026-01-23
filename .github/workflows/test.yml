@@ -18,6 +18,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
         architecture: x64
     - run: pip install -e .[Dev]
+    - run: pip install --upgrade git+https://github.com/TeacakeTech/staticpipes-core.git@theattic2
     - run: py.test .
     # Test CLI code, which isn't tested in Python tests. Just check we can get some output.
     - run: python -m datatig build --sqliteoutput test1.sqlite tests/data/md_site/ && ls -al test1.sqlite
