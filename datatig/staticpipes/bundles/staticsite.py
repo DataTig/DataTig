@@ -23,6 +23,12 @@ class BundleDataTigStaticSite(BaseBundle):
                 source_filename="main.css",
                 destination_directory="/",
             ),
+            PipeCopyFromSecondarySource(
+                secondary_source_name="bundle_datatig_staticsite_assets",
+                source_directory="static",
+                source_filename="web-edit-or-new.js",
+                destination_directory="/",
+            ),
         ]
         self._secondary_source_directory_paths: dict = {
             "bundle_datatig_staticsite_assets": DIRECTORY_ASSETS
