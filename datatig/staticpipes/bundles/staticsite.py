@@ -1,12 +1,15 @@
 from staticpipes.bundle_base import BaseBundle
+from staticpipes.jinja2_environment import Jinja2Environment
 from staticpipes.pipes.copy_from_secondary_source import PipeCopyFromSecondarySource
 
 from datatig.assets import DIRECTORY as DIRECTORY_ASSETS
-from datatig.templates import DIRECTORY as DIRECTORY_TEMPLATES
-from datatig.staticpipes.pipes.datatig_write_frictionless_output import PipeDatatigFrictionless
+from datatig.staticpipes.pipes.datatig_write_frictionless_output import (
+    PipeDatatigFrictionless,
+)
 from datatig.staticpipes.pipes.pygments_css import PipePygmentsCSS
 from datatig.staticpipes.pipes.staticsite_root_html import PipeStaticSiteRootHTML
-from staticpipes.jinja2_environment import Jinja2Environment
+from datatig.templates import DIRECTORY as DIRECTORY_TEMPLATES
+
 
 class BundleDataTigStaticSite(BaseBundle):
     """ """
@@ -39,5 +42,5 @@ class BundleDataTigStaticSite(BaseBundle):
         ]
         self._secondary_source_directory_paths: dict = {
             "bundle_datatig_staticsite_assets": DIRECTORY_ASSETS,
-            "bundle_datatig_staticsite_templates": DIRECTORY_TEMPLATES
+            "bundle_datatig_staticsite_templates": DIRECTORY_TEMPLATES,
         }

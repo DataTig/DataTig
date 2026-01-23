@@ -1,16 +1,10 @@
-import os.path
-import tempfile
-import pygments
-
 from staticpipes.current_info import CurrentInfo
 from staticpipes.pipe_base import BasePipe
-
-from datatig.writers.frictionless.frictionless import FrictionlessWriter
 
 
 class PipeStaticSiteRootHTML(BasePipe):
 
-    def __init__(self,  jinja2_environment=None):
+    def __init__(self, jinja2_environment=None):
         self._jinja2_environment = jinja2_environment
 
     def start_build(self, current_info: CurrentInfo) -> None:
