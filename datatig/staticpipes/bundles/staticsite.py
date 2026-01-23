@@ -2,7 +2,7 @@ from staticpipes.bundle_base import BaseBundle
 from staticpipes.pipes.copy_from_secondary_source import PipeCopyFromSecondarySource
 
 from datatig.assets import DIRECTORY as DIRECTORY_ASSETS
-
+from datatig.staticpipes.pipes.datatig_write_frictionless_output import PipeDatatigFrictionless
 
 
 class BundleDataTigStaticSite(BaseBundle):
@@ -29,6 +29,7 @@ class BundleDataTigStaticSite(BaseBundle):
                 source_filename="web-edit-or-new.js",
                 destination_directory="/",
             ),
+            PipeDatatigFrictionless(),
         ]
         self._secondary_source_directory_paths: dict = {
             "bundle_datatig_staticsite_assets": DIRECTORY_ASSETS

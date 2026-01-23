@@ -26,4 +26,5 @@ class PipeDatatigFrictionless(BasePipe):
         frictionless_writer.go()
 
         with open(temp_out_filename, "rb") as fp:
+            # Is there a copy method we can use instead here?
             self.build_directory.write(self.output_dir, self.output_filename, fp.read())
