@@ -30,6 +30,8 @@ setuptools.setup(
         "Pygments",
         "pyyaml",
         "dateparser",
+        # "staticpipes",
+        # pip install git+https://github.com/TeacakeTech/staticpipes-core.git@theattic2
     ],
     extras_require={
         "Dev": [
