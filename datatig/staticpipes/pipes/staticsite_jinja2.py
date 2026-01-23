@@ -2,14 +2,14 @@ from staticpipes.current_info import CurrentInfo
 from staticpipes.pipe_base import BasePipe
 
 
-class PipeStaticSiteRootHTML(BasePipe):
+class PipeStaticSiteJinja2(BasePipe):
 
     def __init__(self, jinja2_environment=None):
         self._jinja2_environment = jinja2_environment
 
     def start_build(self, current_info: CurrentInfo) -> None:
 
-        for filename in ["index.html", "errors.html"]:
+        for filename in ["index.html", "errors.html", "robots.txt"]:
 
             template = self._jinja2_environment.get(
                 source_directory=self.source_directory,
