@@ -14,6 +14,7 @@ from datatig.staticpipes.pipes.staticsite_jinja2 import PipeStaticSiteJinja2
 from datatig.staticpipes.pipes.staticsite_sqlite_database import (
     PipeStaticSiteSqliteDatabase,
 )
+from datatig.staticpipes.pipes.staticsite_fullcalendar_io_data import PipeStaticSiteFullCalendarIO
 from datatig.templates import DIRECTORY as DIRECTORY_TEMPLATES
 
 _js_escapes = {
@@ -120,6 +121,7 @@ class BundleDataTigStaticSite(BaseBundle):
             PipeStaticSiteJinja2(jinja2_environment=jinja2_environment),
             PipeStaticSiteSqliteDatabase(),
             PipeStaticSiteAPI(),
+            PipeStaticSiteFullCalendarIO(),
         ]
         self._secondary_source_directory_paths: dict = {
             "bundle_datatig_staticsite_assets": DIRECTORY_ASSETS,
