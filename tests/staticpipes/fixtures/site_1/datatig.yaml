@@ -1,0 +1,30 @@
+title: Test register
+description: The data for a test
+types:
+- id: datas
+  directory: datas
+  fields:
+  - id: title
+    key: title
+    title: Title
+  - id: birthday
+    key: birthday
+    title: Birthday
+    type: date
+  - id: has_cat
+    key: has_cat
+    title: Has Cat
+    type: boolean
+  - id: age
+    key: age
+    title: Age
+    type: integer
+  - id: markdown_body
+    key: markdown_body
+    title: Body
+    type: markdown
+  list_fields:
+  - title
+  markdown_body_is_field: markdown_body
+  pretty_json_indent: 2
+  record_id_mode: "directory_AND_filename "
