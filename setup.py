@@ -31,7 +31,7 @@ setuptools.setup(
         "pyyaml",
         "dateparser",
         # "staticpipes",
-        # pip install git+https://github.com/TeacakeTech/staticpipes-core.git@theattic2
+        # pip install --upgrade git+https://github.com/TeacakeTech/staticpipes-core.git@theattic2
     ],
     extras_require={
         "Dev": [
