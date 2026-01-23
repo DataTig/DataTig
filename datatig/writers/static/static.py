@@ -35,6 +35,7 @@ class StaticWriter:
                         self._datastore.get_file_name()
                     ),
                     "datatig": {
+                        "base_url": self._url,
                         "config": self._config,
                         "datastore": self._datastore,
                         "sqlite_filename": self._datastore.get_file_name(),
