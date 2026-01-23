@@ -8,7 +8,7 @@ from datatig.staticpipes.pipes.datatig_write_frictionless_output import PipeData
 class BundleDataTigStaticSite(BaseBundle):
     """ """
 
-    def __init__(self, module_names: list = [], jinja2_environment=None):
+    def __init__(self, jinja2_environment=None):
         super().__init__()
         self._pipes: list = [
             PipeCopyFromSecondarySource(
