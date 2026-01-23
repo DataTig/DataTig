@@ -3,7 +3,7 @@ from staticpipes.pipes.copy_from_secondary_source import PipeCopyFromSecondarySo
 
 from datatig.assets import DIRECTORY as DIRECTORY_ASSETS
 from datatig.staticpipes.pipes.datatig_write_frictionless_output import PipeDatatigFrictionless
-
+from datatig.staticpipes.pipes.pygments_css import PipePygmentsCSS
 
 class BundleDataTigStaticSite(BaseBundle):
     """ """
@@ -30,6 +30,7 @@ class BundleDataTigStaticSite(BaseBundle):
                 destination_directory="/",
             ),
             PipeDatatigFrictionless(),
+            PipePygmentsCSS(),
         ]
         self._secondary_source_directory_paths: dict = {
             "bundle_datatig_staticsite_assets": DIRECTORY_ASSETS
