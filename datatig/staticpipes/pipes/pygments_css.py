@@ -1,4 +1,5 @@
 import pygments
+import pygments.formatters
 from staticpipes.current_info import CurrentInfo
 from staticpipes.pipe_base import BasePipe
 
