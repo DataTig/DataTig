@@ -10,11 +10,13 @@ from datatig.staticpipes.pipes.datatig_write_frictionless_output import (
 )
 from datatig.staticpipes.pipes.pygments_css import PipePygmentsCSS
 from datatig.staticpipes.pipes.staticsite_api import PipeStaticSiteAPI
+from datatig.staticpipes.pipes.staticsite_fullcalendar_io_data import (
+    PipeStaticSiteFullCalendarIO,
+)
 from datatig.staticpipes.pipes.staticsite_jinja2 import PipeStaticSiteJinja2
 from datatig.staticpipes.pipes.staticsite_sqlite_database import (
     PipeStaticSiteSqliteDatabase,
 )
-from datatig.staticpipes.pipes.staticsite_fullcalendar_io_data import PipeStaticSiteFullCalendarIO
 from datatig.templates import DIRECTORY as DIRECTORY_TEMPLATES
 
 _js_escapes = {

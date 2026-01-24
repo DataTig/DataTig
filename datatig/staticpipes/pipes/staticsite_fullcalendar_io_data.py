@@ -24,7 +24,7 @@ class PipeStaticSiteFullCalendarIO(BasePipe):
                         "start": cal_event.get_start_iso(),
                         "end": cal_event.get_end_iso(),
                         "url": base_url
-                               + cal_event.get_url("/type/{{type_id}}/record/{{record_id}}"),
+                        + cal_event.get_url("/type/{{type_id}}/record/{{record_id}}"),
                     }
                 )
             self.build_directory.write(
