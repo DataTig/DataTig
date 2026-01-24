@@ -1,6 +1,7 @@
 import json
 
 import pygments
+import pygments.lexers.data
 from staticpipes.current_info import CurrentInfo
 from staticpipes.pipe_base import BasePipe
 

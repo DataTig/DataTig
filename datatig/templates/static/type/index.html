@@ -3,7 +3,7 @@
 {% block title %}{{ type.get_id() }}{% endblock %}
 
 {% block breadcrumbs %}
-    <span class="breadcrumb"><a href="{{ url }}/">Home</a></span>
+    <span class="breadcrumb"><a href="{{ datatig.base_url }}/">Home</a></span>
     <span class="seperator">></span>
     <span class="breadcrumb">Type: {{ type.get_id() }}</span>
 {% endblock %}
@@ -20,8 +20,8 @@
         {% endfor %}
         <th>&nbsp;</th>
     </tr>
-    {% for item_id in datastore.get_ids_in_type(type.get_id()) %}
-        {% set item = datastore.get_item(type.get_id(), item_id) %}
+    {% for item_id in datatig.datastore.get_ids_in_type(type.get_id()) %}
+        {% set item = datatig.datastore.get_item(type.get_id(), item_id) %}
         <tr>
             <td>{{ item_id }}</td>
             {% for field_name in type.get_list_fields() %}
@@ -48,7 +48,7 @@
                     {% endif %}
                 </td>
             {% endfor %}
-            <td><a href="{{ url }}/type/{{ type.get_id() }}/record/{{ item_id }}/" class="button">View <i class="fa-solid fa-arrow-right"></i></a></td>
+            <td><a href="{{ datatig.base_url }}/type/{{ type.get_id() }}/record/{{ item_id }}/" class="button">View <i class="fa-solid fa-arrow-right"></i></a></td>
         </tr>
     {% endfor %}
 </table>
@@ -59,7 +59,7 @@
 </div>
 
 <div class="links">
-    <a href="{{ url }}/type/{{ type.get_id() }}/api.json" class="button"><i class="fa-solid fa-robot"></i> API</a>
+    <a href="{{ datatig.base_url }}/type/{{ type.get_id() }}/api.json" class="button"><i class="fa-solid fa-robot"></i> API</a>
 </div>
 
 

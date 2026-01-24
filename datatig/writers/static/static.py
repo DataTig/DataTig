@@ -28,17 +28,14 @@ class StaticWriter:
         worker = Worker(
             Config(
                 context={
-                    "site": self._config,
-                    "url": self._url,
-                    "datastore": self._datastore,
-                    "datastore_file_size_bytes": os.path.getsize(
-                        self._datastore.get_file_name()
-                    ),
                     "datatig": {
                         "base_url": self._url,
                         "config": self._config,
                         "datastore": self._datastore,
                         "sqlite_filename": self._datastore.get_file_name(),
+                        "sqlite_file_size_bytes": os.path.getsize(
+                            self._datastore.get_file_name()
+                        ),
                     },
                 },
                 pipes=[BundleDataTigStaticSite()],

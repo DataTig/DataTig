@@ -11,7 +11,7 @@
 
 
 
-<p>{{ site.get_description() }}</p>
+<p>{{ datatig.config.get_description() }}</p>
 
 <h2>Data</h2>
 
@@ -20,15 +20,15 @@
         <th>id</th>
         <th>&nbsp;</th>
     </tr>
-    {% for type_id, type in site.get_types().items() %}
+    {% for type_id, type in datatig.config.get_types().items() %}
         <tr>
             <td>{{ type_id }}</td>
-            <td><a href="{{ url }}/type/{{ type_id }}/" class="button">View <i class="fa-solid fa-arrow-right"></i></a></td>
+            <td><a href="{{ datatig.base_url }}/type/{{ type_id }}/" class="button">View <i class="fa-solid fa-arrow-right"></i></a></td>
         </tr>
     {% endfor %}
 </table>
 
-{% if site.get_calendars() %}
+{% if datatig.config.get_calendars() %}
     <h2>Calendars</h2>
 
     <table class="data">
@@ -36,10 +36,10 @@
             <th>id</th>
             <th>&nbsp;</th>
         </tr>
-        {% for calendar_id, calendar in site.get_calendars().items() %}
+        {% for calendar_id, calendar in datatig.config.get_calendars().items() %}
             <tr>
                 <td>{{ calendar_id }}</td>
-                <td><a href="{{ url }}/calendar/{{ calendar_id }}/" class="button">View Calendar <i class="fa-solid fa-arrow-right"></i></a></td>
+                <td><a href="{{ datatig.base_url }}/calendar/{{ calendar_id }}/" class="button">View Calendar <i class="fa-solid fa-arrow-right"></i></a></td>
             </tr>
         {% endfor %}
     </table>
@@ -47,13 +47,13 @@
 {% endif %}
 
 <div class="links">
-    <a href="{{ url }}/errors.html" class="button"><i class="fa-solid fa-bug"></i> Errors ({{ datastore.get_count_site_errors() + datastore.get_count_record_errors() }})</a>
-    <a href="{{ url }}/database.sqlite" class="button"><i class="fa-solid fa-database"></i> Download SQLite Database ({{ datastore_file_size_bytes }} bytes)</a>
-    <a href="{{ url }}/frictionless.zip" class="button"><i class="fa-solid fa-file-csv"></i> Download Frictionless Data Package (includes CSV's) ({{ frictionless_file_size_bytes }} bytes)</a>
+    <a href="{{ datatig.base_url }}/errors.html" class="button"><i class="fa-solid fa-bug"></i> Errors ({{ datatig.datastore.get_count_site_errors() + datatig.datastore.get_count_record_errors() }})</a>
+    <a href="{{ datatig.base_url }}/database.sqlite" class="button"><i class="fa-solid fa-database"></i> Download SQLite Database ({{ datatig.sqlite_file_size_bytes }} bytes)</a>
+    <a href="{{ datatig.base_url }}/frictionless.zip" class="button"><i class="fa-solid fa-file-csv"></i> Download Frictionless Data Package (includes CSV's) ({{ datatig.frictionless_file_size_bytes }} bytes)</a>
 </div>
 
 <div class="links">
-    <a href="{{ url }}/api.json" class="button"><i class="fa-solid fa-robot"></i> API</a>
+    <a href="{{ datatig.base_url }}/api.json" class="button"><i class="fa-solid fa-robot"></i> API</a>
 </div>
 
 

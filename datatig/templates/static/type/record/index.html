@@ -3,9 +3,9 @@
 {% block title %}{{ item.get_id() }} - {{ type.get_id() }}{% endblock %}
 
 {% block breadcrumbs %}
-    <span class="breadcrumb"><a href="{{ url }}/">Home</a></span>
+    <span class="breadcrumb"><a href="{{ datatig.base_url }}/">Home</a></span>
     <span class="seperator">></span>
-    <span class="breadcrumb"><a href="{{ url }}/type/{{ type.get_id() }}/">Type: {{ type.get_id() }}</a></span>
+    <span class="breadcrumb"><a href="{{ datatig.base_url }}/type/{{ type.get_id() }}/">Type: {{ type.get_id() }}</a></span>
     <span class="seperator">></span>
     <span class="breadcrumb">Record: {{ item.get_id() }}</span>
 {% endblock %}
@@ -134,7 +134,7 @@
 
 <ul>
     {% for calendar_id in calendar_ids %}
-        <li><a href="{{ url }}/calendar/{{ calendar_id }}">{{ calendar_id }}</a></li>
+        <li><a href="{{ datatig.base_url }}/calendar/{{ calendar_id }}">{{ calendar_id }}</a></li>
     {% endfor %}
 </ul>
 
@@ -143,8 +143,8 @@
 <h3>Edit</h3>
 <div class="links">
     <a href="editweb/" class="button"><i class="fa-solid fa-pencil"></i> Edit in Browser</a>
-    {% if site.get_github_url() %}
-        <a href="https://github.com/{{ site.get_github_url() }}/edit/{{ site.get_githost_primary_branch() }}/{{  item.get_githost_filename() }}" class="button"><i class="fa-solid fa-pencil"></i> Edit Raw data directly on GitHub</a>
+    {% if datatig.config.get_github_url() %}
+        <a href="https://github.com/{{ datatig.config.get_github_url() }}/edit/{{ datatig.config.get_githost_primary_branch() }}/{{  item.get_githost_filename() }}" class="button"><i class="fa-solid fa-pencil"></i> Edit Raw data directly on GitHub</a>
     {% endif %}
 </div>
 
@@ -155,8 +155,8 @@
 </div>
 
 <div class="links">
-    {% if site.get_github_url() %}
-        <a href="https://github.com/{{ site.get_github_url() }}/blob/{{ site.get_githost_primary_branch() }}/{{  item.get_githost_filename() }}" class="button"><i class="fa-brands fa-github"></i> View on GitHub</a>
+    {% if datatig.config.get_github_url() %}
+        <a href="https://github.com/{{ datatig.config.get_github_url() }}/blob/{{ datatig.config.get_githost_primary_branch() }}/{{  item.get_githost_filename() }}" class="button"><i class="fa-brands fa-github"></i> View on GitHub</a>
     {% endif %}
     <a href="data.json" class="button"><i class="fa-solid fa-download"></i> Download Raw JSON data</a>
 </div>

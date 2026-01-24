@@ -9,11 +9,11 @@
 {% endblock %}
 
 {% block breadcrumbs %}
-    <span class="breadcrumb"><a href="{{ url }}/">Home</a></span>
+    <span class="breadcrumb"><a href="{{ datatig.base_url }}/">Home</a></span>
     <span class="seperator">></span>
-    <span class="breadcrumb"><a href="{{ url }}/type/{{ type.get_id() }}/">Type: {{ type.get_id() }}</a></span>
+    <span class="breadcrumb"><a href="{{ datatig.base_url }}/type/{{ type.get_id() }}/">Type: {{ type.get_id() }}</a></span>
     <span class="seperator">></span>
-    <span class="breadcrumb"><a href="{{ url }}/type/{{ type.get_id() }}/record/{{ item.get_id() }}/">Record: {{ item.get_id() }}</a></span>
+    <span class="breadcrumb"><a href="{{ datatig.base_url }}/type/{{ type.get_id() }}/record/{{ item.get_id() }}/">Record: {{ item.get_id() }}</a></span>
     <span class="seperator">></span>
     <span class="breadcrumb">Edit in Browser</span>
 {% endblock %}
@@ -43,10 +43,10 @@
 <div class="links">
     <a href="#" onclick="copy(); return false;" class="button"><i class="fa-solid fa-download"></i> Copy Data</a>
 </div>
-{% if site.get_github_url() %}
+{% if datatig.config.get_github_url() %}
     <p>Go to the Github page to edit <em>{{  item.get_githost_filename() }}</em> and copy and paste in the content above.</p>
     <div class="links">
-        <a href="https://github.com/{{ site.get_github_url() }}/edit/{{ site.get_githost_primary_branch() }}/{{  item.get_githost_filename() }}" target="_new" class="button"><i class="fa-brands fa-github"></i> Edit on GitHub</a>
+        <a href="https://github.com/{{ datatig.config.get_github_url() }}/edit/{{ datatig.config.get_githost_primary_branch() }}/{{  item.get_githost_filename() }}" target="_new" class="button"><i class="fa-brands fa-github"></i> Edit on GitHub</a>
     </div>
 {% else %}
     <p>In the git repository, edit <em>{{  item.get_githost_filename() }}</em> and copy and paste in the content above.</p>
@@ -70,5 +70,5 @@
     var data_format = "{{ item.get_format() }}";
     var markdown_body_is_field = "{% if type.get_markdown_body_is_field() %}{{ type.get_markdown_body_is_field()| escapejs }}{% endif %}";
 </script>
-<script src="{{ url }}/web-edit-or-new.js" defer></script>
+<script src="{{ datatig.base_url }}/web-edit-or-new.js" defer></script>
 {% endblock %}
