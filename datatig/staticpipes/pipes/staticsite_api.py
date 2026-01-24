@@ -94,11 +94,29 @@ class PipeStaticSiteAPI(BasePipe):
 
             for item_id in datastore.get_ids_in_type(type_id):
                 item = datastore.get_item(type_id, item_id)
-
                 self.build_directory.write(
                     "/type/{}/record/{}".format(type_id, item_id),
                     "data.json",
                     json.dumps(item.get_data(), indent=2),
+                )
+
+                item_api: dict = {
+                    "data_api_url": base_url
+                    + "/type/"
+                    + type_id
+                    + "/record/"
+                    + item_id
+                    + "/data.json",
+                    "fields": {},
+                }
+                for field_id in type_config.get_fields().keys():
+                    item_api["fields"][field_id] = item.get_field_value(
+                        field_id
+                    ).get_api_value()
+                self.build_directory.write(
+                    "/type/{}/record/{}".format(type_id, item_id),
+                    "api.json",
+                    json.dumps(item_api, indent=2),
                 )
 
         #  Calendar
