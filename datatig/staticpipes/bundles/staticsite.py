@@ -4,7 +4,6 @@ from staticpipes.current_info import CurrentInfo
 from staticpipes.jinja2_environment import Jinja2Environment
 from staticpipes.pipe_base import BasePipe
 from staticpipes.pipes.copy_from_secondary_source import PipeCopyFromSecondarySource
-from staticpipes.pipes.process import PipeProcess
 
 from datatig.assets import DIRECTORY as DIRECTORY_ASSETS
 from datatig.staticpipes.pipes.datatig_write_frictionless_output import (
