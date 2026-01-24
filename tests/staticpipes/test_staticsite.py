@@ -32,6 +32,7 @@ def test_static_subdir():
     # run
     worker.build()
     # test
+    assert not os.path.exists(os.path.join(out_dir, "index.html"))
     assert os.path.exists(os.path.join(out_dir, "datatig", "index.html"))
     with open(os.path.join(out_dir, "datatig", "index.html")) as fp:
         assert '<a href="/datatig/errors.html"' in fp.read()

@@ -8,8 +8,9 @@ from staticpipes.pipe_base import BasePipe
 
 class PipeStaticSiteJinja2(BasePipe):
 
-    def __init__(self, jinja2_environment=None):
+    def __init__(self, jinja2_environment=None, output_dir="/"):
         self._jinja2_environment = jinja2_environment
+        self.output_dir = output_dir
 
     def start_build(self, current_info: CurrentInfo) -> None:
 
@@ -25,7 +26,7 @@ class PipeStaticSiteJinja2(BasePipe):
         for filename in ["index.html", "errors.html", "robots.txt"]:
 
             self.build_directory.write(
-                "/",
+                self.output_dir,
                 filename,
                 actual_jinja2_environment.get_template(
                     "bundle_datatig_staticsite_templates:static/" + filename
@@ -39,7 +40,7 @@ class PipeStaticSiteJinja2(BasePipe):
             context.update({"type": type_config})
 
             self.build_directory.write(
-                "/type/{}".format(type_id),
+                self.output_dir + "/type/{}".format(type_id),
                 "index.html",
                 actual_jinja2_environment.get_template(
                     "bundle_datatig_staticsite_templates:static/type/index.html"
@@ -47,7 +48,7 @@ class PipeStaticSiteJinja2(BasePipe):
             )
 
             self.build_directory.write(
-                "/type/{}/newweb".format(type_id),
+                self.output_dir + "/type/{}/newweb".format(type_id),
                 "index.html",
                 actual_jinja2_environment.get_template(
                     "bundle_datatig_staticsite_templates:static/type/newweb.html"
@@ -79,7 +80,7 @@ class PipeStaticSiteJinja2(BasePipe):
                 )
 
                 self.build_directory.write(
-                    "/type/{}/record/{}".format(type_id, item_id),
+                    self.output_dir + "/type/{}/record/{}".format(type_id, item_id),
                     "index.html",
                     actual_jinja2_environment.get_template(
                         "bundle_datatig_staticsite_templates:static/type/record/index.html"
@@ -87,7 +88,8 @@ class PipeStaticSiteJinja2(BasePipe):
                 )
 
                 self.build_directory.write(
-                    "/type/{}/record/{}/editweb".format(type_id, item_id),
+                    self.output_dir
+                    + "/type/{}/record/{}/editweb".format(type_id, item_id),
                     "index.html",
                     actual_jinja2_environment.get_template(
                         "bundle_datatig_staticsite_templates:static/type/record/editweb.html"
@@ -100,7 +102,7 @@ class PipeStaticSiteJinja2(BasePipe):
             context.update({"calendar": calendar_config})
 
             self.build_directory.write(
-                "/calendar/{}".format(calendar_id),
+                self.output_dir + "/calendar/{}".format(calendar_id),
                 "index.html",
                 actual_jinja2_environment.get_template(
                     "bundle_datatig_staticsite_templates:static/calendar/index.html"

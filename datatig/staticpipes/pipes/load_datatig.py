@@ -65,7 +65,6 @@ class PipeLoadDatatig(BasePipe):
         current_info.set_context(
             "datatig",
             {
-                "base_url": "",
                 "sqlite_file_size_bytes": os.path.getsize(sqlite_filename),
                 "config": config,
                 "datastore": datastore,

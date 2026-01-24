@@ -6,6 +6,9 @@ from staticpipes.pipe_base import BasePipe
 
 class PipeStaticSiteFullCalendarIO(BasePipe):
 
+    def __init__(self, output_dir="/"):
+        self.output_dir = output_dir
+
     def start_build(self, current_info: CurrentInfo) -> None:
 
         config = current_info.get_context("datatig")["config"]
@@ -28,7 +31,7 @@ class PipeStaticSiteFullCalendarIO(BasePipe):
                     }
                 )
             self.build_directory.write(
-                "/calendar/{}".format(calendar_id),
+                self.output_dir + "/calendar/{}".format(calendar_id),
                 "fullcalendar.json",
                 json.dumps(fullcalendar, indent=2),
             )

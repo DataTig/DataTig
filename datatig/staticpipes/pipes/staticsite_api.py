@@ -6,6 +6,9 @@ from staticpipes.pipe_base import BasePipe
 
 class PipeStaticSiteAPI(BasePipe):
 
+    def __init__(self, output_dir="/"):
+        self.output_dir = output_dir
+
     def start_build(self, current_info: CurrentInfo) -> None:
 
         # Root
@@ -34,7 +37,7 @@ class PipeStaticSiteAPI(BasePipe):
             }
 
         self.build_directory.write(
-            "/",
+            self.output_dir,
             "api.json",
             json.dumps(api, indent=2),
         )
@@ -55,7 +58,7 @@ class PipeStaticSiteAPI(BasePipe):
                 }
 
             self.build_directory.write(
-                "/type/{}".format(type_id),
+                self.output_dir + "/type/{}".format(type_id),
                 "api.json",
                 json.dumps(api_type, indent=2),
             )
@@ -85,7 +88,7 @@ class PipeStaticSiteAPI(BasePipe):
                     )
 
             self.build_directory.write(
-                "/type/{}".format(type_id),
+                self.output_dir + "/type/{}".format(type_id),
                 "records_api.json",
                 json.dumps(api_type_records, indent=2),
             )
@@ -95,7 +98,7 @@ class PipeStaticSiteAPI(BasePipe):
             for item_id in datastore.get_ids_in_type(type_id):
                 item = datastore.get_item(type_id, item_id)
                 self.build_directory.write(
-                    "/type/{}/record/{}".format(type_id, item_id),
+                    self.output_dir + "/type/{}/record/{}".format(type_id, item_id),
                     "data.json",
                     json.dumps(item.get_data(), indent=2),
                 )
@@ -114,7 +117,7 @@ class PipeStaticSiteAPI(BasePipe):
                         field_id
                     ).get_api_value()
                 self.build_directory.write(
-                    "/type/{}/record/{}".format(type_id, item_id),
+                    self.output_dir + "/type/{}/record/{}".format(type_id, item_id),
                     "api.json",
                     json.dumps(item_api, indent=2),
                 )
@@ -125,7 +128,7 @@ class PipeStaticSiteAPI(BasePipe):
                 "id": calendar_id,
             }
             self.build_directory.write(
-                "/calendar/{}".format(calendar_id),
+                self.output_dir + "/calendar/{}".format(calendar_id),
                 "api.json",
                 json.dumps(api_calendar, indent=2),
             )
