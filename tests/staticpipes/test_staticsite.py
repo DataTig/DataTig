@@ -6,7 +6,7 @@ import staticpipes.config
 import staticpipes.worker
 
 import datatig.staticpipes.bundles.staticsite
-import datatig.staticpipes.pipes.load_datatig
+import datatig.staticpipes.pipes.load
 
 
 def test_static_subdir():
@@ -14,7 +14,7 @@ def test_static_subdir():
     out_dir = tempfile.mkdtemp(prefix="staticpipes_tests_")
     config = staticpipes.config.Config(
         pipes=[
-            datatig.staticpipes.pipes.load_datatig.PipeLoadDatatig(),
+            datatig.staticpipes.pipes.load.PipeDataTigLoad(),
             datatig.staticpipes.bundles.staticsite.BundleDataTigStaticSite(  # noqa
                 output_dir="datatig"
             ),
@@ -43,7 +43,7 @@ def test_static_root():
     out_dir = tempfile.mkdtemp(prefix="staticpipes_tests_")
     config = staticpipes.config.Config(
         pipes=[
-            datatig.staticpipes.pipes.load_datatig.PipeLoadDatatig(),
+            datatig.staticpipes.pipes.load.PipeDataTigLoad(),
             datatig.staticpipes.bundles.staticsite.BundleDataTigStaticSite(),  # noqa
         ],
     )

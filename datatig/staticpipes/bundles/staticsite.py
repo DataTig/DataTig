@@ -6,17 +6,13 @@ from staticpipes.pipe_base import BasePipe
 from staticpipes.pipes.copy_from_secondary_source import PipeCopyFromSecondarySource
 
 from datatig.assets import DIRECTORY as DIRECTORY_ASSETS
-from datatig.staticpipes.pipes.datatig_write_frictionless_output import (
-    PipeDatatigFrictionless,
-)
-from datatig.staticpipes.pipes.pygments_css import PipePygmentsCSS
-from datatig.staticpipes.pipes.staticsite_api import PipeStaticSiteAPI
-from datatig.staticpipes.pipes.staticsite_fullcalendar_io_data import (
-    PipeStaticSiteFullCalendarIO,
-)
-from datatig.staticpipes.pipes.staticsite_jinja2 import PipeStaticSiteJinja2
+from datatig.staticpipes.pipes.frictionless_zip import PipeDataTigFrictionlessZip
+from datatig.staticpipes.pipes.fullcalendar_io_data import PipeDataTigFullCalendarIO
+from datatig.staticpipes.pipes.pygments_css import PipeDataTigPygmentsCSS
+from datatig.staticpipes.pipes.staticsite_api import PipeDataTigStaticSiteAPI
+from datatig.staticpipes.pipes.staticsite_jinja2 import PipeDataTigStaticSiteJinja2
 from datatig.staticpipes.pipes.staticsite_sqlite_database import (
-    PipeStaticSiteSqliteDatabase,
+    PipeDataTigStaticSiteSqliteDatabase,
 )
 from datatig.templates import DIRECTORY as DIRECTORY_TEMPLATES
 
@@ -124,14 +120,14 @@ class BundleDataTigStaticSite(BaseBundle):
                 destination_directory=output_dir
                 + "/fontawesome-free-6-7-2-web/webfonts",
             ),
-            PipeDatatigFrictionless(output_dir=output_dir),
-            PipePygmentsCSS(output_dir=output_dir),
-            PipeStaticSiteJinja2(
+            PipeDataTigFrictionlessZip(output_dir=output_dir),
+            PipeDataTigPygmentsCSS(output_dir=output_dir),
+            PipeDataTigStaticSiteJinja2(
                 jinja2_environment=jinja2_environment, output_dir=output_dir
             ),
-            PipeStaticSiteSqliteDatabase(output_dir=output_dir),
-            PipeStaticSiteAPI(output_dir=output_dir),
-            PipeStaticSiteFullCalendarIO(output_dir=output_dir),
+            PipeDataTigStaticSiteSqliteDatabase(output_dir=output_dir),
+            PipeDataTigStaticSiteAPI(output_dir=output_dir),
+            PipeDataTigFullCalendarIO(output_dir=output_dir),
         ]
         self._secondary_source_directory_paths: dict = {
             "bundle_datatig_staticsite_assets": DIRECTORY_ASSETS,

@@ -2,7 +2,7 @@ from staticpipes.current_info import CurrentInfo
 from staticpipes.pipe_base import BasePipe
 
 
-class PipeStaticSiteSqliteDatabase(BasePipe):
+class PipeDataTigStaticSiteSqliteDatabase(BasePipe):
 
     def __init__(self, output_dir="/"):
         self.output_dir = output_dir

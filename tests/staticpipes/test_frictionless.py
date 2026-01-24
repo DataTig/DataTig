@@ -5,8 +5,8 @@ import staticpipes.build_directory
 import staticpipes.config
 import staticpipes.worker
 
-import datatig.staticpipes.pipes.datatig_write_frictionless_output
-import datatig.staticpipes.pipes.load_datatig
+import datatig.staticpipes.pipes.frictionless_zip
+import datatig.staticpipes.pipes.load
 
 
 def test_frictionless():
@@ -14,8 +14,8 @@ def test_frictionless():
     out_dir = tempfile.mkdtemp(prefix="staticpipes_tests_")
     config = staticpipes.config.Config(
         pipes=[
-            datatig.staticpipes.pipes.load_datatig.PipeLoadDatatig(),
-            datatig.staticpipes.pipes.datatig_write_frictionless_output.PipeDatatigFrictionless(),  # noqa
+            datatig.staticpipes.pipes.load.PipeDataTigLoad(),
+            datatig.staticpipes.pipes.frictionless_zip.PipeDataTigFrictionlessZip(),  # noqa
         ],
     )
     worker = staticpipes.worker.Worker(

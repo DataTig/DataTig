@@ -3,7 +3,7 @@ from staticpipes.current_info import CurrentInfo
 from staticpipes.pipe_base import BasePipe
 
 
-class PipePygmentsCSS(BasePipe):
+class PipeDataTigPygmentsCSS(BasePipe):
 
     def __init__(self, output_dir="/", output_filename="pygments.css"):
         self.output_dir = output_dir

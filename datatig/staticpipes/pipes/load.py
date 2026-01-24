@@ -12,7 +12,7 @@ from datatig.staticpipes.collection import DataTigCollection
 from datatig.validate.jsonschema import JsonSchemaValidator
 
 
-class PipeLoadDatatig(BasePipe):
+class PipeDataTigLoad(BasePipe):
 
     def __init__(self, directory=""):
         self.directory = directory

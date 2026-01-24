@@ -7,7 +7,7 @@ from staticpipes.pipe_base import BasePipe
 from datatig.writers.frictionless.frictionless import FrictionlessWriter
 
 
-class PipeDatatigFrictionless(BasePipe):
+class PipeDataTigFrictionlessZip(BasePipe):
 
     def __init__(self, output_dir="/", output_filename="frictionless.zip"):
         self.output_dir = output_dir

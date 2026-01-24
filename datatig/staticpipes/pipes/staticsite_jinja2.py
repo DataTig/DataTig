@@ -6,7 +6,7 @@ from staticpipes.current_info import CurrentInfo
 from staticpipes.pipe_base import BasePipe
 
 
-class PipeStaticSiteJinja2(BasePipe):
+class PipeDataTigStaticSiteJinja2(BasePipe):
 
     def __init__(self, jinja2_environment=None, output_dir="/"):
         self._jinja2_environment = jinja2_environment

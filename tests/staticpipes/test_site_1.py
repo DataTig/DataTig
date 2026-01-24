@@ -7,7 +7,7 @@ import staticpipes.pipes.collection_records_process
 import staticpipes.processes.jinja2
 import staticpipes.worker
 
-import datatig.staticpipes.pipes.load_datatig
+import datatig.staticpipes.pipes.load
 
 
 def test_site_1():
@@ -15,7 +15,7 @@ def test_site_1():
     out_dir = tempfile.mkdtemp(prefix="staticpipes_tests_")
     config = staticpipes.config.Config(
         pipes=[
-            datatig.staticpipes.pipes.load_datatig.PipeLoadDatatig(),
+            datatig.staticpipes.pipes.load.PipeDataTigLoad(),
             staticpipes.pipes.collection_records_process.PipeCollectionRecordsProcess(
                 collection_name="datas",
                 processors=[

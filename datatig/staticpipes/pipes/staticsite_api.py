@@ -4,7 +4,7 @@ from staticpipes.current_info import CurrentInfo
 from staticpipes.pipe_base import BasePipe
 
 
-class PipeStaticSiteAPI(BasePipe):
+class PipeDataTigStaticSiteAPI(BasePipe):
 
     def __init__(self, output_dir="/"):
         self.output_dir = output_dir
