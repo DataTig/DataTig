@@ -1,0 +1,59 @@
+name: Docs Deploy
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+
+jobs:
+  latest-deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
+    - name: Setup python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.13
+        architecture: x64
+    - name: Install Software
+      run: pip install sphinx
+      #run: pip install -e .[Dev]
+    - name: Make site
+      # run: VERSION="latest" python docs.py build --no-check
+      run: sphinx-build -b html docs _site
+    - name: Zip site
+      run: zip -r out.zip *
+      working-directory: ./_site
+    - name: Upload Latest Site
+      run: "curl --retry 10 --retry-delay 30 --retry-all-errors -X POST \"https://${{ vars.STATICPATCH_DOMAIN }}/api/site/${{ vars.STATICPATCH_PUBLIC_SITE }}/publish_built_site\"  -H  \"Content-Type: multipart/form-data\" -H \"Security-Key: ${{ secrets.STATICPATCH_PUBLIC_SECURITY_KEY }}\" -F \"built_site=@\\\"out.zip\\\"\" -F \"sub_site_url=latest\""
+      working-directory: ./_site
+  stable-deploy:
+    runs-on: ubuntu-latest
+    if:  github.event_name == 'release'
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
+    - name: Setup python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.13
+        architecture: x64
+    - name: Install Software
+      run: pip install sphinx
+      #run: pip install -e .[Dev]
+    - name: Make site
+      # run: VERSION="latest" python docs.py build --no-check
+      run: sphinx-build -b html docs _site
+    - name: Zip site
+      run: zip -r out.zip *
+      working-directory: ./_site
+    - name: Upload Stable Site
+      run: "curl --retry 10 --retry-delay 30 --retry-all-errors -X POST \"https://${{ vars.STATICPATCH_DOMAIN }}/api/site/${{ vars.STATICPATCH_PUBLIC_SITE }}/publish_built_site\"  -H  \"Content-Type: multipart/form-data\" -H \"Security-Key: ${{ secrets.STATICPATCH_PUBLIC_SECURITY_KEY }}\" -F \"built_site=@\\\"out.zip\\\"\" -F \"sub_site_url=stable\""
+      working-directory: ./_site
+
