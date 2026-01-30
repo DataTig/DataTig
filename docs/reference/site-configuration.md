@@ -1,8 +1,11 @@
-Site Configuration
-==================
+---
+title: Site Configuration
+---
 
-Location
---------
+
+## Site Configuration
+
+### Location
 
 Each site should have a `datatig.json` or `datatig.yaml` file at it's root. This contains configuration for that site.
 
@@ -10,21 +13,19 @@ The schema of each file is the same.
 
 We recommend using `datatig.yaml` - it is easier to edit, and you can have comments.
 
-General
--------
+### General
 
 * `title` - A string. The title of the whole site.
 * `description` - A string. A description for the whole site.
 
 A YAML example:
 
-.. code-block:: yaml
+```yaml
+title: Test register
+description: The data for a test
+```
 
-    title: Test register
-    description: The data for a test
-
-Types
------
+### Types
 
 We need to know information about the types of data - think of types like a table in a database.
 
@@ -44,20 +45,19 @@ Every type has the following options available:
 
 A YAML example:
 
-.. code-block:: yaml
+```yaml
+types:
+- id: lists
+  directory: lists
+  list_fields:
+  - code
+  - title_en
+  json_schema: schema/list-schema.json
+  pretty_json_indent: 2
+  default_format: json
+```
 
-    types:
-    - id: lists
-      directory: lists
-      list_fields:
-      - code
-      - title_en
-      json_schema: schema/list-schema.json
-      pretty_json_indent: 2
-      default_format: json
-
-Fields
-------
+### Fields
 
 Every field needs to be defined. Every field type has these options:
 
@@ -72,79 +72,70 @@ Some field types have extra options. See below for details.
 
 A YAML example:
 
-.. code-block:: yaml
+```yaml
+types:
+- id: lists
+  fields:
+  - id: code
+    key: code
+    title: Code
+  - id: title_en
+    key: name/en
+    title: Name (EN)
+  - id: url
+    key: url
+    title: URL
+    type: url
+  - id: description_en
+    key: description/en
+    title: Description (EN)
+    multiline: True
+```
 
-    types:
-    - id: lists
-      fields:
-      - id: code
-        key: code
-        title: Code
-      - id: title_en
-        key: name/en
-        title: Name (EN)
-      - id: url
-        key: url
-        title: URL
-        type: url
-      - id: description_en
-        key: description/en
-        title: Description (EN)
-        multiline: True
-
-Field Type `string`
-~~~~~~~~~~~~~~~~~~~
+#### Field Type `string`
 
 The type `string` has the following extra options:
 
 * `multiline`: Defaults to false. Whether new lines are allowed in values
 * `min_length` and `max_length`: Defaults to not set. Min or Max length of string allowed.
 
-Field Type `url`
-~~~~~~~~~~~~~~~~
+#### Field Type `url`
 
 There are no extra configuration options.
 
-Field Type `date`
-~~~~~~~~~~~~~~~~~
+#### Field Type `date`
 
 The type `date` has the following extra option:
 
 * `timezone`: Defaults to `UTC`. Set to a location string like `Europe/Berlin`
 
-Field Type `datetime`
-~~~~~~~~~~~~~~~~~~~~~
+#### Field Type `datetime`
 
 The type `datetime` has the following extra options:
 
 * `timezone`: Defaults to `UTC`. Set to a location string like `Europe/Berlin`
 * `timezone_field`: The id of another field on the record that says what time zone to use. That field should be of type `timezone` and should be defined before this field.
 
-Field Type `boolean`
-~~~~~~~~~~~~~~~~~~~~
+#### Field Type `boolean`
 
 There are no extra configuration options.
 
-Field Type `integer`
-~~~~~~~~~~~~~~~~~~~~
+#### Field Type `integer`
 
 There are no extra configuration options.
 
-Field Type `markdown`
-~~~~~~~~~~~~~~~~~~~~~
+#### Field Type `markdown`
 
 There are no extra configuration options.
 
-Field Type `list-strings`
-~~~~~~~~~~~~~~~~~~~~~~~~~
+#### Field Type `list-strings`
 
 The type `list-strings` has the following extra options:
 
 * `unique_items`: Boolean. If true, every value in the list must be unique.
 * `string_min_length` and `string_max_length`: Defaults to not set. Min or Max length of the strings allowed.
 
-Field Type `list-dictionaries`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#### Field Type `list-dictionaries`
 
 As well as `list-dictionaries`, a type of `list-dicts` can be used for short.
 
@@ -153,21 +144,18 @@ The type `list-dictionaries` has the following extra options:
 * `fields`: A list of fields to be found in the dictionary items. Definition is the same as above, but list types are not allowed. (So you can't have a list in a list.)
 * `unique_items`: Boolean. If true, every value in the list must be unique.
 
-Field Type `enum`
-~~~~~~~~~~~~~~~~~~~~
+#### Field Type `enum`
 
 There must be an extra option `choices` which is a list with at least one item, it's items being one off:
 
 * A string
 * A dict with a `value` key. Optionally, this dict can have a `title` key.
 
-Field Type `timezone`
-~~~~~~~~~~~~~~~~~~~~~
+#### Field Type `timezone`
 
 There are no extra configuration options.
 
-Git Host
---------
+### Git Host
 
 You can specify information about where this git repository is hosted.
 
@@ -183,17 +171,14 @@ In a `githost` object, specify the following keys:
 
 A YAML example:
 
-.. code-block:: yaml
+```yaml
+githost:
+    url: org-id/register
+    primary_branch: main
+    directory: src
+```
 
-    githost:
-        url: org-id/register
-        primary_branch: main
-        directory: src
-
-.. _reference_site_configuration_calendars:
-
-Calendars
----------
+###Calendars
 
 More about :ref:`explanation_calendars`.
 
@@ -222,33 +207,33 @@ Field names given should not be of one of the list types.
 
 A YAML example:
 
-.. code-block:: yaml
-
-    calendars:
-      main:
-        timezone: Europe/Berlin
-        datas:
-          - type: events
-            summary: title
-      deadlines:
-        timezone: Europe/Berlin
-        datas:
-          - type: events
-            summary: title
-            start: submission_deadline
-            end: submission_deadline
-            id: "deadline_ID@example.com"
+```yaml
+calendars:
+  main:
+    timezone: Europe/Berlin
+    datas:
+      - type: events
+        summary: title
+  deadlines:
+    timezone: Europe/Berlin
+    datas:
+      - type: events
+        summary: title
+        start: submission_deadline
+        end: submission_deadline
+        id: "deadline_ID@example.com"
+```
 
 This defines 2 calendars, one with the id `main` and one with the id `deadlines`.
 
 Given an data item like:
 
-.. code-block:: yaml
-
-    title: Python Conference
-    start: 2024-07-01T10:00:00
-    end: 2024-07-01T11:00:00
-    submission_deadline: 2024-01-05
+```yaml
+title: Python Conference
+start: 2024-07-01T10:00:00
+end: 2024-07-01T11:00:00
+submission_deadline: 2024-01-05
+```
 
 You can see that the same data item creates an event on the `main` calendar with the start and end dates,
 but also creates a different event on the  `deadlines` calendar at the date of the deadline for the conference.

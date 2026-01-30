@@ -1,18 +1,19 @@
-Encouraging Contributions
-=========================
+---
+title: Encouraging Contributions
+---
 
-Previous
---------
+
+## Encouraging Contributions
+
+### Previous
 
 Before doing this, :doc:`make sure you have done the previous step <deploying-static-site>`.
 
-What this section covers
-------------------------
+### What this section covers
 
 * DataTig can help encourage contributions from people by providing tools and instructions
 
-Tell DataTig where our data lives
----------------------------------
+### Tell DataTig where our data lives
 
 We want to encourage people to contribute new data to this site.
 
@@ -20,11 +21,11 @@ DataTig can help us do this, but before it does that, it needs to know where you
 
 Edit the `datatig.yml` file. We need to add a new section at the bottom:
 
-.. code-block:: yaml
-
-    githost:
-      type: github
-      url: xxxxx/yyyyy
+```yaml
+githost:
+  type: github
+  url: xxxxx/yyyyy
+```
 
 Make sure the URL value matches the GitHub repository you created.
 
@@ -40,8 +41,7 @@ But also, if you click `Edit in Browser` at the bottom of this page you will see
 
 This encourages people to edit the data and send you pull requests for you to accept or refuse.
 
-Next
-----
+### Next
 
 
 :doc:`To continue, visit the next section <using-data>`

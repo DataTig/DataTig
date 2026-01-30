@@ -1,11 +1,14 @@
-Data Formats
-============
+---
+title: Data Formats
+---
+
+
+## Data Formats
 
 This tool works with data stored in several different formats in a git repository. In general these are listed starting with the one we recommend the most, so if you aren't sure start at the top.
 
 
-YAML files, one per record
---------------------------
+### YAML files, one per record
 
 Each type of data should have a directory of it's own.
 
@@ -22,8 +25,7 @@ We recommend this because:
 * One file per record means that many people editing different records at once will not cause merge request conflicts
 * Technically aware humans usually find YAML is easier to read or edit by hand
 
-JSON files, one per record
---------------------------
+### JSON files, one per record
 
 Each type of data should have a directory of it's own.
 

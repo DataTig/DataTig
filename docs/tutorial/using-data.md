@@ -1,18 +1,18 @@
-Using data (API)
-================
+---
+title: Using data (API)
+---
 
-Previous
---------
+## Using data (API)
+
+### Previous
 
 Before doing this, :doc:`make sure you have done the previous step <encouraging-contributions>`.
 
-What this section covers
-------------------------
+### What this section covers
 
 *  Ways other people can use this data
 
-Others can use your data
-------------------------
+### Others can use your data
 
 We've started our list of bike shops; we've set up a website that encourages other people to contribute to it.
 
@@ -38,8 +38,7 @@ By doing this, others can take your data and re-use it. This means your data has
 
 This Open Data is something DataTig is designed to encourage.
 
-Next
-----
+### Next
 
 That's it! The Tutorial is now complete.
 

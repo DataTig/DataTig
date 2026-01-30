@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{% block title %}{% endblock %} - DataTig Documentation</title>
+        <link href="{{ base_url }}css/main.css" rel="stylesheet"/>
+        <meta name="robots" content="{{ meta_robots }}">
+    </head>
+    <body>
+        <header>
+            <div class="content">
+                <h1><a href="{{ base_url }}">DataTig Documentation</a></h1>
+            </div>
+        </header>
+        <nav>
+            <div class="content">
+                <ul class="nav_items">
+
+                    {% block navitems %}{% endblock %}
+                </ul>
+            </div>
+        </nav>
+        <div id="body">
+            <div class="content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+        <footer>
+            <div class="content">
+                StaticPipes Documentation
+            </div>
+        </footer>
+    </body>
+</html>

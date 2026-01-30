@@ -1,0 +1,18 @@
+{% extends "_templates/base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block navitems %}
+    <li class="nav_item"><a href="{{ base_url }}">&gt; Documentation ({{ version }})</a></li>
+    {% for url, text in breadcrumbs %}
+        <li class="nav_item">
+            {% if url %}<a href="{{ base_url }}{{ url }}">{% endif %}
+                &gt; {{text }}
+            {% if url %}</a>{% endif %}
+        </li>
+    {% endfor %}
+{% endblock %}
+
+{% block content %}
+    {{ content | safe}}
+{% endblock %}

@@ -40,6 +40,8 @@ setuptools.setup(
             "isort==7.0.0",
             "flake8==7.3.0",
             "mypy==1.18.2",
+            # For building our docs
+            "markdown-it-py"
         ],
         "localserver": ["flask"],
     },

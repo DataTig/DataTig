@@ -1,8 +1,10 @@
+---
+title: Calendars
+---
 
-.. _explanation_calendars:
 
-Calendars
-=========
+
+## Calendars
 
 If some of your data is about events, deadlines or other date information that would be useful to see on a calendar, you can define calendars from your data.
 

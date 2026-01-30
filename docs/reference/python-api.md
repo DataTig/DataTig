@@ -1,5 +1,9 @@
-Python API
-==========
+---
+title: Python API
+---
+
+
+## Python API
 
 There is a Python API that you can use. This means you can use the features of DataTig as part of other Python programs and processes.
 

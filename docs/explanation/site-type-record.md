@@ -1,8 +1,11 @@
-Site, Types and Records
-=======================
+---
+title: Site, Types and Records
+---
 
-Site
-----
+
+## Site, Types and Records
+
+### Site
 
 Each site is a separate website and data repository.
 
@@ -10,8 +13,7 @@ It should ideally be in one git repository by itself - so one git repository sho
 
 You can think of sites like a whole database in a database system.
 
-Type
-----
+### Type
 
 Each site can have multiple types of data in it.
 
@@ -32,8 +34,7 @@ Each type has a:
 
 You can think of types like a table in a database system.
 
-Field
------
+### Field
 
 Each type can have a list of field definitions.
 
@@ -41,8 +42,7 @@ These define interesting data to pull out.
 
 Note that there is currently some duplication between the definition of these and the JSON Schema definition.
 
-Record
-------
+### Record
 
 Each Type can have multiple records of data.
 

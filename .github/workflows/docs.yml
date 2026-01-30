@@ -20,11 +20,9 @@ jobs:
         python-version: 3.13
         architecture: x64
     - name: Install Software
-      run: pip install sphinx
-      #run: pip install -e .[Dev]
+      run: pip install -e .[Dev]
     - name: Make site
-      # run: VERSION="latest" python docs.py build --no-check
-      run: sphinx-build -b html docs _site
+      run: VERSION="latest" python docs.py build --no-check
     - name: Zip site
       run: zip -r out.zip *
       working-directory: ./_site
@@ -45,11 +43,9 @@ jobs:
         python-version: 3.13
         architecture: x64
     - name: Install Software
-      run: pip install sphinx
-      #run: pip install -e .[Dev]
+      run: pip install -e .[Dev]
     - name: Make site
-      # run: VERSION="latest" python docs.py build --no-check
-      run: sphinx-build -b html docs _site
+      run: VERSION="latest" python docs.py build --no-check
     - name: Zip site
       run: zip -r out.zip *
       working-directory: ./_site

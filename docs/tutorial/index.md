@@ -1,5 +1,9 @@
-Tutorial
-========
+---
+title: Tutorial
+---
+
+
+## Tutorial
 
 You and your friends in the city are keen cyclists, and want to start collecting information on local things for cyclists.
 
@@ -16,15 +20,12 @@ This tutorial assumes you are using Linux or Mac, and you have Python 3 installe
 This tutorial assumes you want to use certain services, like GitHub. No alternatives will be given in the tutorial, to keep the tutorial simple. In reality, you can use DataTig with many different services. All services suggested in this tutorial have a free option, so you should be able to complete it with no cost.
 
 
-.. toctree::
-   :maxdepth: 2
+### Contents
 
-   setting-up-site-and-adding-first-data.rst
-   specify-structure.rst
-   checking-data-automatically.rst
-   deploying-static-site.rst
-   encouraging-contributions.rst
-   using-data.rst
-
-
+* [Setting up a site on GitHub](setting-up-site-and-adding-first-data.html)
+* [Specifying Structure](specify-structure.html)
+* [Checking data automatically](checking-data-automatically.html)
+* [Deploying the Static Site](deploying-static-site.html)
+* [Encouraging Contributions](encouraging-contributions.html)
+* [Using data (API)](using-data.html)
 
