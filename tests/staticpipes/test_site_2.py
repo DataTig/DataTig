@@ -14,7 +14,7 @@ def test_site_1():
     # setup
     out_dir = tempfile.mkdtemp(prefix="staticpipes_tests_")
     config = staticpipes.config.Config(
-        pipes=[
+        pipes_and_groups_of_pipes=[
             datatig.staticpipes.pipes.load.PipeDataTigLoad(directory="data"),
             staticpipes.pipes.collection_records_process.PipeCollectionRecordsProcess(
                 collection_name="datas",

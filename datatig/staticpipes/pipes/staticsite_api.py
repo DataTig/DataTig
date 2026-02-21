@@ -36,7 +36,7 @@ class PipeDataTigStaticSiteAPI(BasePipe):
                 "api_url": base_url + "/calendar/" + calendar_id + "/api.json",
             }
 
-        self.build_directory.write(
+        self._build_directory.write(
             self.output_dir,
             "api.json",
             json.dumps(api, indent=2),
@@ -57,7 +57,7 @@ class PipeDataTigStaticSiteAPI(BasePipe):
                     "type": field.get_type(),
                 }
 
-            self.build_directory.write(
+            self._build_directory.write(
                 self.output_dir + "/type/{}".format(type_id),
                 "api.json",
                 json.dumps(api_type, indent=2),
@@ -87,7 +87,7 @@ class PipeDataTigStaticSiteAPI(BasePipe):
                         item.get_field_value(field_id).get_api_value()
                     )
 
-            self.build_directory.write(
+            self._build_directory.write(
                 self.output_dir + "/type/{}".format(type_id),
                 "records_api.json",
                 json.dumps(api_type_records, indent=2),
@@ -97,7 +97,7 @@ class PipeDataTigStaticSiteAPI(BasePipe):
 
             for item_id in datastore.get_ids_in_type(type_id):
                 item = datastore.get_item(type_id, item_id)
-                self.build_directory.write(
+                self._build_directory.write(
                     self.output_dir + "/type/{}/record/{}".format(type_id, item_id),
                     "data.json",
                     json.dumps(item.get_data(), indent=2),
@@ -116,7 +116,7 @@ class PipeDataTigStaticSiteAPI(BasePipe):
                     item_api["fields"][field_id] = item.get_field_value(
                         field_id
                     ).get_api_value()
-                self.build_directory.write(
+                self._build_directory.write(
                     self.output_dir + "/type/{}/record/{}".format(type_id, item_id),
                     "api.json",
                     json.dumps(item_api, indent=2),
@@ -127,7 +127,7 @@ class PipeDataTigStaticSiteAPI(BasePipe):
             api_calendar: dict = {
                 "id": calendar_id,
             }
-            self.build_directory.write(
+            self._build_directory.write(
                 self.output_dir + "/calendar/{}".format(calendar_id),
                 "api.json",
                 json.dumps(api_calendar, indent=2),

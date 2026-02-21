@@ -23,9 +23,9 @@ class PipeDataTigLoad(BasePipe):
     def start_build(self, current_info: CurrentInfo) -> None:
 
         absolute_directory = (
-            os.path.join(self.source_directory.dir, self.directory)
+            os.path.join(self._source_directory.dir, self.directory)
             if self.directory and self.directory != "/"
-            else self.source_directory.dir
+            else self._source_directory.dir
         )
 
         # Repository Access

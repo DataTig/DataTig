@@ -15,8 +15,8 @@ class PipeDataTigStaticSiteJinja2(BasePipe):
     def start_build(self, current_info: CurrentInfo) -> None:
 
         actual_jinja2_environment = self._jinja2_environment.get(
-            source_directory=self.source_directory,
-            secondary_source_directories=self.secondary_source_directories,
+            source_directory=self._source_directory,
+            secondary_source_directories=self._secondary_source_directories,
         )
         config = current_info.get_context("datatig")["config"]
         # base_url = current_info.get_context("datatig")["base_url"]
@@ -25,7 +25,7 @@ class PipeDataTigStaticSiteJinja2(BasePipe):
         # Root pages
         for filename in ["index.html", "errors.html", "robots.txt"]:
 
-            self.build_directory.write(
+            self._build_directory.write(
                 self.output_dir,
                 filename,
                 actual_jinja2_environment.get_template(
@@ -39,7 +39,7 @@ class PipeDataTigStaticSiteJinja2(BasePipe):
             context = current_info.get_context()
             context.update({"type": type_config})
 
-            self.build_directory.write(
+            self._build_directory.write(
                 self.output_dir + "/type/{}".format(type_id),
                 "index.html",
                 actual_jinja2_environment.get_template(
@@ -47,7 +47,7 @@ class PipeDataTigStaticSiteJinja2(BasePipe):
                 ).render(context),
             )
 
-            self.build_directory.write(
+            self._build_directory.write(
                 self.output_dir + "/type/{}/newweb".format(type_id),
                 "index.html",
                 actual_jinja2_environment.get_template(
@@ -79,7 +79,7 @@ class PipeDataTigStaticSiteJinja2(BasePipe):
                     pygments.formatters.HtmlFormatter(),
                 )
 
-                self.build_directory.write(
+                self._build_directory.write(
                     self.output_dir + "/type/{}/record/{}".format(type_id, item_id),
                     "index.html",
                     actual_jinja2_environment.get_template(
@@ -87,7 +87,7 @@ class PipeDataTigStaticSiteJinja2(BasePipe):
                     ).render(item_context),
                 )
 
-                self.build_directory.write(
+                self._build_directory.write(
                     self.output_dir
                     + "/type/{}/record/{}/editweb".format(type_id, item_id),
                     "index.html",
@@ -101,7 +101,7 @@ class PipeDataTigStaticSiteJinja2(BasePipe):
             context = current_info.get_context()
             context.update({"calendar": calendar_config})
 
-            self.build_directory.write(
+            self._build_directory.write(
                 self.output_dir + "/calendar/{}".format(calendar_id),
                 "index.html",
                 actual_jinja2_environment.get_template(

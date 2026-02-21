@@ -30,7 +30,7 @@ class PipeDataTigFullCalendarIO(BasePipe):
                         + cal_event.get_url("/type/{{type_id}}/record/{{record_id}}"),
                     }
                 )
-            self.build_directory.write(
+            self._build_directory.write(
                 self.output_dir + "/calendar/{}".format(calendar_id),
                 "fullcalendar.json",
                 json.dumps(fullcalendar, indent=2),

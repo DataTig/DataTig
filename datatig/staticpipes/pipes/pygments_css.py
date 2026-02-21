@@ -11,7 +11,7 @@ class PipeDataTigPygmentsCSS(BasePipe):
         self.output_filename = output_filename
 
     def start_build(self, current_info: CurrentInfo) -> None:
-        self.build_directory.write(
+        self._build_directory.write(
             self.output_dir,
             self.output_filename,
             pygments.formatters.HtmlFormatter().get_style_defs(".highlight"),

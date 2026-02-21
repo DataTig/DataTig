@@ -38,7 +38,7 @@ class StaticWriter:
                         ),
                     },
                 },
-                pipes=[BundleDataTigStaticSite()],
+                pipes_and_groups_of_pipes=[BundleDataTigStaticSite()],
             ),
             os.path.join(os.path.dirname(os.path.realpath(__file__)), "source"),
             self._out_dir,
